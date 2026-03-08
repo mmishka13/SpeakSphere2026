@@ -3,7 +3,8 @@ import { useState } from "react";
 import LandingPage  from "./home.jsx";
 import AuthPage     from "./AuthPage.jsx";
 import Dashboard    from "./dashboard.jsx";
-import CalendarPage from "./CalendarPage.jsx";
+import CalendarPage   from "./CalendarPage.jsx";
+import ResourcesPage  from "./resourcespage.jsx";
 
 /* ── Design tokens (dark academia — matches Dashboard) ── */
 const DARK   = "#140b04";
@@ -179,7 +180,7 @@ function AppShell() {
       <div style={{ marginLeft:56, flex:1, overflow:"hidden", display:"flex", flexDirection:"column" }}>
         <Routes>
           <Route path="/calendar"      element={<CalendarPage/>}/>
-          <Route path="/resources"     element={<ComingSoon label="Resources"/>}/>
+          <Route path="/resources"     element={<ResourcesPage/>}/>
           <Route path="/ai-tutor"      element={<ComingSoon label="AI Tutor"/>}/>
           <Route path="/pronunciation" element={<ComingSoon label="Pronunciation Studio"/>}/>
           <Route path="/pen-pals"      element={<ComingSoon label="Pen Pals"/>}/>

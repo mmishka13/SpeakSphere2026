@@ -191,14 +191,14 @@ function GlowRing({ label, pct, color, size=70 }) {
 
 /* ─── WEEK BARS ─── */
 const DAYLABELS = ["S","M","T","W","T","F","S"];
-function WeekBars({ data, color }) {
+function WeekBars({ data, color, h=46 }) {
   const max = Math.max(...data, 1);
   return (
     <div style={{ display:"flex", gap:5, alignItems:"flex-end" }}>
       {data.map((v, i) => (
         <div key={i} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
           <div title={`${v} sessions`} style={{
-            width:"100%", height:Math.max(3, (v/max)*46), borderRadius:3,
+            width:"100%", height:Math.max(3, (v/max)*h), borderRadius:3,
             background: v ? color : "rgba(255,255,255,0.04)",
             boxShadow: "none",
             opacity: v ? 0.3+(v/max)*0.7 : 1,
@@ -300,7 +300,7 @@ function AddLangModal({ onAdd, onClose, existing }) {
             cursor:"pointer", color:MUTED, fontSize:22, lineHeight:1, padding:"0 4px" }}>×</button>
         </div>
         {available.length === 0
-          ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:MUTED, fontStyle:"italic" }}>
+          ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c4aa80", fontStyle:"italic" }}>
               You're enrolled in all languages!</p>
           : available.map(l => (
             <button key={l.code} onClick={()=>{ onAdd(l); onClose(); }}
@@ -321,6 +321,171 @@ function AddLangModal({ onAdd, onClose, existing }) {
   );
 }
 
+/* ─── HERO BANNER ─── */
+const BANNERS = [
+  {
+    tag:    "Your streak is alive",
+    title:  "12 days and counting.",
+    body:   "You've studied Spanish every day this week. Don't let the chain break — your daily question is waiting.",
+    cta:    "Answer today's question",
+    path:   null, // scrolls to daily Q
+    accent: GOLD,
+    pattern: "radial-gradient(ellipse 80% 60% at 20% 50%, rgba(201,160,90,0.13) 0%, transparent 70%)",
+  },
+  {
+    tag:    "Ready to level up?",
+    title:  "660 XP from Scholar.",
+    body:   "You're a Journeyman — but Scholar is within reach. Three focused sessions this week will get you there.",
+    cta:    "Book a session",
+    path:   "/calendar",
+    accent: A_BLUE,
+    pattern: "radial-gradient(ellipse 80% 60% at 20% 50%, rgba(106,158,192,0.13) 0%, transparent 70%)",
+  },
+  {
+    tag:    "Your weakest skill",
+    title:  "Speaking is at 45%.",
+    body:   "Reading and vocab are strong — but speaking is where fluency is won. Book a conversation session today.",
+    cta:    "Find a tutor",
+    path:   "/calendar",
+    accent: A_ROSE,
+    pattern: "radial-gradient(ellipse 80% 60% at 20% 50%, rgba(192,112,112,0.13) 0%, transparent 70%)",
+  },
+  {
+    tag:    "Your students are waiting",
+    title:  "2 upcoming sessions.",
+    body:   "You're a Guide-level tutor with a 4.7 rating. Your next session is March 10 — review your notes.",
+    cta:    "View schedule",
+    path:   "/calendar",
+    accent: A_GREEN,
+    pattern: "radial-gradient(ellipse 80% 60% at 20% 50%, rgba(125,184,125,0.13) 0%, transparent 70%)",
+  },
+];
+
+function HeroBanner({ onDailyQ, navigate }) {
+  const [idx, setIdx]         = useState(0);
+  const [hovered, setHovered] = useState(false);
+  const [fading, setFading]   = useState(false);
+
+  // Auto-rotate every 6s, pauses on hover
+  useEffect(() => {
+    if (hovered) return;
+    const t = setInterval(() => {
+      setFading(true);
+      setTimeout(() => { setIdx(i => (i+1) % BANNERS.length); setFading(false); }, 260);
+    }, 6000);
+    return () => clearInterval(t);
+  }, [hovered]);
+
+  function goTo(i) {
+    setFading(true);
+    setTimeout(() => { setIdx(i); setFading(false); }, 200);
+  }
+
+  const b = BANNERS[idx];
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ position:"relative", borderRadius:8, overflow:"hidden", cursor:"default",
+        border:`1px solid rgba(201,160,90,0.14)`,
+        background: CARD,
+        backgroundImage: GRAIN,
+        backgroundRepeat:"repeat", backgroundSize:"300px",
+        marginBottom:20, transition:"border-color .25s",
+        minHeight:"52vh",
+        display:"flex", flexDirection:"column", justifyContent:"space-between",
+        borderColor: hovered ? `${b.accent}55` : "rgba(201,160,90,0.14)" }}>
+
+      {/* Decorative pattern layer */}
+      <div style={{ position:"absolute", inset:0, background:b.pattern,
+        transition:"background .5s ease", pointerEvents:"none" }}/>
+
+      {/* Giant background word — right-aligned, fully contained */}
+      <div style={{ position:"absolute", right:50, top:0, bottom:0,
+        display:"flex", alignItems:"center",
+        fontFamily:"'Oswald',sans-serif", fontSize:"clamp(140px, 22vw, 350px)", fontWeight:700,
+        letterSpacing:"-0.04em", lineHeight:1, paddingRight:24,
+        color:b.accent, opacity: hovered ? 0.13 : 0.08,
+        transition:"opacity .35s", pointerEvents:"none", userSelect:"none" }}>
+        {idx === 0 ? "12" : idx === 1 ? "XP" : idx === 2 ? "ES" : "GO"}
+      </div>
+
+      {/* ── TOP STATS STRIP — normal flow so it isn't clipped ── */}
+      <div style={{ position:"relative", zIndex:1,
+        display:"flex", gap:0,
+        borderBottom:`1px solid rgba(201,160,90,0.08)`, flexShrink:0 }}>
+        {[
+          { label:"Current Level",   value:"Journeyman",  sub:"Spanish"          },
+          { label:"Total XP",        value:"1,840",       sub:"660 to Scholar"   },
+          { label:"Day Streak",      value:"12",          sub:"Best: 21 days"    },
+          { label:"Sessions",        value:"24",          sub:"3 this week"      },
+          { label:"Avg Score",       value:"60%",         sub:"Intermediate"     },
+          { label:"Tutor Rating",    value:"4.7",         sub:"38 students"      },
+        ].map((s, i) => (
+          <div key={i} style={{ flex:1,
+            paddingTop:20, paddingBottom:16,
+            paddingLeft: i === 0 ? 36 : 20, paddingRight: i === 5 ? 36 : 20,
+            borderRight: i < 5 ? `1px solid rgba(201,160,90,0.08)` : "none" }}>
+            <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:8, letterSpacing:"0.16em",
+              textTransform:"uppercase", color:MUTED, marginBottom:5 }}>{s.label}</p>
+            <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:20, color:CREAM,
+              letterSpacing:"0.02em", lineHeight:1 }}>{s.value}</p>
+            <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:"#c4aa80",
+              fontStyle:"italic", marginTop:3 }}>{s.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Content — pinned to bottom-left */}
+      <div style={{ position:"relative", padding:"36px 36px 32px",
+        opacity: fading ? 0 : 1, transition:"opacity .26s ease" }}>
+
+        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.2em",
+          textTransform:"uppercase", color:b.accent, marginBottom:10 }}>{b.tag}</p>
+
+        <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:38, color:CREAM,
+          letterSpacing:"0.01em", lineHeight:1.15, marginBottom:14,
+          maxWidth:600 }}>{b.title}</h2>
+
+        <p style={{ fontFamily:"'Lora',serif", fontSize:15, color:"#c8b89a",
+          lineHeight:1.7, fontStyle:"italic", maxWidth:520,
+          opacity: hovered ? 1 : 0.75,
+          transition:"opacity .3s ease" }}>
+          {b.body}
+        </p>
+
+        {/* CTA */}
+        <button
+          onClick={() => b.path ? navigate(b.path) : onDailyQ?.()}
+          style={{ marginTop:22, fontFamily:"'Oswald',sans-serif", fontSize:11,
+            letterSpacing:"0.12em", textTransform:"uppercase",
+            padding:"10px 24px", borderRadius:4, border:`1px solid ${b.accent}`,
+            background: hovered ? b.accent : "transparent",
+            color: hovered ? DARK : b.accent,
+            cursor:"pointer", transition:"all .25s",
+            display:"inline-flex", alignItems:"center", gap:8,
+            fontWeight:600 }}>
+          {b.cta}
+          <IcoArrow size={12} color={hovered ? DARK : b.accent}/>
+        </button>
+      </div>
+
+      {/* Dot indicators */}
+      <div style={{ position:"absolute", top:20, right:20,
+        display:"flex", gap:6, alignItems:"center" }}>
+        {BANNERS.map((_, i) => (
+          <button key={i} onClick={() => goTo(i)}
+            style={{ width: i===idx ? 18 : 6, height:6, borderRadius:3,
+              background: i===idx ? b.accent : "rgba(201,160,90,0.2)",
+              border:"none", cursor:"pointer", padding:0,
+              transition:"all .3s ease" }}/>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ═══════════════ MAIN DASHBOARD ═══════════════ */
 export default function Dashboard() {
   const navigate   = useNavigate();
@@ -331,6 +496,8 @@ export default function Dashboard() {
   const [doneDQ,   setDoneDQ]   = useState({});
   const [toast,    setToast]    = useState(null);
   const [page,     setPage]     = useState("dashboard");
+  const [sideExpanded, setSideExpanded] = useState(false);
+  const dqRef = useRef(null);
 
   const lm   = ALL_LANGS.find(l => l.code === lcode) || ALL_LANGS[0];
   const lang = langs.find(l => l.code === lcode) || langs[0];
@@ -344,12 +511,18 @@ export default function Dashboard() {
   const tPct = tNxt ? Math.min((td.hosted / tNxt.sessions) * 100, 100) : 100;
   const isDQ = doneDQ[lcode] || ld.dailyQ.done;
 
+  const sideW = sideExpanded ? 210 : 56;
+
   const greeting = (() => {
     const h = new Date().getHours();
     return h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
   })();
 
   function fireToast(msg) { setToast(msg); setTimeout(() => setToast(null), 2600); }
+
+  function scrollToDQ() {
+    dqRef.current?.scrollIntoView({ behavior:"smooth", block:"center" });
+  }
 
   function addLang(l) {
     setLangs(prev => [...prev, {
@@ -377,21 +550,26 @@ export default function Dashboard() {
 
   /* ── SIDEBAR ── */
   const sidebar = (
-    <aside style={{ width:210, flexShrink:0, background:DARK,
-      borderRight:`1px solid ${BORD}`, position:"fixed", top:0, left:0, bottom:0,
-      zIndex:50, display:"flex", flexDirection:"column",
-      backgroundImage:GRAIN, backgroundRepeat:"repeat", backgroundSize:"300px" }}>
+    <aside
+      onMouseEnter={() => setSideExpanded(true)}
+      onMouseLeave={() => setSideExpanded(false)}
+      style={{ width:sideW, flexShrink:0, background:DARK,
+        borderRight:`1px solid ${BORD}`, position:"fixed", top:0, left:0, bottom:0,
+        zIndex:50, display:"flex", flexDirection:"column",
+        backgroundImage:GRAIN, backgroundRepeat:"repeat", backgroundSize:"300px",
+        transition:"width .22s cubic-bezier(.4,0,.2,1)", overflow:"hidden" }}>
 
       {/* Logo */}
-      <div style={{ padding:"20px 18px 16px", borderBottom:`1px solid rgba(201,160,90,0.08)`,
-        cursor:"pointer", display:"flex", alignItems:"center", gap:10 }}
+      <div style={{ padding:"20px 14px 16px", borderBottom:`1px solid rgba(201,160,90,0.08)`,
+        cursor:"pointer", display:"flex", alignItems:"center", gap:10, flexShrink:0,
+        minWidth:210 }}
         onClick={() => navigate("/")}>
-        <svg width={26} height={26} viewBox="0 0 26 26" fill="none">
+        <svg width={26} height={26} viewBox="0 0 26 26" fill="none" style={{ flexShrink:0 }}>
           <circle cx="13" cy="13" r="11" stroke={GOLD} strokeWidth="1.2"/>
           <ellipse cx="13" cy="13" rx="5" ry="11" stroke={GOLD} strokeWidth="0.8" opacity=".5"/>
           <line x1="2" y1="13" x2="24" y2="13" stroke={GOLD} strokeWidth="0.8" opacity=".4"/>
         </svg>
-        <div>
+        <div style={{ opacity: sideExpanded ? 1 : 0, transition:"opacity .15s", whiteSpace:"nowrap" }}>
           <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, fontWeight:600,
             color:CREAM, letterSpacing:"0.08em" }}>SPEAKSPHERE</p>
           <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:8, color:DIM, letterSpacing:"0.14em" }}>
@@ -408,14 +586,18 @@ export default function Dashboard() {
             <button key={id}
               onClick={() => { if (ROUTES[id]) navigate(ROUTES[id]); else setPage(id); }}
               style={{ display:"flex", alignItems:"center", gap:10, width:"100%",
-                padding:"8px 11px", borderRadius:4, border:"none", marginBottom:2,
+                padding:"9px 11px", borderRadius:4, border:"none", marginBottom:2,
                 background: active ? "rgba(201,160,90,0.09)" : "transparent",
                 borderLeft: active ? `2px solid ${GOLD}` : "2px solid transparent",
-                cursor:"pointer", transition:"all .14s", textAlign:"left" }}>
-              <IconC size={14} color={active ? GOLD : DIM}/>
+                cursor:"pointer", transition:"all .14s", textAlign:"left",
+                minWidth:210, overflow:"hidden" }}>
+              <div style={{ flexShrink:0, width:20, display:"flex", justifyContent:"center" }}>
+                <IconC size={16} color={active ? GOLD : MUTED}/>
+              </div>
               <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
-                letterSpacing:"0.08em", textTransform:"uppercase",
-                color: active ? CREAM : MUTED, fontWeight: active ? 600 : 400 }}>
+                letterSpacing:"0.08em", textTransform:"uppercase", whiteSpace:"nowrap",
+                color: active ? CREAM : MUTED, fontWeight: active ? 600 : 400,
+                opacity: sideExpanded ? 1 : 0, transition:"opacity .12s" }}>
                 {label}
               </span>
             </button>
@@ -424,23 +606,25 @@ export default function Dashboard() {
       </nav>
 
       {/* User card */}
-      <div style={{ margin:"0 8px 12px", padding:"11px 13px",
-        border:`1px solid ${BORD}`, borderRadius:6, background:"rgba(255,255,255,0.01)" }}>
+      <div style={{ margin:"0 8px 12px", padding:"11px 10px",
+        border:`1px solid ${BORD}`, borderRadius:6, background:"rgba(255,255,255,0.01)",
+        flexShrink:0, minWidth:194, overflow:"hidden" }}>
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
           <div style={{ width:32, height:32, borderRadius:6, flexShrink:0,
             background:`linear-gradient(135deg,${GOLD},#8a5a20)`,
             display:"flex", alignItems:"center", justifyContent:"center",
             fontFamily:"'Oswald',sans-serif", fontSize:11, fontWeight:700, color:DARK }}>
             MM</div>
-          <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ flex:1, minWidth:0, opacity: sideExpanded ? 1 : 0, transition:"opacity .12s" }}>
             <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, color:CREAM,
               letterSpacing:"0.04em", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
               Mishka Mittal</p>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:MUTED, fontStyle:"italic" }}>
+            <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:"#c4aa80", fontStyle:"italic" }}>
               {lLvl.title}</p>
           </div>
           <button onClick={() => fireToast("Settings coming soon.")}
-            style={{ background:"none", border:"none", cursor:"pointer", padding:3, flexShrink:0 }}>
+            style={{ background:"none", border:"none", cursor:"pointer", padding:3, flexShrink:0,
+              opacity: sideExpanded ? 1 : 0, transition:"opacity .12s" }}>
             <IcoGear size={13} color={DIM}/>
           </button>
         </div>
@@ -452,28 +636,16 @@ export default function Dashboard() {
   const rightPanel = (
     <div style={{ width:280, flexShrink:0, display:"flex", flexDirection:"column", gap:14 }}>
 
-      {/* Streak + This Week + Placement — 3 mini cards */}
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
-        {/* Streak */}
-        <Card style={{ padding:"16px 14px", gridColumn:"1" }}>
-          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:8, letterSpacing:"0.14em",
-            textTransform:"uppercase", color:MUTED, marginBottom:6 }}>Day Streak</p>
-          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:38, color:GOLDLT, lineHeight:1 }}>
-            <AnimNum to={ld.streak}/></p>
-          <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:DIM,
-            fontStyle:"italic", marginTop:4 }}>Best {ld.best}</p>
-        </Card>
-
-        {/* This week */}
-        <Card style={{ padding:"16px 14px" }}>
-          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:8, letterSpacing:"0.14em",
-            textTransform:"uppercase", color:MUTED, marginBottom:8 }}>This Week</p>
-          <WeekBars data={ld.week} color={lm.c}/>
-          <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:DIM,
-            fontStyle:"italic", marginTop:6 }}>
-            <AnimNum to={ld.sessionsTotal}/> sessions</p>
-        </Card>
-      </div>
+      {/* This Week — full width, bigger */}
+      <Card style={{ padding:"20px 18px" }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:14 }}>
+          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.14em",
+            textTransform:"uppercase", color:MUTED }}>This Week</p>
+          <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c4aa80", fontStyle:"italic" }}>
+            <AnimNum to={ld.sessionsTotal}/> sessions total · streak <span style={{color:GOLDLT}}>{ld.streak}</span> days</p>
+        </div>
+        <WeekBars data={ld.week} color={lm.c} h={64}/>
+      </Card>
 
       {/* Placement */}
       <Card style={{ padding:"14px 16px" }}>
@@ -485,31 +657,11 @@ export default function Dashboard() {
           <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:lm.c }}>
             {ld.avgScore}% avg</span>
         </div>
-        <div style={{ display:"flex", gap:10, fontFamily:"'Lora',serif", fontSize:11, color:MUTED }}>
+        <div style={{ display:"flex", gap:10, fontFamily:"'Lora',serif", fontSize:11, color:"#c4aa80" }}>
           <span>{ld.sessionsTotal} sessions</span>
           <span>·</span>
           <span>3 this week</span>
         </div>
-      </Card>
-
-      {/* Daily Question */}
-      <Card style={{ padding:"16px" }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
-          <div>
-            <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:8, letterSpacing:"0.14em",
-              textTransform:"uppercase", color:MUTED }}>Daily · {lcode}</p>
-          </div>
-          {!isDQ && (
-            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.1em",
-              textTransform:"uppercase", color:A_GREEN, border:`1px solid ${A_GREEN}44`,
-              borderRadius:3, padding:"2px 7px" }}>+25 XP</span>
-          )}
-        </div>
-        <DailyQuestion
-          q={ld.dailyQ.q} opts={ld.dailyQ.opts} ans={ld.dailyQ.ans}
-          done={isDQ}
-          onDone={() => { setDoneDQ(d => ({...d,[lcode]:true})); fireToast("+25 XP earned!"); }}
-        />
       </Card>
 
       {/* Suggested Resources */}
@@ -588,7 +740,7 @@ export default function Dashboard() {
           <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, color:MUTED }}>
             {ld.xp.toLocaleString()} XP</span>
           {lNxt && (
-            <span style={{ fontFamily:"'Lora',serif", fontSize:10, color:DIM, fontStyle:"italic" }}>
+            <span style={{ fontFamily:"'Lora',serif", fontSize:10, color:"#c4aa80", fontStyle:"italic" }}>
               {(lNxt.xp - ld.xp).toLocaleString()} XP to {lNxt.title}</span>
           )}
         </div>
@@ -642,7 +794,7 @@ export default function Dashboard() {
           </button>
         </div>
         {ld.sessions.length === 0
-          ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:MUTED, fontStyle:"italic" }}>
+          ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c4aa80", fontStyle:"italic" }}>
               No sessions yet — book one from the calendar.</p>
           : ld.sessions.map((s, i) => (
             <div key={i} style={{ display:"flex", alignItems:"center", gap:14,
@@ -655,7 +807,7 @@ export default function Dashboard() {
               <div style={{ flex:1, minWidth:0 }}>
                 <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, color:CREAM,
                   letterSpacing:"0.02em", marginBottom:3 }}>{s.title}</p>
-                <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED, fontStyle:"italic" }}>
+                <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:"#c4aa80", fontStyle:"italic" }}>
                   with {s.with} · {s.date} · {s.duration}</p>
               </div>
               <Stars n={s.stars} size={11}/>
@@ -696,7 +848,7 @@ export default function Dashboard() {
         <div style={{ display:"flex", justifyContent:"space-between", marginTop:8 }}>
           <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, color:MUTED }}>
             {td.hosted} sessions hosted</span>
-          {tNxt && <span style={{ fontFamily:"'Lora',serif", fontSize:10, color:DIM, fontStyle:"italic" }}>
+          {tNxt && <span style={{ fontFamily:"'Lora',serif", fontSize:10, color:"#c4aa80", fontStyle:"italic" }}>
             {tNxt.sessions - td.hosted} more to {tNxt.title}</span>}
         </div>
       </Card>
@@ -716,14 +868,14 @@ export default function Dashboard() {
             </button>
           </div>
           {td.upcoming.length === 0
-            ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:MUTED, fontStyle:"italic" }}>
+            ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c4aa80", fontStyle:"italic" }}>
                 No upcoming sessions.</p>
             : td.upcoming.map((s, i) => (
               <div key={i} style={{ padding:"10px 0",
                 borderBottom: i < td.upcoming.length-1 ? `1px solid rgba(201,160,90,0.07)` : "none" }}>
                 <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, color:CREAM,
                   letterSpacing:"0.02em", marginBottom:4 }}>{s.title}</p>
-                <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED, fontStyle:"italic" }}>
+                <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:"#c4aa80", fontStyle:"italic" }}>
                   {s.date}</p>
                 <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.08em",
                   color:s.spots<=1?A_ROSE:A_GREEN, border:`1px solid ${s.spots<=1?A_ROSE:A_GREEN}44`,
@@ -739,7 +891,7 @@ export default function Dashboard() {
           <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.14em",
             textTransform:"uppercase", color:MUTED, marginBottom:16 }}>Student Reviews</p>
           {td.reviews.length === 0
-            ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:MUTED, fontStyle:"italic" }}>
+            ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c4aa80", fontStyle:"italic" }}>
                 Host a session to get reviews.</p>
             : td.reviews.map((r, i) => (
               <div key={i} style={{ marginBottom: i < td.reviews.length-1 ? 14 : 0 }}>
@@ -753,7 +905,7 @@ export default function Dashboard() {
                     color:CREAM, letterSpacing:"0.04em" }}>{r.from}</span>
                   <Stars n={r.stars} size={10}/>
                 </div>
-                <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:MUTED,
+                <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:"#c4aa80",
                   fontStyle:"italic", lineHeight:1.6 }}>"{r.text}"</p>
               </div>
             ))
@@ -781,7 +933,8 @@ export default function Dashboard() {
 
       {sidebar}
 
-      <main style={{ marginLeft:210, flex:1, display:"flex", flexDirection:"column", minHeight:"100vh" }}>
+      <main style={{ marginLeft:sideW, flex:1, display:"flex", flexDirection:"column", minHeight:"100vh",
+        transition:"margin-left .22s cubic-bezier(.4,0,.2,1)" }}>
 
         {/* TOP BAR */}
         <div style={{ padding:"22px 28px 0", borderBottom:`1px solid rgba(201,160,90,0.08)`,
@@ -844,9 +997,9 @@ export default function Dashboard() {
           <div style={{ display:"flex", gap:8, overflowX:"auto", scrollbarWidth:"none" }}>
             {quickLinks.map(q => (
               <button key={q.label} onClick={() => navigate(q.path)}
-                style={{ flexShrink:0, fontFamily:"'Oswald',sans-serif", fontSize:10,
-                  letterSpacing:"0.08em", textTransform:"uppercase", padding:"6px 14px",
-                  borderRadius:4, border:`1px solid ${q.c}33`, background:`${q.c}08`,
+                style={{ flexShrink:0, fontFamily:"'Oswald',sans-serif", fontSize:11,
+                  letterSpacing:"0.1em", textTransform:"uppercase", padding:"10px 20px",
+                  borderRadius:5, border:`1px solid ${q.c}44`, background:`${q.c}0a`,
                   color:q.c, cursor:"pointer", transition:"all .15s", display:"flex",
                   alignItems:"center", gap:7, whiteSpace:"nowrap" }}
                 onMouseEnter={e=>{ e.currentTarget.style.background=`${q.c}18`; e.currentTarget.style.borderColor=`${q.c}66`; }}
@@ -860,6 +1013,95 @@ export default function Dashboard() {
         {/* CONTENT */}
         <div style={{ flex:1, padding:"20px 28px 36px", overflowY:"auto",
           animation:"fadeUp .35s ease .05s both" }}>
+          <HeroBanner navigate={navigate} onDailyQ={scrollToDQ} />
+
+          {/* ── FEATURED: QUESTION OF THE DAY ── */}
+          {tab === "learner" && (
+            <div ref={dqRef} style={{ marginBottom:20, border:`1px solid ${isDQ ? "rgba(201,160,90,0.12)" : "rgba(201,160,90,0.28)"}`,
+              borderRadius:8, background:CARD, backgroundImage:GRAIN,
+              backgroundRepeat:"repeat", backgroundSize:"300px",
+              position:"relative", overflow:"hidden" }}>
+
+              {/* Left accent bar */}
+              <div style={{ position:"absolute", left:0, top:0, bottom:0, width:3,
+                background: isDQ ? DIM : GOLD }}/>
+
+              {/* Faint grid pattern top-right */}
+              <div style={{ position:"absolute", right:0, top:0, width:180, height:"100%",
+                pointerEvents:"none", opacity:0.04 }}>
+                {[0,1,2,3,4,5].map(row => [0,1,2,3,4,5,6,7].map(col => (
+                  <div key={`${row}-${col}`} style={{ position:"absolute",
+                    left: col*24, top: row*24, width:1, height:1,
+                    background:GOLD, borderRadius:"50%" }}/>
+                )))}
+              </div>
+
+              <div style={{ padding:"28px 32px 28px 36px", display:"flex",
+                gap:32, alignItems:"flex-start", flexWrap:"wrap" }}>
+
+                {/* Left — label + question */}
+                <div style={{ flex:"0 0 auto", maxWidth:260 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
+                    <div style={{ width:36, height:36, borderRadius:6,
+                      background: isDQ ? "rgba(125,184,125,0.1)" : "rgba(201,160,90,0.1)",
+                      border:`1px solid ${isDQ ? A_GREEN+"44" : GOLD+"44"}`,
+                      display:"flex", alignItems:"center", justifyContent:"center" }}>
+                      {isDQ
+                        ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke={A_GREEN} strokeWidth="2" strokeLinecap="round">
+                            <path d="M20 6L9 17l-5-5"/>
+                          </svg>
+                        : <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke={GOLD} strokeWidth="1.6" strokeLinecap="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 8v4M12 16h.01"/>
+                          </svg>
+                      }
+                    </div>
+                    <div>
+                      <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
+                        letterSpacing:"0.14em", textTransform:"uppercase",
+                        color: isDQ ? A_GREEN : GOLD, marginBottom:2 }}>
+                        {isDQ ? "Completed" : "Question of the Day"}
+                      </p>
+                      <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
+                        letterSpacing:"0.1em", textTransform:"uppercase", color:MUTED }}>
+                        {ALL_LANGS.find(l=>l.code===lcode)?.name} · Daily Challenge
+                      </p>
+                    </div>
+                  </div>
+
+                  {!isDQ && (
+                    <div style={{ display:"inline-flex", alignItems:"center", gap:6,
+                      background:"rgba(125,184,125,0.08)", border:`1px solid ${A_GREEN}33`,
+                      borderRadius:4, padding:"5px 12px" }}>
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                        stroke={A_GREEN} strokeWidth="2" strokeLinecap="round">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                      </svg>
+                      <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:12,
+                        letterSpacing:"0.1em", textTransform:"uppercase", color:A_GREEN,
+                        fontWeight:600 }}>+25 XP on correct answer</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Divider */}
+                <div style={{ width:1, background:"rgba(201,160,90,0.1)",
+                  alignSelf:"stretch", flexShrink:0, minHeight:80 }}/>
+
+                {/* Right — the actual question */}
+                <div style={{ flex:1, minWidth:280 }}>
+                  <DailyQuestion
+                    q={ld.dailyQ.q} opts={ld.dailyQ.opts} ans={ld.dailyQ.ans}
+                    done={isDQ}
+                    onDone={() => { setDoneDQ(d => ({...d,[lcode]:true})); fireToast("+25 XP earned!"); }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
           {tab === "learner"
             ? <div style={{ display:"flex", gap:16, alignItems:"flex-start" }}>
                 {learnerMain}

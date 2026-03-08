@@ -374,7 +374,7 @@ export default function LandingPage() {
             <p style={s.eyebrow}>LAUNCH LANGUAGES</p>
             <h2 id="lang-h" style={s.h2}>6 Languages. Endless Possibilities.</h2>
             <p style={s.sectionSub}>
-              Start with these six — admins can add more any time from the dashboard.
+              More languages coming soon!
             </p>
             <div style={s.langGrid} role="list">
               {LANGUAGES.map((lang, i) => (
@@ -403,7 +403,7 @@ export default function LandingPage() {
             </div>
             <p style={s.adminNote}>
               <InfoIcon/>
-              Admins can add new languages directly from the Admin Dashboard — no code required.
+              Contact us to add more languages.
             </p>
           </div>
         </section>

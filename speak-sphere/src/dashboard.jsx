@@ -402,9 +402,9 @@ function HeroBanner({ onDailyQ, navigate }) {
         transition:"background .5s ease", pointerEvents:"none" }}/>
 
       {/* Giant background word — right-aligned, fully contained */}
-      <div style={{ position:"absolute", right:50, top:0, bottom:0,
+      <div style={{ position:"absolute", right:0, top:0, bottom:0,
         display:"flex", alignItems:"center",
-        fontFamily:"'Oswald',sans-serif", fontSize:"clamp(140px, 22vw, 350px)", fontWeight:700,
+        fontFamily:"'Oswald',sans-serif", fontSize:"clamp(140px, 22vw, 300px)", fontWeight:700,
         letterSpacing:"-0.04em", lineHeight:1, paddingRight:24,
         color:b.accent, opacity: hovered ? 0.13 : 0.08,
         transition:"opacity .35s", pointerEvents:"none", userSelect:"none" }}>
@@ -487,6 +487,174 @@ function HeroBanner({ onDailyQ, navigate }) {
 }
 
 /* ═══════════════ MAIN DASHBOARD ═══════════════ */
+/* ── CREATE SESSION (standalone component) ──────────────────── */
+function CreateSession({ lang, csOpen, setCsOpen, csData, setCsData, csSubmitted, onSubmit }) {
+  const langColor = lang?.c || "#c9a05a";
+  const GOLD_C = "#c9a05a", DARK_C = "#140b04", BORD_C = "rgba(201,160,90,0.12)";
+  const CREAM_C = "#eadcca", MUTED_C = "#9a7d5a", DIM_C = "#5a3a22";
+  const A_GREEN_C = "#3ec98a", A_ROSE_C = "#e05878";
+  const LEVELS = ["Beginner","Intermediate","Advanced"];
+  const LANGS_OPTS = [
+    { code:"ES", name:"Spanish" }, { code:"FR", name:"French" },
+    { code:"JP", name:"Japanese" }, { code:"KO", name:"Korean" },
+  ];
+  const inputStyle = {
+    background:"rgba(201,160,90,0.04)", border:`1px solid ${BORD_C}`,
+    borderRadius:4, padding:"9px 12px", fontFamily:"'Oswald',sans-serif",
+    fontSize:12, letterSpacing:"0.04em", color:CREAM_C, width:"100%", outline:"none",
+  };
+  const labelStyle = {
+    fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.14em",
+    textTransform:"uppercase", color:MUTED_C, display:"block", marginBottom:5,
+  };
+  const valid = csData.title && csData.date && csData.time && csData.zoom;
+
+  return (
+    <div style={{ background:"#1a0d05", border:`1px solid ${BORD_C}`, borderRadius:6, padding:"20px 22px" }}>
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom: csOpen ? 20 : 0 }}>
+        <div>
+          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.14em",
+            textTransform:"uppercase", color:MUTED_C, marginBottom:4 }}>Tutor Tools</p>
+          <h3 style={{ fontFamily:"'Oswald',sans-serif", fontSize:16, color:CREAM_C,
+            letterSpacing:"0.03em" }}>Create a Session</h3>
+        </div>
+        <button onClick={() => setCsOpen(o => !o)}
+          style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.1em",
+            textTransform:"uppercase", padding:"8px 18px", borderRadius:4,
+            border:`1px solid ${langColor}55`,
+            background: csOpen ? `${langColor}18` : `${langColor}0a`,
+            color:langColor, cursor:"pointer", transition:"all .15s" }}>
+          {csOpen ? "Close" : "+ New Session"}
+        </button>
+      </div>
+
+      {csOpen && (
+        <div style={{ animation:"fadeUp .2s ease both" }}>
+          {csSubmitted ? (
+            <div style={{ background:"rgba(62,201,138,0.08)", border:"1px solid rgba(62,201,138,0.22)",
+              borderRadius:5, padding:"18px 20px", textAlign:"center" }}>
+              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:16, color:A_GREEN_C,
+                letterSpacing:"0.06em" }}>Session Created!</p>
+              <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:"#c4aa80",
+                fontStyle:"italic", marginTop:6 }}>Your session has been added to the calendar.</p>
+            </div>
+          ) : (
+            <>
+              <div style={{ display:"grid", gridTemplateColumns:"2fr 1fr", gap:12, marginBottom:14 }}>
+                <div>
+                  <label style={labelStyle}>Session Title</label>
+                  <input style={inputStyle} placeholder="e.g. Beginner Spanish Chat"
+                    value={csData.title}
+                    onChange={e => setCsData(d => ({...d, title:e.target.value}))}/>
+                </div>
+                <div>
+                  <label style={labelStyle}>Language</label>
+                  <select style={{...inputStyle, cursor:"pointer"}}
+                    value={csData.language}
+                    onChange={e => setCsData(d => ({...d, language:e.target.value}))}>
+                    {LANGS_OPTS.map(l => <option key={l.code} value={l.code}>{l.name}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginBottom:14 }}>
+                <div>
+                  <label style={labelStyle}>Date</label>
+                  <input type="date" style={{...inputStyle, colorScheme:"dark"}}
+                    value={csData.date}
+                    onChange={e => setCsData(d => ({...d, date:e.target.value}))}/>
+                </div>
+                <div>
+                  <label style={labelStyle}>Start Time</label>
+                  <input type="time" style={{...inputStyle, colorScheme:"dark"}}
+                    value={csData.time}
+                    onChange={e => setCsData(d => ({...d, time:e.target.value}))}/>
+                </div>
+                <div>
+                  <label style={labelStyle}>Duration</label>
+                  <select style={{...inputStyle, cursor:"pointer"}}
+                    value={csData.duration}
+                    onChange={e => setCsData(d => ({...d, duration:e.target.value}))}>
+                    {["30","45","60","90","120"].map(v =>
+                      <option key={v} value={v}>{v} min</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:14 }}>
+                <div>
+                  <label style={labelStyle}>Level</label>
+                  <div style={{ display:"flex", gap:6 }}>
+                    {LEVELS.map(lv => {
+                      const lvm = { Beginner:{c:A_GREEN_C}, Intermediate:{c:GOLD_C}, Advanced:{c:A_ROSE_C} };
+                      const sel = csData.level === lv;
+                      return (
+                        <button key={lv} onClick={() => setCsData(d => ({...d, level:lv}))}
+                          style={{ flex:1, fontFamily:"'Oswald',sans-serif", fontSize:9,
+                            letterSpacing:"0.08em", textTransform:"uppercase", padding:"8px 4px",
+                            borderRadius:4, border:`1px solid ${sel ? lvm[lv].c+"66" : BORD_C}`,
+                            background: sel ? `${lvm[lv].c}14` : "transparent",
+                            color: sel ? lvm[lv].c : MUTED_C, cursor:"pointer", transition:"all .14s" }}>
+                          {lv}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div>
+                  <label style={labelStyle}>Max Spots</label>
+                  <select style={{...inputStyle, cursor:"pointer"}}
+                    value={csData.spots}
+                    onChange={e => setCsData(d => ({...d, spots:e.target.value}))}>
+                    {["2","4","6","8","10","12"].map(v =>
+                      <option key={v} value={v}>{v} students</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ marginBottom:14 }}>
+                <label style={labelStyle}>Zoom Link</label>
+                <input style={inputStyle} placeholder="https://zoom.us/j/..."
+                  value={csData.zoom}
+                  onChange={e => setCsData(d => ({...d, zoom:e.target.value}))}/>
+              </div>
+
+              <div style={{ marginBottom:18 }}>
+                <label style={labelStyle}>
+                  Description{" "}
+                  <span style={{ color:DIM_C, fontWeight:400 }}>(optional)</span>
+                </label>
+                <textarea style={{...inputStyle, resize:"vertical", minHeight:60, lineHeight:1.6}}
+                  placeholder="What will students learn in this session?"
+                  value={csData.desc}
+                  onChange={e => setCsData(d => ({...d, desc:e.target.value}))}/>
+              </div>
+
+              <div style={{ display:"flex", gap:10, alignItems:"center" }}>
+                <button onClick={onSubmit} disabled={!valid}
+                  style={{ flex:1, fontFamily:"'Oswald',sans-serif", fontSize:12,
+                    letterSpacing:"0.1em", textTransform:"uppercase", padding:"12px",
+                    borderRadius:4, border:"none", background:langColor, color:DARK_C,
+                    fontWeight:700, cursor: valid ? "pointer" : "default",
+                    transition:"all .15s", opacity: valid ? 1 : 0.45 }}>
+                  Publish Session
+                </button>
+                <button onClick={() => setCsOpen(false)}
+                  style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
+                    letterSpacing:"0.08em", textTransform:"uppercase", padding:"12px 18px",
+                    borderRadius:4, border:`1px solid ${BORD_C}`, background:"transparent",
+                    color:MUTED_C, cursor:"pointer" }}>
+                  Cancel
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Dashboard() {
   const navigate   = useNavigate();
   const [tab,      setTab]      = useState("learner");
@@ -818,6 +986,21 @@ export default function Dashboard() {
     </div>
   );
 
+  /* ── CREATE SESSION STATE ── */
+  const [csOpen, setCsOpen] = useState(false);
+  const [csData, setCsData] = useState({
+    title:"", date:"", time:"", duration:"60", language:"ES", level:"Beginner",
+    spots:"6", zoom:"", desc:""
+  });
+  const [csSubmitted, setCsSubmitted] = useState(false);
+  function handleCsSubmit() {
+    if (!csData.title || !csData.date || !csData.time || !csData.zoom) return;
+    setCsSubmitted(true);
+    setTimeout(() => { setCsSubmitted(false); setCsOpen(false);
+      setCsData({ title:"", date:"", time:"", duration:"60", language:"ES",
+        level:"Beginner", spots:"6", zoom:"", desc:"" }); }, 2200);
+  }
+
   /* ── TUTOR VIEW ── */
   const tutorView = (
     <div style={{ flex:1, display:"flex", flexDirection:"column", gap:16 }}>
@@ -837,6 +1020,12 @@ export default function Dashboard() {
           </Card>
         ))}
       </div>
+
+      {/* ── CREATE SESSION ── */}
+      <CreateSession lang={lang}
+        csOpen={csOpen} setCsOpen={setCsOpen}
+        csData={csData} setCsData={setCsData}
+        csSubmitted={csSubmitted} onSubmit={handleCsSubmit}/>
 
       {/* Tutor level card */}
       <Card style={{ padding:"22px 24px" }}>
@@ -947,8 +1136,8 @@ export default function Dashboard() {
                 textTransform:"uppercase", color:MUTED, marginBottom:4 }}>
                 {greeting}, Mishka
               </p>
-              <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:24, fontWeight:600,
-                color:CREAM, letterSpacing:"0.03em" }}>Dashboard</h1>
+              <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:38, fontWeight:700,
+                color:CREAM, letterSpacing:"0.02em", lineHeight:1 }}>Dashboard</h1>
             </div>
 
             {/* Learner / Tutor + language selector */}
@@ -993,21 +1182,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Quick links row */}
-          <div style={{ display:"flex", gap:8, overflowX:"auto", scrollbarWidth:"none" }}>
-            {quickLinks.map(q => (
-              <button key={q.label} onClick={() => navigate(q.path)}
-                style={{ flexShrink:0, fontFamily:"'Oswald',sans-serif", fontSize:11,
-                  letterSpacing:"0.1em", textTransform:"uppercase", padding:"10px 20px",
-                  borderRadius:5, border:`1px solid ${q.c}44`, background:`${q.c}0a`,
-                  color:q.c, cursor:"pointer", transition:"all .15s", display:"flex",
-                  alignItems:"center", gap:7, whiteSpace:"nowrap" }}
-                onMouseEnter={e=>{ e.currentTarget.style.background=`${q.c}18`; e.currentTarget.style.borderColor=`${q.c}66`; }}
-                onMouseLeave={e=>{ e.currentTarget.style.background=`${q.c}08`; e.currentTarget.style.borderColor=`${q.c}33`; }}>
-                {q.label}
-              </button>
-            ))}
-          </div>
+
         </div>
 
         {/* CONTENT */}

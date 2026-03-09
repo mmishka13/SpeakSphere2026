@@ -29,7 +29,6 @@ function Ico({ d, size=16, color="currentColor" }) {
 const DashIcon  = (p) => <Ico {...p} d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/>;
 const CalIcon   = (p) => <Ico {...p} d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/>;
 const BookIcon  = (p) => <Ico {...p} d="M4 19.5A2.5 2.5 0 016.5 17H20M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/>;
-const BotIcon   = (p) => <Ico {...p} d="M12 2a4 4 0 014 4v1h1a2 2 0 012 2v8a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2h1V6a4 4 0 014-4zM9 9v1m6-1v1M9 15h6"/>;
 const MicIcon   = (p) => <Ico {...p} d="M12 2a3 3 0 013 3v6a3 3 0 01-6 0V5a3 3 0 013-3zM19 10a7 7 0 01-14 0M12 19v3M8 22h8"/>;
 const MailIcon  = (p) => <Ico {...p} d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zM22 6l-10 7L2 6"/>;
 const ChatIcon  = (p) => <Ico {...p} d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>;
@@ -39,7 +38,6 @@ const NAV_ITEMS = [
   { path:"/dashboard",     label:"Dashboard",     Icon:DashIcon  },
   { path:"/calendar",      label:"Schedule",      Icon:CalIcon   },
   { path:"/resources",     label:"Resources",     Icon:BookIcon  },
-  { path:"/ai-tutor",      label:"AI Tutor",      Icon:BotIcon   },
   { path:"/pronunciation", label:"Pronunciation", Icon:MicIcon   },
   { path:"/pen-pals",      label:"Pen Pals",      Icon:MailIcon  },
   { path:"/community",     label:"Community",     Icon:ChatIcon  },
@@ -63,12 +61,17 @@ function ComingSoon({ label }) {
 }
 
 /* ── Sidebar ─────────────────────────────────────────── */
-function Sidebar() {
+function Sidebar({ onExpand }) {
   const location  = useLocation();
   const navigate  = useNavigate();
   const active    = location.pathname;
   const [expanded, setExpanded] = useState(false);
   const sideW = expanded ? 210 : 56;
+
+  function handleExpand(val) {
+    setExpanded(val);
+    onExpand?.(val);
+  }
 
   return (
     <>
@@ -78,8 +81,8 @@ function Sidebar() {
         .app-nav-btn:hover span { opacity:1 !important; color:#eadcca !important; }
       `}</style>
       <aside
-        onMouseEnter={() => setExpanded(true)}
-        onMouseLeave={() => setExpanded(false)}
+        onMouseEnter={() => handleExpand(true)}
+        onMouseLeave={() => handleExpand(false)}
         style={{ width:sideW, flexShrink:0, background:DARK,
           borderRight:`1px solid ${BORD}`, position:"fixed", top:0, left:0, bottom:0,
           zIndex:50, display:"flex", flexDirection:"column",
@@ -161,27 +164,20 @@ function Sidebar() {
 /* ── App shell ───────────────────────────────────────── */
 function AppShell() {
   const location    = useLocation();
-  const isDashboard = location.pathname === "/dashboard" || location.pathname.startsWith("/dashboard/");
-  const [sideW]     = useState(56); // collapsed default, sidebar manages its own width
-
-  if (isDashboard) {
-    return (
-      <Routes>
-        <Route path="/dashboard" element={<Dashboard/>}/>
-        <Route path="*"          element={<Navigate to="/dashboard" replace/>}/>
-      </Routes>
-    );
-  }
+  const [sideExpanded, setSideExpanded] = useState(false);
 
   return (
     <div style={{ display:"flex", height:"100vh", background:DARK }}>
-      <Sidebar/>
-      {/* margin matches collapsed sidebar width; sidebar expands over content */}
-      <div style={{ marginLeft:56, flex:1, overflow:"hidden", display:"flex", flexDirection:"column" }}>
+      <Sidebar onExpand={setSideExpanded}/>
+      <div style={{
+        marginLeft: sideExpanded ? 210 : 56,
+        flex:1, overflow:"hidden", display:"flex", flexDirection:"column",
+        transition:"margin-left .22s cubic-bezier(.4,0,.2,1)"
+      }}>
         <Routes>
+          <Route path="/dashboard"     element={<Dashboard/>}/>
           <Route path="/calendar"      element={<CalendarPage/>}/>
           <Route path="/resources"     element={<ResourcesPage/>}/>
-          <Route path="/ai-tutor"      element={<ComingSoon label="AI Tutor"/>}/>
           <Route path="/pronunciation" element={<ComingSoon label="Pronunciation Studio"/>}/>
           <Route path="/pen-pals"      element={<ComingSoon label="Pen Pals"/>}/>
           <Route path="/community"     element={<ComingSoon label="Community"/>}/>

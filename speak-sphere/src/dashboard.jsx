@@ -103,13 +103,11 @@ const NAV_ITEMS = [
   { id:"dashboard",    label:"Dashboard"     },
   { id:"calendar",     label:"Schedule"      },
   { id:"resources",    label:"Resources"     },
-  { id:"ai-tutor",     label:"AI Tutor"      },
   { id:"pronunciation",label:"Pronunciation" },
   { id:"pen-pals",     label:"Pen Pals"      },
   { id:"community",    label:"Community"     },
 ];
-const ROUTES = { calendar:"/calendar", resources:"/resources", "ai-tutor":"/ai-tutor",
-  pronunciation:"/pronunciation", "pen-pals":"/pen-pals", community:"/community" };
+const ROUTES = { calendar:"/calendar", resources:"/resources", pronunciation:"/pronunciation", "pen-pals":"/pen-pals", community:"/community" };
 
 /* ─── SVG ICONS ─── */
 function Ico({ d, size=16, color=MUTED, sw=1.6 }) {
@@ -123,7 +121,6 @@ function Ico({ d, size=16, color=MUTED, sw=1.6 }) {
 const IcoGrid  = p => <><Ico {...p} d="M3 3h7v7H3z"/><Ico {...p} d="M14 3h7v7h-7z"/><Ico {...p} d="M3 14h7v7H3z"/><Ico {...p} d="M14 14h7v7h-7z"/></>;
 const IcoCal   = p => <Ico {...p} d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/>;
 const IcoBook  = p => <Ico {...p} d="M4 19.5A2.5 2.5 0 016.5 17H20M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/>;
-const IcoBot   = p => <Ico {...p} d="M12 2a4 4 0 014 4v1h1a2 2 0 012 2v8a2 2 0 01-2 2H7a2 2 0 01-2-2V9a2 2 0 012-2h1V6a4 4 0 014-4z"/>;
 const IcoMic   = p => <Ico {...p} d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3zM19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/>;
 const IcoMail  = p => <Ico {...p} d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zM22 6l-10 7L2 6"/>;
 const IcoChat  = p => <Ico {...p} d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>;
@@ -134,7 +131,7 @@ const IcoArrow = ({ size=14, color=GOLD }) => (
     stroke={color} strokeWidth="1.6" strokeLinecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
 );
 const NAV_ICONS = { dashboard:IcoGrid, calendar:IcoCal, resources:IcoBook,
-  "ai-tutor":IcoBot, pronunciation:IcoMic, "pen-pals":IcoMail, community:IcoChat };
+  pronunciation:IcoMic, "pen-pals":IcoMail, community:IcoChat };
 
 /* ─── ANIMATED COUNTER ─── */
 function AnimNum({ to }) {
@@ -492,7 +489,7 @@ function CreateSession({ lang, csOpen, setCsOpen, csData, setCsData, csSubmitted
   const langColor = lang?.c || "#c9a05a";
   const GOLD_C = "#c9a05a", DARK_C = "#140b04", BORD_C = "rgba(201,160,90,0.12)";
   const CREAM_C = "#eadcca", MUTED_C = "#9a7d5a", DIM_C = "#5a3a22";
-  const A_GREEN_C = "#3ec98a", A_ROSE_C = "#e05878";
+  const A_GREEN_C = "#a8855a", A_ROSE_C = "#8a6440";
   const LEVELS = ["Beginner","Intermediate","Advanced"];
   const LANGS_OPTS = [
     { code:"ES", name:"Spanish" }, { code:"FR", name:"French" },
@@ -531,7 +528,7 @@ function CreateSession({ lang, csOpen, setCsOpen, csData, setCsData, csSubmitted
       {csOpen && (
         <div style={{ animation:"fadeUp .2s ease both" }}>
           {csSubmitted ? (
-            <div style={{ background:"rgba(62,201,138,0.08)", border:"1px solid rgba(62,201,138,0.22)",
+            <div style={{ background:"rgba(168,133,90,0.08)", border:"1px solid rgba(62,201,138,0.22)",
               borderRadius:5, padding:"18px 20px", textAlign:"center" }}>
               <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:16, color:A_GREEN_C,
                 letterSpacing:"0.06em" }}>Session Created!</p>
@@ -664,7 +661,6 @@ export default function Dashboard() {
   const [doneDQ,   setDoneDQ]   = useState({});
   const [toast,    setToast]    = useState(null);
   const [page,     setPage]     = useState("dashboard");
-  const [sideExpanded, setSideExpanded] = useState(false);
   const dqRef = useRef(null);
 
   const lm   = ALL_LANGS.find(l => l.code === lcode) || ALL_LANGS[0];
@@ -679,7 +675,6 @@ export default function Dashboard() {
   const tPct = tNxt ? Math.min((td.hosted / tNxt.sessions) * 100, 100) : 100;
   const isDQ = doneDQ[lcode] || ld.dailyQ.done;
 
-  const sideW = sideExpanded ? 210 : 56;
 
   const greeting = (() => {
     const h = new Date().getHours();
@@ -709,96 +704,12 @@ export default function Dashboard() {
   /* ── QUICK ACCESS BUTTONS ── */
   const quickLinks = [
     { label:"Book Session",  path:"/calendar",      c:A_BLUE   },
-    { label:"AI Tutor Chat", path:"/ai-tutor",      c:A_AMBER  },
     { label:"Pronunciation", path:"/pronunciation", c:A_ROSE   },
     { label:"Resources",     path:"/resources",     c:A_GREEN  },
     { label:"Pen Pals",      path:"/pen-pals",      c:A_VIOLET },
     { label:"Community",     path:"/community",     c:MUTED    },
   ];
 
-  /* ── SIDEBAR ── */
-  const sidebar = (
-    <aside
-      onMouseEnter={() => setSideExpanded(true)}
-      onMouseLeave={() => setSideExpanded(false)}
-      style={{ width:sideW, flexShrink:0, background:DARK,
-        borderRight:`1px solid ${BORD}`, position:"fixed", top:0, left:0, bottom:0,
-        zIndex:50, display:"flex", flexDirection:"column",
-        backgroundImage:GRAIN, backgroundRepeat:"repeat", backgroundSize:"300px",
-        transition:"width .22s cubic-bezier(.4,0,.2,1)", overflow:"hidden" }}>
-
-      {/* Logo */}
-      <div style={{ padding:"20px 14px 16px", borderBottom:`1px solid rgba(201,160,90,0.08)`,
-        cursor:"pointer", display:"flex", alignItems:"center", gap:10, flexShrink:0,
-        minWidth:210 }}
-        onClick={() => navigate("/")}>
-        <svg width={26} height={26} viewBox="0 0 26 26" fill="none" style={{ flexShrink:0 }}>
-          <circle cx="13" cy="13" r="11" stroke={GOLD} strokeWidth="1.2"/>
-          <ellipse cx="13" cy="13" rx="5" ry="11" stroke={GOLD} strokeWidth="0.8" opacity=".5"/>
-          <line x1="2" y1="13" x2="24" y2="13" stroke={GOLD} strokeWidth="0.8" opacity=".4"/>
-        </svg>
-        <div style={{ opacity: sideExpanded ? 1 : 0, transition:"opacity .15s", whiteSpace:"nowrap" }}>
-          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, fontWeight:600,
-            color:CREAM, letterSpacing:"0.08em" }}>SPEAKSPHERE</p>
-          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:8, color:DIM, letterSpacing:"0.14em" }}>
-            LANGUAGE HUB</p>
-        </div>
-      </div>
-
-      {/* Nav items */}
-      <nav style={{ flex:1, padding:"12px 8px", overflowY:"auto" }}>
-        {NAV_ITEMS.map(({ id, label }) => {
-          const IconC = NAV_ICONS[id];
-          const active = page === id;
-          return (
-            <button key={id}
-              onClick={() => { if (ROUTES[id]) navigate(ROUTES[id]); else setPage(id); }}
-              style={{ display:"flex", alignItems:"center", gap:10, width:"100%",
-                padding:"9px 11px", borderRadius:4, border:"none", marginBottom:2,
-                background: active ? "rgba(201,160,90,0.09)" : "transparent",
-                borderLeft: active ? `2px solid ${GOLD}` : "2px solid transparent",
-                cursor:"pointer", transition:"all .14s", textAlign:"left",
-                minWidth:210, overflow:"hidden" }}>
-              <div style={{ flexShrink:0, width:20, display:"flex", justifyContent:"center" }}>
-                <IconC size={16} color={active ? GOLD : MUTED}/>
-              </div>
-              <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
-                letterSpacing:"0.08em", textTransform:"uppercase", whiteSpace:"nowrap",
-                color: active ? CREAM : MUTED, fontWeight: active ? 600 : 400,
-                opacity: sideExpanded ? 1 : 0, transition:"opacity .12s" }}>
-                {label}
-              </span>
-            </button>
-          );
-        })}
-      </nav>
-
-      {/* User card */}
-      <div style={{ margin:"0 8px 12px", padding:"11px 10px",
-        border:`1px solid ${BORD}`, borderRadius:6, background:"rgba(255,255,255,0.01)",
-        flexShrink:0, minWidth:194, overflow:"hidden" }}>
-        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-          <div style={{ width:32, height:32, borderRadius:6, flexShrink:0,
-            background:`linear-gradient(135deg,${GOLD},#8a5a20)`,
-            display:"flex", alignItems:"center", justifyContent:"center",
-            fontFamily:"'Oswald',sans-serif", fontSize:11, fontWeight:700, color:DARK }}>
-            MM</div>
-          <div style={{ flex:1, minWidth:0, opacity: sideExpanded ? 1 : 0, transition:"opacity .12s" }}>
-            <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, color:CREAM,
-              letterSpacing:"0.04em", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
-              Mishka Mittal</p>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:"#c4aa80", fontStyle:"italic" }}>
-              {lLvl.title}</p>
-          </div>
-          <button onClick={() => fireToast("Settings coming soon.")}
-            style={{ background:"none", border:"none", cursor:"pointer", padding:3, flexShrink:0,
-              opacity: sideExpanded ? 1 : 0, transition:"opacity .12s" }}>
-            <IcoGear size={13} color={DIM}/>
-          </button>
-        </div>
-      </div>
-    </aside>
-  );
 
   /* ── RIGHT PANEL — streak / week / placement / daily Q / resources ── */
   const rightPanel = (
@@ -1120,10 +1031,7 @@ export default function Dashboard() {
         @keyframes toastIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
       `}</style>
 
-      {sidebar}
-
-      <main style={{ marginLeft:sideW, flex:1, display:"flex", flexDirection:"column", minHeight:"100vh",
-        transition:"margin-left .22s cubic-bezier(.4,0,.2,1)" }}>
+      <main style={{ flex:1, display:"flex", flexDirection:"column", minHeight:"100vh" }}>
 
         {/* TOP BAR */}
         <div style={{ padding:"22px 28px 0", borderBottom:`1px solid rgba(201,160,90,0.08)`,

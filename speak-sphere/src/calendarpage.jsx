@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-/* ═══════════════════════════════════════════════════════════════
-   DESIGN: Dark Academia × Futuristic HUD
-   — Compact, data-dense, terminal-inspired
-   — Oswald caps + Lora italic + monospace accents
-   — Gold scanline grid, glowing active states, tight spacing
-═══════════════════════════════════════════════════════════════ */
-
 const DARK   = "#140b04";
 const CARD   = "#1a0d05";
 const CARD2  = "#200f06";
@@ -32,7 +25,6 @@ const CSS = `
   ::-webkit-scrollbar { width:4px; }
   ::-webkit-scrollbar-track { background:transparent; }
   ::-webkit-scrollbar-thumb { background:rgba(201,160,90,0.2); border-radius:2px; }
-
   .hud-cell { transition:background .12s, border-color .12s; }
   .hud-cell:hover { background:rgba(201,160,90,0.05) !important; border-color:rgba(201,160,90,0.2) !important; }
   .ev-chip:hover { filter:brightness(1.25); transform:translateX(1px); }
@@ -41,72 +33,62 @@ const CSS = `
   .agenda-row:hover { background:rgba(201,160,90,0.05) !important; }
   .sess-card:hover { border-color:rgba(201,160,90,0.22) !important; transform:translateY(-1px); }
   .book-btn:hover { filter:brightness(1.1); transform:scale(1.02); }
-  .gcal-btn:hover { border-color:rgba(201,160,90,0.4) !important; background:rgba(201,160,90,0.1) !important; }
   .pop-in { animation:popIn .2s cubic-bezier(.34,1.3,.64,1) both; }
   .fade-in { animation:fadeIn .18s ease both; }
   @keyframes popIn  { from{opacity:0;transform:scale(.95) translateY(6px)} to{opacity:1;transform:none} }
   @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
 `;
 
-/* ─── DATA ───────────────────────────────────────────────────── */
 const LANGS = [
   { code:"ES", name:"Spanish",  c:"#e07858", g:"rgba(224,120,88,0.13)",  script:"Hola"      },
   { code:"FR", name:"French",   c:"#6a9ec0", g:"rgba(106,158,192,0.13)", script:"Bonjour"   },
   { code:"JP", name:"Japanese", c:"#c07070", g:"rgba(192,112,112,0.13)", script:"こんにちは" },
   { code:"KO", name:"Korean",   c:"#7db87d", g:"rgba(125,184,125,0.13)", script:"안녕"       },
 ];
+
 const SUBJECT_COLORS = {
   Spanish:  { c:"#e07858", g:"rgba(224,120,88,0.13)"   },
   French:   { c:"#6a9ec0", g:"rgba(106,158,192,0.13)"  },
   Japanese: { c:"#c07070", g:"rgba(192,112,112,0.13)"  },
   Korean:   { c:"#7db87d", g:"rgba(125,184,125,0.13)"  },
   Personal: { c:"#b8956e", g:"rgba(184,149,110,0.13)"  },
-  GCal:     { c:"#38c4c0", g:"rgba(56,196,192,0.13)"   },
   Reminder: { c:"#d4a96a", g:"rgba(212,169,106,0.13)"  },
 };
+
 const LEVEL_META = {
   Beginner:     { c:A_GREEN, g:"rgba(125,184,125,0.12)" },
   Intermediate: { c:GOLD,    g:"rgba(201,160,90,0.12)"  },
   Advanced:     { c:A_ROSE,  g:"rgba(192,112,112,0.12)" },
 };
+
 const MONTHS = ["January","February","March","April","May","June",
                 "July","August","September","October","November","December"];
-const DOW    = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+const DOW = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 
 function buildPersonalEvents(year, month) {
   const d = (day, h, m=0) => new Date(year, month, day, h, m);
   return [
-    { id:"e1",  subject:"Spanish",  title:"Spanish Conversation",  start:d(3,16),  end:d(3,17),    tutor:"Maria G.",  desc:"Practice daily conversation topics"    },
-    { id:"e2",  subject:"Spanish",  title:"Grammar Office Hours",  start:d(5,18),  end:d(5,19),    tutor:"Carlos R.", desc:"Irregular preterite deep dive"          },
-    { id:"e3",  subject:"French",   title:"French Basics",         start:d(5,14),  end:d(5,15),    tutor:"Claire D.", desc:"Intro to French pronunciation"          },
-    { id:"e4",  subject:"Spanish",  title:"Pronunciation Lab",     start:d(8,15),  end:d(8,16),    tutor:"Sofia L.",  desc:"Rolling R's and vowel sounds"           },
-    { id:"e5",  subject:"Korean",   title:"Korean Study Group",    start:d(10,17), end:d(10,18),   tutor:"Jin P.",    desc:"Hangul reading practice"                },
-    { id:"e6",  subject:"Spanish",  title:"Spanish Session",       start:d(11,16), end:d(11,17),   tutor:"Maria G.",  desc:"Ser vs Estar review"                    },
-    { id:"e7",  subject:"Japanese", title:"Japanese Intro",        start:d(12,13), end:d(12,14),   tutor:"Yuki T.",   desc:"Hiragana chart overview"                },
-    { id:"e8",  subject:"Personal", title:"Doctor Appt",           start:d(14,10), end:d(14,11),   tutor:null,        desc:"Annual checkup"                         },
-    { id:"e9",  subject:"French",   title:"French Immersion",      start:d(15,15), end:d(15,17),   tutor:"Pierre M.", desc:"Listening & shadowing"                  },
-    { id:"e10", subject:"Spanish",  title:"Spanish Conversation",  start:d(17,16), end:d(17,17),   tutor:"Maria G.",  desc:"Travel vocabulary"                      },
-    { id:"e11", subject:"Reminder", title:"Study Hall",            start:d(18,19), end:d(18,21),   tutor:null,        desc:"Self-study: vocab flashcards"           },
-    { id:"e12", subject:"Korean",   title:"Korean Grammar",        start:d(20,14), end:d(20,15),   tutor:"Jin P.",    desc:"Particle practice"                      },
-    { id:"e13", subject:"Spanish",  title:"Spanish Session",       start:d(22,16), end:d(22,17),   tutor:"Carlos R.", desc:"Subjunctive mood intro"                 },
-    { id:"e14", subject:"French",   title:"French Conversation",   start:d(24,15), end:d(24,16),   tutor:"Claire D.", desc:"Everyday French phrases"                },
-    { id:"e15", subject:"Personal", title:"Birthday Party",        start:d(25,18), end:d(25,22),   tutor:null,        desc:"Miguel's birthday"                      },
-    { id:"e16", subject:"Japanese", title:"Japanese Session",      start:d(26,13), end:d(26,14),   tutor:"Yuki T.",   desc:"Basic greetings"                        },
-    { id:"e17", subject:"Spanish",  title:"Spanish Immersion",     start:d(28,17), end:d(28,19),   tutor:"Sofia L.",  desc:"Full conversation, no notes"            },
-    { id:"e18", subject:"Reminder", title:"Weekly Review",         start:d(30,20), end:d(30,21),   tutor:null,        desc:"Log progress, set next week goals"      },
+    { id:"e1",  subject:"Spanish",  title:"Spanish Conversation", start:d(3,16),  end:d(3,17),  tutor:"Maria G.",  desc:"Practice daily conversation topics"   },
+    { id:"e2",  subject:"Spanish",  title:"Grammar Office Hours", start:d(5,18),  end:d(5,19),  tutor:"Carlos R.", desc:"Irregular preterite deep dive"         },
+    { id:"e3",  subject:"French",   title:"French Basics",        start:d(5,14),  end:d(5,15),  tutor:"Claire D.", desc:"Intro to French pronunciation"         },
+    { id:"e4",  subject:"Spanish",  title:"Pronunciation Lab",    start:d(8,15),  end:d(8,16),  tutor:"Sofia L.",  desc:"Rolling R's and vowel sounds"          },
+    { id:"e5",  subject:"Korean",   title:"Korean Study Group",   start:d(10,17), end:d(10,18), tutor:"Jin P.",    desc:"Hangul reading practice"               },
+    { id:"e6",  subject:"Spanish",  title:"Spanish Session",      start:d(11,16), end:d(11,17), tutor:"Maria G.",  desc:"Ser vs Estar review"                   },
+    { id:"e7",  subject:"Japanese", title:"Japanese Intro",       start:d(12,13), end:d(12,14), tutor:"Yuki T.",   desc:"Hiragana chart overview"               },
+    { id:"e8",  subject:"Personal", title:"Doctor Appt",          start:d(14,10), end:d(14,11), tutor:null,        desc:"Annual checkup"                        },
+    { id:"e9",  subject:"French",   title:"French Immersion",     start:d(15,15), end:d(15,17), tutor:"Pierre M.", desc:"Listening & shadowing"                 },
+    { id:"e10", subject:"Spanish",  title:"Spanish Conversation", start:d(17,16), end:d(17,17), tutor:"Maria G.",  desc:"Travel vocabulary"                     },
+    { id:"e11", subject:"Reminder", title:"Study Hall",           start:d(18,19), end:d(18,21), tutor:null,        desc:"Self-study: vocab flashcards"          },
+    { id:"e12", subject:"Korean",   title:"Korean Grammar",       start:d(20,14), end:d(20,15), tutor:"Jin P.",    desc:"Particle practice"                     },
+    { id:"e13", subject:"Spanish",  title:"Spanish Session",      start:d(22,16), end:d(22,17), tutor:"Carlos R.", desc:"Subjunctive mood intro"                },
+    { id:"e14", subject:"French",   title:"French Conversation",  start:d(24,15), end:d(24,16), tutor:"Claire D.", desc:"Everyday French phrases"               },
+    { id:"e15", subject:"Personal", title:"Birthday Party",       start:d(25,18), end:d(25,22), tutor:null,        desc:"Miguel's birthday"                     },
+    { id:"e16", subject:"Japanese", title:"Japanese Session",     start:d(26,13), end:d(26,14), tutor:"Yuki T.",   desc:"Basic greetings"                       },
+    { id:"e17", subject:"Spanish",  title:"Spanish Immersion",   start:d(28,17), end:d(28,19), tutor:"Sofia L.",  desc:"Full conversation, no notes"           },
+    { id:"e18", subject:"Reminder", title:"Weekly Review",        start:d(30,20), end:d(30,21), tutor:null,        desc:"Log progress, set next week goals"     },
   ];
 }
-function buildGCalEvents(year, month) {
-  const d = (day, h, m=0) => new Date(year, month, day, h, m);
-  return [
-    { id:"gc1", subject:"GCal", title:"CS Homework Due",   start:d(6,23),  end:d(6,23),  tutor:null, desc:"From Google Calendar" },
-    { id:"gc2", subject:"GCal", title:"Team Project Call", start:d(9,14),  end:d(9,15),  tutor:null, desc:"From Google Calendar" },
-    { id:"gc3", subject:"GCal", title:"FBLA Meeting",      start:d(13,16), end:d(13,17), tutor:null, desc:"From Google Calendar" },
-    { id:"gc4", subject:"GCal", title:"SAT Prep",          start:d(19,9),  end:d(19,12), tutor:null, desc:"From Google Calendar" },
-    { id:"gc5", subject:"GCal", title:"College Tour",      start:d(22,8),  end:d(22,18), tutor:null, desc:"From Google Calendar" },
-    { id:"gc6", subject:"GCal", title:"AP Exam",           start:d(27,8),  end:d(27,12), tutor:null, desc:"From Google Calendar" },
-  ];
-}
+
 const SESSIONS = {
   ES: [
     { id:"s1", type:"individual", title:"Beginner Spanish Chat",  tutor:"Maria G.",  level:"Beginner",     day:9,  time:"4:00 PM", dur:60,  spots:1, max:1,  desc:"One-on-one casual conversation for absolute beginners." },
@@ -119,21 +101,20 @@ const SESSIONS = {
     { id:"s7", type:"group",      title:"Vocabulary Blitz",       tutor:"Ana L.",    level:"Beginner",     day:23, time:"4:00 PM", dur:45,  spots:7, max:10, desc:"Top 500 Spanish words with memory techniques." },
   ],
   FR: [
-    { id:"f1", type:"individual", title:"French for Beginners",     tutor:"Claire D.", level:"Beginner",     day:7,  time:"3:00 PM", dur:60, spots:1, max:1, desc:"Personalised French intro from zero." },
-    { id:"f2", type:"individual", title:"1-on-1 Conversation",      tutor:"Pierre M.", level:"Intermediate", day:14, time:"5:00 PM", dur:60, spots:1, max:1, desc:"Focused conversation practice at your pace." },
-    { id:"f3", type:"group",      title:"French Pronunciation",     tutor:"Claire D.", level:"Beginner",     day:20, time:"4:00 PM", dur:45, spots:6, max:10, desc:"Nasal vowels, silent letters, liaison." },
+    { id:"f1", type:"individual", title:"French for Beginners", tutor:"Claire D.", level:"Beginner",     day:7,  time:"3:00 PM", dur:60, spots:1, max:1,  desc:"Personalised French intro from zero." },
+    { id:"f2", type:"individual", title:"1-on-1 Conversation",  tutor:"Pierre M.", level:"Intermediate", day:14, time:"5:00 PM", dur:60, spots:1, max:1,  desc:"Focused conversation practice at your pace." },
+    { id:"f3", type:"group",      title:"French Pronunciation", tutor:"Claire D.", level:"Beginner",     day:20, time:"4:00 PM", dur:45, spots:6, max:10, desc:"Nasal vowels, silent letters, liaison." },
   ],
   JP: [
     { id:"j1", type:"group",      title:"Hiragana & Katakana", tutor:"Yuki T.",  level:"Beginner", day:8,  time:"2:00 PM", dur:60, spots:5, max:10, desc:"Master both syllabaries in one session." },
     { id:"j2", type:"individual", title:"JLPT N5 Prep",        tutor:"Kenji M.", level:"Beginner", day:17, time:"4:00 PM", dur:90, spots:1, max:1,  desc:"Personalised grammar and vocab for N5." },
   ],
   KO: [
-    { id:"k1", type:"individual", title:"Hangul Reading",     tutor:"Jin P.",  level:"Beginner",     day:10, time:"3:00 PM", dur:60, spots:1, max:1,  desc:"One-on-one Korean script coaching." },
-    { id:"k2", type:"group",      title:"K-Drama Vocabulary", tutor:"Soo Y.",  level:"Intermediate", day:22, time:"6:00 PM", dur:60, spots:6, max:12, desc:"Learn Korean through K-Drama clips." },
+    { id:"k1", type:"individual", title:"Hangul Reading",     tutor:"Jin P.", level:"Beginner",     day:10, time:"3:00 PM", dur:60, spots:1, max:1,  desc:"One-on-one Korean script coaching." },
+    { id:"k2", type:"group",      title:"K-Drama Vocabulary", tutor:"Soo Y.", level:"Intermediate", day:22, time:"6:00 PM", dur:60, spots:6, max:12, desc:"Learn Korean through K-Drama clips." },
   ],
 };
 
-/* ─── HELPERS ────────────────────────────────────────────────── */
 function toDate(v) { if (!v) return null; if (v instanceof Date) return v; return new Date(v); }
 function fmt12(date) {
   const d = toDate(date); if (!d) return "";
@@ -155,7 +136,6 @@ function sessionToEvent(sess, year, month) {
   return { ...sess, start, end };
 }
 
-/* ─── HUD LABEL ─────────────────────────────────────────────── */
 function HudLabel({ children, color=MUTED }) {
   return (
     <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
@@ -165,7 +145,6 @@ function HudLabel({ children, color=MUTED }) {
   );
 }
 
-/* ─── EVENT CHIP ─────────────────────────────────────────────── */
 function EventChip({ ev, onClick }) {
   const sc = SUBJECT_COLORS[ev.subject] || SUBJECT_COLORS.Personal;
   return (
@@ -183,7 +162,6 @@ function EventChip({ ev, onClick }) {
   );
 }
 
-/* ─── EVENT MODAL ────────────────────────────────────────────── */
 function EventModal({ ev, onClose, onBook, onUnbook, isBooked }) {
   if (!ev) return null;
   const sc = SUBJECT_COLORS[ev.subject] || SUBJECT_COLORS.Personal;
@@ -194,13 +172,11 @@ function EventModal({ ev, onClose, onBook, onUnbook, isBooked }) {
       alignItems:"center", justifyContent:"center", padding:24 }}
       onClick={onClose}>
       <div className="pop-in"
-        style={{ background:CARD, border:`1px solid ${sc.c}25`,
-          borderRadius:6, padding:24, width:"100%", maxWidth:400,
-          position:"relative", backgroundImage:GRAIN,
-          backgroundRepeat:"repeat", backgroundSize:"300px" }}
+        style={{ background:CARD, border:`1px solid ${sc.c}25`, borderRadius:6,
+          padding:24, width:"100%", maxWidth:400, position:"relative",
+          backgroundImage:GRAIN, backgroundRepeat:"repeat", backgroundSize:"300px" }}
         onClick={e => e.stopPropagation()}>
 
-        {/* HUD corner accents */}
         <div style={{ position:"absolute", top:0, left:0, width:16, height:16,
           borderTop:`1px solid ${sc.c}`, borderLeft:`1px solid ${sc.c}` }}/>
         <div style={{ position:"absolute", top:0, right:0, width:16, height:16,
@@ -210,7 +186,6 @@ function EventModal({ ev, onClose, onBook, onUnbook, isBooked }) {
         <div style={{ position:"absolute", bottom:0, right:0, width:16, height:16,
           borderBottom:`1px solid ${sc.c}`, borderRight:`1px solid ${sc.c}` }}/>
 
-        {/* Header */}
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:18 }}>
           <div>
             <HudLabel color={sc.c}>{ev.subject}</HudLabel>
@@ -223,10 +198,8 @@ function EventModal({ ev, onClose, onBook, onUnbook, isBooked }) {
               display:"flex", alignItems:"center", justifyContent:"center" }}>×</button>
         </div>
 
-        {/* Data grid */}
         <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:12 }}>
-          <div style={{ background:`${sc.c}08`, border:`1px solid ${BORD}`,
-            borderRadius:4, padding:"8px 10px" }}>
+          <div style={{ background:`${sc.c}08`, border:`1px solid ${BORD}`, borderRadius:4, padding:"8px 10px" }}>
             <HudLabel>Date</HudLabel>
             <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, color:CREAM,
               letterSpacing:"0.02em", marginTop:3 }}>
@@ -235,8 +208,7 @@ function EventModal({ ev, onClose, onBook, onUnbook, isBooked }) {
               color:BODY, marginTop:2 }}>{fmt12(ev.start)} → {fmt12(ev.end)}</p>
           </div>
           {ev.tutor && (
-            <div style={{ background:`${sc.c}08`, border:`1px solid ${BORD}`,
-              borderRadius:4, padding:"8px 10px" }}>
+            <div style={{ background:`${sc.c}08`, border:`1px solid ${BORD}`, borderRadius:4, padding:"8px 10px" }}>
               <HudLabel>Tutor</HudLabel>
               <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, color:CREAM,
                 letterSpacing:"0.02em", marginTop:3 }}>{ev.tutor}</p>
@@ -250,9 +222,7 @@ function EventModal({ ev, onClose, onBook, onUnbook, isBooked }) {
             <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:6 }}>
               <HudLabel>Availability</HudLabel>
               <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
-                color:ev.spots<=2?A_ROSE:A_GREEN }}>
-                {ev.spots}/{ev.max} spots
-              </span>
+                color:ev.spots<=2?A_ROSE:A_GREEN }}>{ev.spots}/{ev.max} spots</span>
             </div>
             <div style={{ height:3, borderRadius:1, background:"rgba(255,255,255,0.06)" }}>
               <div style={{ height:"100%", borderRadius:1, transition:"width .4s",
@@ -289,8 +259,7 @@ function EventModal({ ev, onClose, onBook, onUnbook, isBooked }) {
                 <button onClick={() => { onUnbook(ev._sessId||ev.id); onClose(); }} className="book-btn"
                   style={{ width:"100%", background:"none", border:`1px solid rgba(224,88,120,0.3)`,
                     borderRadius:4, padding:"8px", fontFamily:"'Share Tech Mono',monospace",
-                    fontSize:10, letterSpacing:"0.1em", color:A_ROSE,
-                    cursor:"pointer", transition:"all .2s" }}>
+                    fontSize:10, letterSpacing:"0.1em", color:A_ROSE, cursor:"pointer", transition:"all .2s" }}>
                   CANCEL_BOOKING
                 </button>
               </div>
@@ -312,50 +281,7 @@ function EventModal({ ev, onClose, onBook, onUnbook, isBooked }) {
   );
 }
 
-/* ─── GCAL BANNER ────────────────────────────────────────────── */
-function GCalBanner({ connected, onConnect, onDisconnect, count }) {
-  if (connected) return (
-    <div style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(168,133,90,0.06)",
-      border:`1px solid rgba(62,201,138,0.16)`, borderRadius:4,
-      padding:"7px 12px", marginBottom:10 }}>
-      <HudLabel color={A_GREEN}>GCAL LINKED · {count} EVENTS</HudLabel>
-      <button onClick={onDisconnect}
-        style={{ marginLeft:"auto", background:"none", border:`1px solid rgba(62,201,138,0.2)`,
-          borderRadius:3, padding:"2px 8px", fontFamily:"'Share Tech Mono',monospace",
-          fontSize:11, color:A_GREEN, cursor:"pointer", letterSpacing:"0.08em" }}>
-        DISCONNECT
-      </button>
-    </div>
-  );
-  return (
-    <div style={{ display:"flex", alignItems:"center", gap:10,
-      background:`rgba(201,160,90,0.05)`, border:`1px solid ${BORD}`,
-      borderRadius:4, padding:"8px 12px", marginBottom:10 }}>
-      <svg width={16} height={16} viewBox="0 0 24 24" style={{ flexShrink:0 }}>
-        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-      </svg>
-      <div style={{ flex:1 }}>
-        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:CREAM,
-          letterSpacing:"0.06em" }}>Connect Google Calendar</p>
-        <p style={{ fontFamily:"'Lora',serif", fontSize:15, color:MUTED,
-          fontStyle:"italic" }}>Demo mode — simulates import.</p>
-      </div>
-      <button onClick={onConnect} className="gcal-btn"
-        style={{ background:"rgba(201,160,90,0.07)", border:`1px solid rgba(201,160,90,0.2)`,
-          borderRadius:3, padding:"5px 12px", fontFamily:"'Share Tech Mono',monospace",
-          fontSize:15, letterSpacing:"0.1em", color:GOLD,
-          cursor:"pointer", whiteSpace:"nowrap", transition:"all .2s" }}>
-        CONNECT →
-      </button>
-    </div>
-  );
-}
-
-/* ─── PERSONAL CALENDAR ──────────────────────────────────────── */
-function PersonalCalendar({ year, month, allEvents, onSelectDay, selectedDay, onEventClick, gcalConn, onConnect, onDisconnect, gcalCount }) {
+function PersonalCalendar({ year, month, allEvents, onSelectDay, selectedDay, onEventClick }) {
   const firstDow   = new Date(year, month, 1).getDay();
   const daysInMon  = new Date(year, month+1, 0).getDate();
   const daysInPrev = new Date(year, month, 0).getDate();
@@ -371,29 +297,25 @@ function PersonalCalendar({ year, month, allEvents, onSelectDay, selectedDay, on
 
   return (
     <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", padding:"14px 20px" }}>
-      <GCalBanner connected={gcalConn} onConnect={onConnect} onDisconnect={onDisconnect} count={gcalCount}/>
 
       {/* Legend */}
       <div style={{ display:"flex", gap:12, marginBottom:8, flexWrap:"wrap", alignItems:"center" }}>
         <HudLabel>Legend</HudLabel>
-        {Object.entries(SUBJECT_COLORS).map(([subj, sc]) => {
-          if (subj === "GCal" && !gcalConn) return null;
-          return (
-            <div key={subj} style={{ display:"flex", alignItems:"center", gap:4 }}>
-              <div style={{ width:5, height:5, borderRadius:"50%", background:sc.c }}/>
-              <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
-                letterSpacing:"0.06em", color:BODY }}>{subj}</span>
-            </div>
-          );
-        })}
+        {Object.entries(SUBJECT_COLORS).map(([subj, sc]) => (
+          <div key={subj} style={{ display:"flex", alignItems:"center", gap:4 }}>
+            <div style={{ width:5, height:5, borderRadius:"50%", background:sc.c }}/>
+            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
+              letterSpacing:"0.06em", color:BODY }}>{subj}</span>
+          </div>
+        ))}
       </div>
 
       {/* DOW headers */}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:2, marginBottom:3 }}>
         {DOW.map(d => (
-          <div key={d} style={{ textAlign:"center", padding:"2px 0",
-            borderBottom:`1px solid ${BORD2}` }}>
-            <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12, letterSpacing:"0.14em", color:DIM }}>{d}</span>
+          <div key={d} style={{ textAlign:"center", padding:"2px 0", borderBottom:`1px solid ${BORD2}` }}>
+            <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
+              letterSpacing:"0.14em", color:DIM }}>{d}</span>
           </div>
         ))}
       </div>
@@ -408,29 +330,19 @@ function PersonalCalendar({ year, month, allEvents, onSelectDay, selectedDay, on
           const isTod    = isCurr && cellDate && sameDay(cellDate, today);
           const isSel    = isCurr && selectedDay && cellDate && sameDay(cellDate, selectedDay);
           const evs      = isCurr ? allEvents.filter(ev => sameDay(ev.start, cellDate)) : [];
-
           return (
-            <div key={i}
-              onClick={() => isCurr && onSelectDay(cellDate)}
+            <div key={i} onClick={() => isCurr && onSelectDay(cellDate)}
               className={isCurr ? "hud-cell" : ""}
-              style={{
-                background: isSel ? "rgba(201,160,90,0.08)" : isCurr ? CARD : "rgba(255,255,255,0.01)",
-                border:`1px solid ${isSel ? "rgba(201,160,90,0.25)" : isCurr ? BORD2 : "transparent"}`,
+              style={{ background: isSel?"rgba(201,160,90,0.08)":isCurr?CARD:"rgba(255,255,255,0.01)",
+                border:`1px solid ${isSel?"rgba(201,160,90,0.25)":isCurr?BORD2:"transparent"}`,
                 borderRadius:3, padding:"8px 8px 6px",
-                cursor: isCurr ? "pointer" : "default",
-                overflow:"hidden", minHeight:90, position:"relative",
-              }}>
-              {/* Date number */}
+                cursor:isCurr?"pointer":"default",
+                overflow:"hidden", minHeight:90, position:"relative" }}>
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:2 }}>
-                <span style={{
-                  fontFamily: isTod ? "'Share Tech Mono',monospace" : "'Oswald',sans-serif",
-                  fontSize:15,
-                  color: isTod ? DARK : isCurr ? CREAM : DIM,
-                  background: isTod ? GOLD : "transparent",
-                  borderRadius: isTod ? 2 : 0,
-                  padding: isTod ? "0 4px" : 0,
-                  lineHeight:"16px",
-                }}>
+                <span style={{ fontFamily:isTod?"'Share Tech Mono',monospace":"'Oswald',sans-serif",
+                  fontSize:15, color:isTod?DARK:isCurr?CREAM:DIM,
+                  background:isTod?GOLD:"transparent", borderRadius:isTod?2:0,
+                  padding:isTod?"0 4px":0, lineHeight:"16px" }}>
                   {cell.day}
                 </span>
                 {evs.length > 0 && isCurr && (
@@ -451,7 +363,6 @@ function PersonalCalendar({ year, month, allEvents, onSelectDay, selectedDay, on
   );
 }
 
-/* ─── AGENDA PANEL ───────────────────────────────────────────── */
 function AgendaPanel({ selectedDay, allEvents, onEventClick }) {
   const dayEvs = selectedDay
     ? allEvents.filter(ev => sameDay(ev.start, selectedDay)).sort((a,b) => a.start-b.start)
@@ -462,11 +373,8 @@ function AgendaPanel({ selectedDay, allEvents, onEventClick }) {
     .slice(0, 6);
 
   return (
-    <div style={{ width:300, borderLeft:`1px solid ${BORD}`,
-      display:"flex", flexDirection:"column", overflow:"hidden", flexShrink:0,
-      background:CARD2 }}>
-
-      {/* Day header */}
+    <div style={{ width:300, borderLeft:`1px solid ${BORD}`, display:"flex",
+      flexDirection:"column", overflow:"hidden", flexShrink:0, background:CARD2 }}>
       <div style={{ padding:"12px 14px 10px", borderBottom:`1px solid ${BORD}` }}>
         <HudLabel>Agenda</HudLabel>
         <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:20, color:CREAM,
@@ -477,7 +385,6 @@ function AgendaPanel({ selectedDay, allEvents, onEventClick }) {
         </p>
       </div>
 
-      {/* Day events */}
       <div style={{ flex:1, overflowY:"auto", padding:"8px 10px" }}>
         {!selectedDay ? (
           <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
@@ -513,7 +420,6 @@ function AgendaPanel({ selectedDay, allEvents, onEventClick }) {
         })}
       </div>
 
-      {/* Upcoming */}
       <div style={{ borderTop:`1px solid ${BORD}`, padding:"8px 10px 10px" }}>
         <div style={{ marginBottom:7 }}><HudLabel>Upcoming</HudLabel></div>
         {upcoming.map((ev, i) => {
@@ -539,7 +445,6 @@ function AgendaPanel({ selectedDay, allEvents, onEventClick }) {
   );
 }
 
-/* ─── SESSIONS VIEW ──────────────────────────────────────────── */
 function SessionsView({ langCode, year, month, booked, onBook, onUnbook, onCardClick, goMonth }) {
   const lm       = LANGS.find(l => l.code === langCode) || LANGS[0];
   const sessions = SESSIONS[langCode] || [];
@@ -556,16 +461,12 @@ function SessionsView({ langCode, year, month, booked, onBook, onUnbook, onCardC
     return (
       <div className="sess-card"
         onClick={() => onCardClick({ ...sess, start:ev.start, end:ev.end, subject:lm.name })}
-        style={{ background:CARD, border:`1px solid ${isBooked ? "rgba(168,133,90,0.3)" : BORD}`,
+        style={{ background:CARD, border:`1px solid ${isBooked?"rgba(168,133,90,0.3)":BORD}`,
           borderRadius:5, padding:"10px 12px", cursor:"pointer", transition:"all .18s",
           position:"relative", overflow:"hidden",
           backgroundImage:GRAIN, backgroundRepeat:"repeat", backgroundSize:"300px" }}>
-
-        {/* HUD corner */}
         <div style={{ position:"absolute", top:0, left:0, width:9, height:9,
           borderTop:`1px solid ${lm.c}70`, borderLeft:`1px solid ${lm.c}70` }}/>
-
-        {/* Title + booked badge */}
         <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:6, marginBottom:3 }}>
           <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:15, color:CREAM,
             letterSpacing:"0.02em", lineHeight:1.2, flex:1 }}>{sess.title}</p>
@@ -575,35 +476,28 @@ function SessionsView({ langCode, year, month, booked, onBook, onUnbook, onCardC
               fontSize:8, letterSpacing:"0.1em", color:A_GREEN, flexShrink:0, marginTop:2 }}>BOOKED</span>
           )}
         </div>
-
-        {/* Tutor */}
         <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:BODY,
           fontStyle:"italic", marginBottom:7 }}>with {sess.tutor}</p>
-
-        {/* Tags */}
         <div style={{ display:"flex", gap:4, flexWrap:"wrap", marginBottom:7 }}>
           <span style={{ background:"rgba(201,160,90,0.08)", color:BODY,
-            fontFamily:"'Share Tech Mono',monospace", fontSize:9,
-            borderRadius:2, padding:"2px 6px" }}>
+            fontFamily:"'Share Tech Mono',monospace", fontSize:9, borderRadius:2, padding:"2px 6px" }}>
             {sessDate.toLocaleDateString("en-US",{month:"short",day:"numeric"})} · {sess.time}
           </span>
           <span style={{ background:"rgba(201,160,90,0.08)", color:BODY,
-            fontFamily:"'Share Tech Mono',monospace", fontSize:9,
-            borderRadius:2, padding:"2px 6px" }}>{sess.dur}MIN</span>
+            fontFamily:"'Share Tech Mono',monospace", fontSize:9, borderRadius:2, padding:"2px 6px" }}>
+            {sess.dur}MIN
+          </span>
           <span style={{ background:lv.g, color:lv.c,
-            fontFamily:"'Share Tech Mono',monospace", fontSize:9,
-            borderRadius:2, padding:"2px 6px" }}>{sess.level.toUpperCase()}</span>
+            fontFamily:"'Share Tech Mono',monospace", fontSize:9, borderRadius:2, padding:"2px 6px" }}>
+            {sess.level.toUpperCase()}
+          </span>
         </div>
-
-        {/* Desc */}
         <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:BODY,
           lineHeight:1.5, fontStyle:"italic", marginBottom:9 }}>{sess.desc}</p>
-
-        {/* Spots + book button */}
         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
           {isIndiv ? (
             <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
-              color:isFull ? A_ROSE : A_GREEN, flex:1 }}>
+              color:isFull?A_ROSE:A_GREEN, flex:1 }}>
               {isFull ? "FULLY BOOKED" : "1 SPOT AVAILABLE"}
             </span>
           ) : (
@@ -611,24 +505,24 @@ function SessionsView({ langCode, year, month, booked, onBook, onUnbook, onCardC
               <div style={{ display:"flex", gap:2, flex:1 }}>
                 {Array.from({ length:Math.min(sess.max,12) }).map((_,i) => (
                   <div key={i} style={{ width:5, height:5, borderRadius:1,
-                    background: i < (sess.max - sess.spots) ? lm.c : "rgba(255,255,255,0.07)" }}/>
+                    background: i<(sess.max-sess.spots)?lm.c:"rgba(255,255,255,0.07)" }}/>
                 ))}
               </div>
               <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
-                color:isFull ? A_ROSE : sess.spots <= 2 ? A_AMBER : A_GREEN }}>
-                {isFull ? "FULL" : `${sess.spots}/${sess.max}`}
+                color:isFull?A_ROSE:sess.spots<=2?A_AMBER:A_GREEN }}>
+                {isFull?"FULL":`${sess.spots}/${sess.max}`}
               </span>
             </>
           )}
           {isBooked
-            ? <button onClick={e => { e.stopPropagation(); onUnbook(sess.id); }} className="book-btn"
+            ? <button onClick={e=>{e.stopPropagation();onUnbook(sess.id);}} className="book-btn"
                 style={{ background:"none", border:`1px solid ${A_ROSE}44`, borderRadius:3,
                   padding:"4px 10px", fontFamily:"'Share Tech Mono',monospace",
                   fontSize:8.5, color:A_ROSE, cursor:"pointer", transition:"all .2s", flexShrink:0 }}>
                 CANCEL
               </button>
             : !isFull && (
-              <button onClick={e => { e.stopPropagation(); onBook(sess); }} className="book-btn"
+              <button onClick={e=>{e.stopPropagation();onBook(sess);}} className="book-btn"
                 style={{ background:lm.c, border:"none", borderRadius:3, padding:"4px 10px",
                   fontFamily:"'Share Tech Mono',monospace", fontSize:8.5, fontWeight:700,
                   color:DARK, cursor:"pointer", transition:"all .2s", flexShrink:0 }}>
@@ -652,7 +546,7 @@ function SessionsView({ langCode, year, month, booked, onBook, onUnbook, onCardC
           </h3>
           <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
             color:DIM, letterSpacing:"0.1em" }}>
-            {items.length} SESSION{items.length !== 1 ? "S" : ""}
+            {items.length} SESSION{items.length!==1?"S":""}
           </span>
         </div>
         {items.length === 0
@@ -668,7 +562,6 @@ function SessionsView({ langCode, year, month, booked, onBook, onUnbook, onCardC
 
   return (
     <div style={{ flex:1, overflowY:"auto", padding:"16px 20px 40px" }}>
-      {/* Header */}
       <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:16, flexWrap:"wrap" }}>
         <div style={{ width:36, height:36, borderRadius:4, background:`${lm.c}14`,
           border:`1px solid ${lm.c}25`, display:"flex", alignItems:"center",
@@ -697,8 +590,6 @@ function SessionsView({ langCode, year, month, booked, onBook, onUnbook, onCardC
               justifyContent:"center", transition:"all .15s" }}>›</button>
         </div>
       </div>
-
-      {/* Two columns */}
       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:18 }}>
         <Column title="Individual" items={individual}/>
         <Column title="Group"      items={group}/>
@@ -707,7 +598,6 @@ function SessionsView({ langCode, year, month, booked, onBook, onUnbook, onCardC
   );
 }
 
-/* ─── MAIN ───────────────────────────────────────────────────── */
 export default function CalendarPage() {
   const navigate = useNavigate();
   const today    = new Date();
@@ -717,11 +607,9 @@ export default function CalendarPage() {
   const [selDay,    setSelDay]    = useState(null);
   const [modal,     setModal]     = useState(null);
   const [bookedEvs, setBookedEvs] = useState({});
-  const [gcalConn,  setGcalConn]  = useState(false);
 
-  const personalEvs   = buildPersonalEvents(year, month);
-  const gcalEvsList   = gcalConn ? buildGCalEvents(year, month) : [];
-  const allEvs        = [...personalEvs, ...gcalEvsList, ...Object.values(bookedEvs)];
+  const personalEvs = buildPersonalEvents(year, month);
+  const allEvs      = [...personalEvs, ...Object.values(bookedEvs)];
 
   function goMonth(dir) {
     setMonth(m => {
@@ -749,38 +637,33 @@ export default function CalendarPage() {
       background:DARK, color:CREAM, fontFamily:"'Oswald',sans-serif", overflow:"hidden" }}>
       <style>{CSS}</style>
 
-      {/* ── TOPBAR ── */}
       <header style={{ borderBottom:`1px solid ${BORD}`, padding:"14px 20px",
         display:"flex", alignItems:"center", gap:6, flexShrink:0,
         flexWrap:"wrap", rowGap:6, background:CARD2 }}>
-
-        {/* Title */}
         <div style={{ marginRight:10 }}>
           <HudLabel>Speaksphere / Schedule</HudLabel>
           <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, fontWeight:700,
             color:CREAM, letterSpacing:"0.04em", lineHeight:1, marginTop:2 }}>Calendar</h1>
         </div>
 
-        {/* View tabs */}
         <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
-          {[{ id:"personal", label:"My Calendar", c:GOLD }, ...LANGS.map(l=>({id:l.code,label:l.name,c:l.c,script:l.script}))].map(t => (
+          {[{id:"personal",label:"My Calendar",c:GOLD}, ...LANGS.map(l=>({id:l.code,label:l.name,c:l.c,script:l.script}))].map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
-              className={tab!==t.id ? "tab-btn" : ""}
+              className={tab!==t.id?"tab-btn":""}
               style={{ display:"flex", alignItems:"center", gap:5,
-                background: tab===t.id ? `${t.c}14` : "transparent",
-                border:`1px solid ${tab===t.id ? `${t.c}40` : BORD2}`,
-                borderBottom: tab===t.id ? `1px solid ${t.c}` : `1px solid ${BORD2}`,
+                background: tab===t.id?`${t.c}14`:"transparent",
+                border:`1px solid ${tab===t.id?`${t.c}40`:BORD2}`,
+                borderBottom: tab===t.id?`1px solid ${t.c}`:`1px solid ${BORD2}`,
                 borderRadius:"3px 3px 0 0", padding:"5px 11px",
                 fontFamily:"'Oswald',sans-serif", fontSize:12,
                 letterSpacing:"0.08em", textTransform:"uppercase",
-                color: tab===t.id ? t.c : MUTED, cursor:"pointer", transition:"all .15s" }}>
+                color: tab===t.id?t.c:MUTED, cursor:"pointer", transition:"all .15s" }}>
               {t.script && <span style={{ fontFamily:"Georgia,serif", fontSize:11 }}>{t.script.slice(0,3)}</span>}
               {t.label}
             </button>
           ))}
         </div>
 
-        {/* Month nav (personal only) */}
         {tab === "personal" && (
           <div style={{ display:"flex", alignItems:"center", gap:6, marginLeft:"auto" }}>
             <button onClick={() => goMonth(-1)} className="arrow-btn"
@@ -806,19 +689,13 @@ export default function CalendarPage() {
         )}
       </header>
 
-      {/* ── BODY ── */}
       <div style={{ flex:1, display:"flex", overflow:"hidden" }}>
         {tab === "personal" ? (
           <>
             <PersonalCalendar
               year={year} month={month} allEvents={allEvs}
               onSelectDay={setSelDay} selectedDay={selDay}
-              onEventClick={setModal}
-              gcalConn={gcalConn}
-              onConnect={() => setGcalConn(true)}
-              onDisconnect={() => setGcalConn(false)}
-              gcalCount={buildGCalEvents(year,month).length}
-            />
+              onEventClick={setModal}/>
             <AgendaPanel selectedDay={selDay} allEvents={allEvs} onEventClick={setModal}/>
           </>
         ) : (

@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import LandingPage  from "./home.jsx";
-import AuthPage     from "./AuthPage.jsx";
+import AuthPage     from "./authpage.jsx";
 import Dashboard    from "./dashboard.jsx";
-import CalendarPage   from "./CalendarPage.jsx";
+import CalendarPage   from "./calendarpage.jsx";
 import PronunciationPage from "./pronunciationpage.jsx";
 import ResourcesPage  from "./resourcespage.jsx";
 import CommunityPage  from "./communitypage.jsx";

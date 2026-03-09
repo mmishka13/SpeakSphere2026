@@ -6,6 +6,7 @@ import Dashboard    from "./dashboard.jsx";
 import CalendarPage   from "./CalendarPage.jsx";
 import PronunciationPage from "./pronunciationpage.jsx";
 import ResourcesPage  from "./resourcespage.jsx";
+import CommunityPage  from "./communitypage.jsx";
 
 /* ── Design tokens (dark academia — matches Dashboard) ── */
 const DARK   = "#140b04";
@@ -181,7 +182,7 @@ function AppShell() {
           <Route path="/resources"     element={<ResourcesPage/>}/>
           <Route path="/pronunciation" element={<PronunciationPage/>}/>
           <Route path="/pen-pals"      element={<ComingSoon label="Pen Pals"/>}/>
-          <Route path="/community"     element={<ComingSoon label="Community"/>}/>
+          <Route path="/community"     element={<CommunityPage/>}/>
           <Route path="*"              element={<Navigate to="/dashboard" replace/>}/>
         </Routes>
       </div>

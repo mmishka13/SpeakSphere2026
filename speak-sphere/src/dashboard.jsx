@@ -410,8 +410,8 @@ function HeroBanner({ onDailyQ, navigate }) {
       </div>
 
       {/* ── TOP STATS STRIP — normal flow so it isn't clipped ── */}
-      <div style={{ position:"relative", zIndex:1,
-        display:"flex", gap:0,
+      <div className="learner-stats" style={{ position:"relative", zIndex:1,
+        display:"grid", gridTemplateColumns:"repeat(6,1fr)",
         borderBottom:`1px solid rgba(212,168,67,0.14)`, flexShrink:0 }}>
         {[
           { label:"Current Level",   value:"Journeyman",  sub:"Spanish"          },
@@ -1051,8 +1051,8 @@ export default function Dashboard() {
           .dash-right{display:none!important;}
           .tutor-stats{grid-template-columns:1fr 1fr!important;}
           .tutor-grid{grid-template-columns:1fr!important;}
-          .learner-stats{grid-template-columns:1fr 1fr!important;}
-          .learner-grid{grid-template-columns:1fr!important;}
+          .learner-stats{grid-template-columns:repeat(3,1fr)!important;}
+          .learner-stats>*:nth-child(3n){border-right:none!important;}
         }
         @media(min-width:768px) and (max-width:1023px){
           .dash-right{width:260px!important;}

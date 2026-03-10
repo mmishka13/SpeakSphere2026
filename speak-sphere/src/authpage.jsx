@@ -215,7 +215,7 @@ export default function AuthPage() {
           <IconGlobe size={22}/><span style={p.logoTxt}>SpeakSphere</span>
         </a>
         <div style={p.navRight}>
-          <span style={p.navHint}>Already have an account?</span>
+          <span style={p.navHint} data-navhint="">Already have an account?</span>
           <button style={p.navBtn} onClick={()=>setMode(mode==="signup"?"login":"signup")}>
             {mode==="signup"?"Log In":"Sign Up"}
           </button>
@@ -226,7 +226,7 @@ export default function AuthPage() {
       <div style={p.layout}>
 
         {/* LEFT PANEL — decorative */}
-        <aside style={p.leftPanel} aria-hidden="true">
+        <aside style={p.leftPanel} data-leftpanel="" aria-hidden="true">
           <div style={p.leftInner}>
             {/* big language word rotating */}
             <div style={p.bigWord} className="pulse-word">
@@ -282,7 +282,7 @@ export default function AuthPage() {
                 <form onSubmit={handleSignup} noValidate aria-label="Sign up">
 
                   {/* ── Row: Name + Email ── */}
-                  <div style={p.row}>
+                  <div style={p.row} data-row="">
                     <InputField icon={<IconUser/>}    label="Full name" id="name"  type="text"  value={form.name}  onChange={v=>set("name",v)}  placeholder="Alex Rivera" autoComplete="name"/>
                     <InputField icon={<IconMail/>}    label="Email"     id="email" type="email" value={form.email} onChange={v=>set("email",v)} placeholder="you@example.com" autoComplete="email"/>
                   </div>
@@ -301,7 +301,7 @@ export default function AuthPage() {
                   )}
 
                   {/* ── Row: Age + Grade ── */}
-                  <div style={p.row}>
+                  <div style={p.row} data-row="">
                     <InputField icon={<IconCake/>}    label="Age"   id="age"   type="number" value={form.age}   onChange={v=>set("age",v)}   placeholder="16" min="10" max="25"/>
                     <SelectField icon={<IconGradCap/>} label="Grade" id="grade" value={form.grade} onChange={v=>set("grade",v)} options={GRADES} placeholder="Select grade"/>
                   </div>
@@ -309,7 +309,7 @@ export default function AuthPage() {
                   {/* ── Language picker ── */}
                   <div style={p.block}>
                     <label style={p.label}>Language I want to learn</label>
-                    <div style={p.langGrid} role="group" aria-label="Language selection">
+                    <div style={p.langGrid} data-langgrid="" role="group" aria-label="Language selection">
                       {LANGUAGES.map(lang=>(
                         <button key={lang} type="button"
                           style={{ ...p.langTile, ...(form.language===lang?p.langTileOn:{}) }}
@@ -404,7 +404,7 @@ export default function AuthPage() {
         </header>
 
         {/* ── EXAM BODY ── */}
-        <div style={e.body}>
+        <div style={e.body} data-exam-body="">
 
           {/* left: question */}
           <div style={e.qCol}>
@@ -865,7 +865,12 @@ const CSS = `
 
   @media (max-width: 860px) {
     [data-leftpanel] { display: none !important; }
-    [data-exam-body] { flex-direction: column !important; }
+    [data-exam-body] { flex-direction: column !important; min-height: auto !important; }
+    [data-exam-body] > * { flex: none !important; width: 100% !important; padding: 32px 24px !important; border-right: none !important; }
+  }
+  @media (max-width: 680px) {
+    nav { padding: 0 16px !important; }
+    [data-navhint] { display: none !important; }
   }
   @media (max-width: 600px) {
     [data-row] { flex-direction: column !important; }

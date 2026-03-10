@@ -464,7 +464,7 @@ export default function PronunciationPage() {
                 <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
                   letterSpacing:"0.14em", color:MUTED, textTransform:"uppercase",
                   display:"block", marginBottom:16 }}>Word Breakdown</span>
-                <div style={{ display:"flex", flexWrap:"wrap", gap:10 }}>
+                <div className="pron-results-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(80px, 1fr))", gap:10 }}>
                   {result.wordScores.map((ws, i) => (
                     <div key={i} className="word-chip"
                       style={{ display:"flex", flexDirection:"column", alignItems:"center",

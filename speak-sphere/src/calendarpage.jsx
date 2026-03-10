@@ -644,7 +644,7 @@ export default function CalendarPage() {
   }
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", height:"100vh",
+    <div style={{ display:"flex", flexDirection:"column", height:"100%",
       background:DARK, color:CREAM, fontFamily:"'Oswald',sans-serif", overflow:"hidden" }}>
       <style>{CSS}</style>
 

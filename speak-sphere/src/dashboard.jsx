@@ -1030,7 +1030,7 @@ export default function Dashboard() {
 
   /* ══════════════ RENDER ══════════════ */
   return (
-    <div style={{ display:"flex", minHeight:"100vh", background:DARK, color:CREAM }}>
+    <div style={{ display:"flex", height:"100%", background:DARK, color:CREAM }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
@@ -1059,7 +1059,7 @@ export default function Dashboard() {
         }
       `}</style>
 
-      <main style={{ flex:1, display:"flex", flexDirection:"column", minHeight:"100vh" }}>
+      <main style={{ flex:1, display:"flex", flexDirection:"column", minHeight:0 }}>
 
         {/* TOP BAR */}
         <div style={{ padding:"22px 28px 0", borderBottom:`1px solid rgba(212,168,67,0.14)`,

@@ -188,12 +188,13 @@ function BottomNav() {
   return (
     <nav style={{
       position:"fixed", bottom:0, left:0, right:0,
-      height:62, background:"#0d0702",
+      height:"calc(62px + env(safe-area-inset-bottom, 0px))",
+      background:"#0d0702",
       borderTop:`1px solid ${BORD}`,
       boxShadow:"0 -2px 12px rgba(212,168,67,0.08)",
       display:"flex", alignItems:"stretch",
       zIndex:50,
-      paddingBottom:"env(safe-area-inset-bottom,0px)",
+      paddingBottom:"env(safe-area-inset-bottom, 0px)",
     }}>
       {NAV_ITEMS.map(({ path, label, Icon }) => {
         const isActive = active === path || active.startsWith(path + "/");
@@ -241,7 +242,7 @@ function AppShell() {
   const marginLeft = isMobile ? 0 : (isTablet ? 66 : (sideExpanded ? 240 : 66));
 
   return (
-    <div style={{ display:"flex", height:"100vh", background:DARK }}>
+    <div style={{ display:"flex", height:"100%", background:DARK }}>
       {!isMobile && (
         <Sidebar
           onExpand={setSideExpanded}
@@ -250,7 +251,7 @@ function AppShell() {
       )}
       <div style={{
         marginLeft,
-        paddingBottom: isMobile ? 62 : 0,
+        paddingBottom: isMobile ? "calc(62px + env(safe-area-inset-bottom, 0px))" : 0,
         flex:1, overflow:"hidden", display:"flex", flexDirection:"column",
         transition:"margin-left .22s cubic-bezier(.4,0,.2,1)"
       }}>

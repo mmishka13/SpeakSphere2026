@@ -350,7 +350,7 @@ function Lesson23({ onBack }) {
   const quizComplete = Object.keys(quizAnswers).length === QUIZ.length;
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", height:"100vh",
+    <div style={{ display:"flex", flexDirection:"column", height:"100%",
       background:DARK, color:CREAM, overflow:"hidden",
       backgroundImage:GRAIN, backgroundRepeat:"repeat", backgroundSize:"300px" }}>
       <style>{CSS}</style>

@@ -237,7 +237,7 @@ export default function PronunciationPage() {
   const fmtTime = s => `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", height:"100vh", background:DARK,
+    <div style={{ display:"flex", flexDirection:"column", height:"100%", background:DARK,
       color:CREAM, overflow:"hidden", fontFamily:"'Oswald',sans-serif" }}>
       <style>{CSS}</style>
 

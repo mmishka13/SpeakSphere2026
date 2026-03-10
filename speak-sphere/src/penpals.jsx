@@ -382,7 +382,7 @@ export default function PenPalsPage() {
     : profiles.filter(p => p.native === filter || p.learning === filter);
 
   return (
-    <div style={{ display:"flex", flexDirection:"column", height:"100vh",
+    <div style={{ display:"flex", flexDirection:"column", height:"100%",
       background:DARK, color:CREAM, overflow:"hidden" }}>
       <style>{CSS}</style>
 

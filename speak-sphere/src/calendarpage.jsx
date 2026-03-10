@@ -37,12 +37,48 @@ const CSS = `
   .fade-in { animation:fadeIn .18s ease both; }
   @keyframes popIn  { from{opacity:0;transform:scale(.95) translateY(6px)} to{opacity:1;transform:none} }
   @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+
   @media(max-width:768px){
-    .cal-layout { flex-direction:column !important; }
-    .cal-sidebar { width:100% !important; max-height:280px !important; border-left:none !important; border-top:1px solid rgba(212,168,67,0.20) !important; overflow-y:auto !important; }
+    /* Whole layout scrolls vertically on mobile */
+    .cal-layout { flex-direction:column !important; overflow-y:auto !important; overflow-x:hidden !important; }
+
+    /* Calendar main — size to content, don't clip */
+    .cal-main { overflow:visible !important; flex:none !important; padding:10px 10px 0 !important; }
+
+    /* Compact cells: shrink height, hide event chips, show colored dots */
+    .cal-main .fade-in > div { min-height:44px !important; padding:4px 3px 2px !important; }
+    .ev-chip { display:none !important; }
+    .cal-ev-count { display:none !important; }
+    .cal-dots { display:flex !important; }
+
+    /* Legend hidden on mobile to save space */
+    .cal-legend { display:none !important; }
+
+    /* DOW headers smaller */
+    .cal-dow span { font-size:9px !important; }
+
+    /* Sidebar full width, not capped, scrolls independently */
+    .cal-sidebar { width:100% !important; max-height:320px !important; flex:none !important;
+      border-left:none !important; border-top:1px solid rgba(212,168,67,0.20) !important;
+      overflow-y:auto !important; }
+
+    /* Sessions grid 1 col */
     .cal-sessions-grid { grid-template-columns:1fr !important; }
-    .cal-topbar { flex-wrap:wrap !important; gap:8px !important; padding:14px 16px !important; }
-    .cal-main { padding:14px !important; }
+
+    /* Month nav wraps under header on mobile */
+    .cal-topbar { flex-wrap:wrap !important; gap:6px !important;
+      padding:8px 12px 10px !important; margin-left:0 !important; width:100% !important; }
+
+    /* Tab row scrolls horizontally */
+    .cal-tab-row { overflow-x:auto !important; flex-wrap:nowrap !important;
+      -webkit-overflow-scrolling:touch !important; padding-bottom:2px; }
+    .cal-tab-row::-webkit-scrollbar { height:0; }
+
+    /* Smaller header title */
+    .cal-h1 { font-size:22px !important; line-height:1.1 !important; }
+
+    /* Header more compact */
+    .cal-header { padding:12px 16px !important; gap:6px !important; }
   }
   @media(min-width:768px) and (max-width:1023px){
     .cal-sidebar { width:260px !important; }
@@ -309,7 +345,7 @@ function PersonalCalendar({ year, month, allEvents, onSelectDay, selectedDay, on
     <div className="cal-main" style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", padding:"14px 20px" }}>
 
       {/* Legend */}
-      <div style={{ display:"flex", gap:16, marginBottom:10, flexWrap:"wrap", alignItems:"center" }}>
+      <div className="cal-legend" style={{ display:"flex", gap:16, marginBottom:10, flexWrap:"wrap", alignItems:"center" }}>
         <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:13,
           letterSpacing:"0.14em", textTransform:"uppercase", color:MUTED }}>Legend</span>
         {Object.entries(SUBJECT_COLORS).map(([subj, sc]) => (
@@ -322,7 +358,7 @@ function PersonalCalendar({ year, month, allEvents, onSelectDay, selectedDay, on
       </div>
 
       {/* DOW headers */}
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:2, marginBottom:3 }}>
+      <div className="cal-dow" style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:2, marginBottom:3 }}>
         {DOW.map(d => (
           <div key={d} style={{ textAlign:"center", padding:"2px 0", borderBottom:`1px solid ${BORD2}` }}>
             <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
@@ -357,7 +393,7 @@ function PersonalCalendar({ year, month, allEvents, onSelectDay, selectedDay, on
                   {cell.day}
                 </span>
                 {evs.length > 0 && isCurr && (
-                  <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                  <span className="cal-ev-count" style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
                     color:GOLD, opacity:0.6 }}>{evs.length}</span>
                 )}
               </div>
@@ -365,6 +401,15 @@ function PersonalCalendar({ year, month, allEvents, onSelectDay, selectedDay, on
               {evs.length > 2 && (
                 <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:7.5,
                   color:MUTED, paddingLeft:2 }}>+{evs.length-2}</span>
+              )}
+              {/* Mobile: colored dots since chips are hidden */}
+              {evs.length > 0 && (
+                <div className="cal-dots" style={{ display:"none", gap:2, flexWrap:"wrap", marginTop:2 }}>
+                  {evs.slice(0,4).map((ev,ei) => {
+                    const sc = SUBJECT_COLORS[ev.subject] || SUBJECT_COLORS.Personal;
+                    return <div key={ei} style={{ width:5, height:5, borderRadius:"50%", background:sc.c, flexShrink:0 }}/>;
+                  })}
+                </div>
               )}
             </div>
           );
@@ -648,7 +693,7 @@ export default function CalendarPage() {
       background:DARK, color:CREAM, fontFamily:"'Oswald',sans-serif", overflow:"hidden" }}>
       <style>{CSS}</style>
 
-      <header style={{ borderBottom:`1px solid ${BORD}`, padding:"18px 28px",
+      <header className="cal-header" style={{ borderBottom:`1px solid ${BORD}`, padding:"18px 28px",
         display:"flex", alignItems:"center", gap:10, flexShrink:0,
         flexWrap:"wrap", rowGap:10, background:CARD2 }}>
         <div style={{ marginRight:14 }}>
@@ -657,10 +702,10 @@ export default function CalendarPage() {
             Speaksphere / Schedule
           </span>
           <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:34, fontWeight:700,
-            color:CREAM, letterSpacing:"0.04em", lineHeight:1, marginTop:4 }}>Calendar</h1>
+            color:CREAM, letterSpacing:"0.04em", lineHeight:1, marginTop:4 }} className="cal-h1">Calendar</h1>
         </div>
 
-        <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+        <div className="cal-tab-row" style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
           {[{id:"personal",label:"My Calendar",c:GOLD}, ...LANGS.map(l=>({id:l.code,label:l.name,c:l.c,script:l.script}))].map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
               className={tab!==t.id?"tab-btn":""}
@@ -679,7 +724,7 @@ export default function CalendarPage() {
         </div>
 
         {tab === "personal" && (
-          <div className="cal-topbar" style={{ display:"flex", alignItems:"center", gap:8, marginLeft:"auto" }}>
+          <div className="cal-topbar" style={{ display:"flex", alignItems:"center", gap:8, marginLeft:"auto", flexShrink:0 }}>
             <button onClick={() => goMonth(-1)} className="arrow-btn"
               style={{ width:32, height:32, background:"transparent", border:`1px solid ${BORD}`,
                 borderRadius:4, cursor:"pointer", color:MUTED, fontSize:18,

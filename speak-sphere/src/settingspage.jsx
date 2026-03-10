@@ -97,7 +97,7 @@ export default function SettingsPage() {
     <div style={{
       flex: 1, display: "flex", flexDirection: "column", background: DARK,
       backgroundImage: GRAIN, backgroundRepeat: "repeat", backgroundSize: "300px",
-      minHeight: "100vh", overflowY: "auto",
+      height: "100%", overflowY: "auto",
       fontFamily: "'Lora',serif",
     }}>
       <style>{`

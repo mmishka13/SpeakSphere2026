@@ -11,16 +11,16 @@ import SpanishCourseOverview from "./spanishcourseoverview.jsx";
    Khan Academy's linear lesson flow × literary aesthetics.
 ═══════════════════════════════════════════════════════════════ */
 
-const DARK   = "#140b04";
-const CARD   = "#1a0d05";
+const DARK   = "#0d0702";
+const CARD   = "#1b0f06";
 const CARD2  = "#1f1108";
-const GOLD   = "#c9a05a";
-const GOLDLT = "#e8c07a";
-const CREAM  = "#eadcca";
-const MUTED  = "#9a7d5a";
-const DIM    = "#5a3a22";
-const BORD   = "rgba(201,160,90,0.12)";
-const BODY   = "#c4aa80";
+const GOLD   = "#d4a843";
+const GOLDLT = "#f0cc55";
+const CREAM  = "#f5ede0";
+const MUTED  = "#c8aa80";
+const DIM    = "#a08050";
+const BORD   = "rgba(212,168,67,0.20)";
+const BODY   = "#c8aa80";
 const A_GREEN  = "#a8855a";
 const A_BLUE   = "#c4956a";
 const A_ROSE   = "#8a6440";
@@ -134,16 +134,35 @@ const CSS = `
   html, body { height:100%; }
   ::-webkit-scrollbar { width:5px; }
   ::-webkit-scrollbar-track { background:transparent; }
-  ::-webkit-scrollbar-thumb { background:rgba(201,160,90,0.18); border-radius:3px; }
+  ::-webkit-scrollbar-thumb { background:rgba(212,168,67,0.18); border-radius:3px; }
   .spine-seg { transition:background .3s, box-shadow .3s; }
-  .pdf-card:hover { border-color:rgba(201,160,90,0.28) !important; transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.45) !important; }
+  .pdf-card:hover { border-color:rgba(212,168,67,0.28) !important; transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.45) !important; }
   .pdf-dl:hover { filter:brightness(1.12); }
-  .nav-pill:hover { background:rgba(201,160,90,0.08) !important; color:#eadcca !important; }
-  .quiz-opt:hover { border-color:rgba(201,160,90,0.3) !important; background:rgba(201,160,90,0.05) !important; }
+  .nav-pill:hover { background:rgba(212,168,67,0.14) !important; color:#f5ede0 !important; }
+  .quiz-opt:hover { border-color:rgba(212,168,67,0.3) !important; background:rgba(212,168,67,0.05) !important; }
   .section-anchor { scroll-margin-top:20px; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
   @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:.5} }
   @keyframes drawIn { from{stroke-dashoffset:280} to{stroke-dashoffset:0} }
+
+  @media(max-width:767px){
+    .res-layout { flex-direction:column !important; }
+    .res-spine { width:100% !important; height:auto !important; border-right:none !important; border-bottom:1px solid rgba(212,168,67,0.20) !important; padding:12px 14px !important; overflow-y:visible !important; }
+    .res-spine-inner { flex-direction:row !important; flex-wrap:wrap !important; gap:8px !important; height:auto !important; }
+    .res-content { padding:20px 16px 60px !important; }
+    .res-topbar { flex-wrap:wrap !important; padding:8px 14px !important; gap:6px !important; }
+    .res-right-margin { display:none !important; }
+    .res-grid-2col { grid-template-columns:1fr !important; }
+    .res-pdf-grid { grid-template-columns:1fr !important; }
+    .res-weirdos-grid { grid-template-columns:1fr !important; }
+  }
+  @media(min-width:768px) and (max-width:1023px){
+    .res-spine { width:160px !important; }
+    .res-content { padding:24px 28px 60px !important; }
+    .res-pdf-grid { grid-template-columns:repeat(auto-fill,minmax(220px,1fr)) !important; }
+    .res-weirdos-grid { grid-template-columns:repeat(auto-fill,minmax(220px,1fr)) !important; }
+    .res-grid-2col { grid-template-columns:1fr 1fr !important; }
+  }
 `;
 
 /* ── PROGRESS SPINE component ── */
@@ -159,7 +178,7 @@ function ProgressSpine({ completed, active, onJump }) {
         <div style={{ position:"relative", width:80, height:80 }}>
           <svg width={80} height={80} style={{ transform:"rotate(-90deg)" }}>
             <circle cx={40} cy={40} r={34} fill="none"
-              stroke="rgba(201,160,90,0.1)" strokeWidth={5}/>
+              stroke="rgba(212,168,67,0.1)" strokeWidth={5}/>
             <circle cx={40} cy={40} r={34} fill="none"
               stroke={GOLD} strokeWidth={5}
               strokeLinecap="round"
@@ -169,15 +188,15 @@ function ProgressSpine({ completed, active, onJump }) {
           </svg>
           <div style={{ position:"absolute", inset:0, display:"flex",
             flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
-            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:20, color:GOLDLT,
+            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:24, color:GOLDLT,
               lineHeight:1 }}>{pct}%</span>
-            <span style={{ fontFamily:"'Lora',serif", fontSize:8, color:MUTED,
+            <span style={{ fontFamily:"'Lora',serif", fontSize:10, color:MUTED,
               fontStyle:"italic" }}>done</span>
           </div>
         </div>
-        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.12em",
+        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.12em",
           textTransform:"uppercase", color:MUTED, marginTop:8 }}>Lesson 2.3</p>
-        <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:BODY,
+        <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY,
           fontStyle:"italic", textAlign:"center", marginTop:3, lineHeight:1.4 }}>
           Present Subjunctive
         </p>
@@ -191,7 +210,7 @@ function ProgressSpine({ completed, active, onJump }) {
           return (
             <button key={s.id} onClick={() => onJump(s.id)} className="nav-pill"
               style={{ display:"flex", alignItems:"center", gap:9, padding:"7px 10px",
-                borderRadius:4, border:"none", background: isAct ? "rgba(201,160,90,0.1)" : "transparent",
+                borderRadius:4, border:"none", background: isAct ? "rgba(212,168,67,0.1)" : "transparent",
                 borderLeft:`2px solid ${isAct ? GOLD : done ? GOLDLT+"66" : "transparent"}`,
                 cursor:"pointer", textAlign:"left", transition:"all .15s" }}>
               {/* status dot */}
@@ -206,7 +225,7 @@ function ProgressSpine({ completed, active, onJump }) {
                   </svg>
                 )}
               </div>
-              <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:10.5,
+              <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:12,
                 letterSpacing:"0.04em", color: isAct ? CREAM : done ? BODY : MUTED,
                 lineHeight:1.3 }}>{s.label}</span>
             </button>
@@ -216,13 +235,13 @@ function ProgressSpine({ completed, active, onJump }) {
 
       {/* XP earned */}
       <div style={{ marginTop:12, padding:"12px 10px",
-        background:"rgba(201,160,90,0.06)", border:`1px solid ${BORD}`,
+        background:"rgba(212,168,67,0.06)", border:`1px solid ${BORD}`,
         borderRadius:5, textAlign:"center" }}>
-        <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+        <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
           color:MUTED, letterSpacing:"0.1em", marginBottom:4 }}>XP EARNED</p>
-        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:24, color:GOLDLT, lineHeight:1 }}>
+        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, color:GOLDLT, lineHeight:1 }}>
           {Object.keys(completed).length * 25}</p>
-        <p style={{ fontFamily:"'Lora',serif", fontSize:9, color:MUTED,
+        <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
           fontStyle:"italic", marginTop:2 }}>of {SECTIONS.length * 25} possible</p>
       </div>
     </div>
@@ -261,11 +280,11 @@ function Callout({ color=GOLD, icon="◈", title, children }) {
       border:`1px solid ${color}20`, borderLeftWidth:3,
       borderRadius:"0 6px 6px 0", padding:"14px 18px", margin:"18px 0" }}>
       <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
-        <span style={{ color, fontSize:12 }}>{icon}</span>
-        <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.14em",
+        <span style={{ color, fontSize:14 }}>{icon}</span>
+        <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.14em",
           textTransform:"uppercase", color }}>{title}</span>
       </div>
-      <div style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY, lineHeight:1.75 }}>
+      <div style={{ fontFamily:"'Lora',serif", fontSize:15, color:BODY, lineHeight:1.75 }}>
         {children}
       </div>
     </div>
@@ -284,16 +303,16 @@ function ConjTable({ verb, stem, endings, color }) {
   ];
   return (
     <div style={{ flex:1, minWidth:200 }}>
-      <div style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, letterSpacing:"0.1em",
+      <div style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, letterSpacing:"0.1em",
         textTransform:"uppercase", color, marginBottom:8 }}>{verb}</div>
       <div style={{ border:`1px solid ${BORD}`, borderRadius:5, overflow:"hidden" }}>
         {rows.map(([pro, conj], i) => (
-          <div key={i} style={{ display:"flex", padding:"7px 12px",
+          <div key={i} style={{ display:"flex", padding:"8px 14px",
             background: i%2===0 ? CARD : "rgba(255,255,255,0.01)",
             borderBottom: i<5 ? `1px solid ${BORD}` : "none" }}>
-            <span style={{ fontFamily:"'Lora',serif", fontSize:12, color:MUTED,
-              fontStyle:"italic", width:80, flexShrink:0 }}>{pro}</span>
-            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
+            <span style={{ fontFamily:"'Lora',serif", fontSize:14, color:MUTED,
+              fontStyle:"italic", width:90, flexShrink:0 }}>{pro}</span>
+            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:15,
               color:CREAM, letterSpacing:"0.04em" }}>{conj}</span>
           </div>
         ))}
@@ -337,12 +356,12 @@ function Lesson23({ onBack }) {
       <style>{CSS}</style>
 
       {/* ── TOP BREADCRUMB BAR ── */}
-      <div style={{ borderBottom:`1px solid ${BORD}`, padding:"10px 24px",
+      <div className="res-topbar" style={{ borderBottom:`1px solid ${BORD}`, padding:"10px 24px",
         display:"flex", alignItems:"center", gap:8, flexShrink:0,
         background:CARD, backdropFilter:"blur(12px)" }}>
         {[["RESOURCES",onBack],["SPANISH",onBack],["INTERMEDIATE",onBack]].map(([label,fn],i)=>(
           <span key={i} style={{ display:"flex", alignItems:"center", gap:8 }}>
-            <button onClick={fn} style={{ fontFamily:"'Oswald',sans-serif", fontSize:9,
+            <button onClick={fn} style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
               letterSpacing:"0.16em", color:MUTED, background:"none", border:"none",
               cursor:"pointer", padding:0, transition:"color .12s" }}
               onMouseEnter={e=>e.currentTarget.style.color=CREAM}
@@ -350,46 +369,46 @@ function Lesson23({ onBack }) {
             <span style={{ color:DIM, fontSize:11 }}>›</span>
           </span>
         ))}
-        <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+        <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
           color:GOLD, letterSpacing:"0.1em" }}>2.3 — PRESENT SUBJUNCTIVE</span>
         <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:10 }}>
-          <span style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
+          <span style={{ fontFamily:"'Lora',serif", fontSize:13, color:MUTED,
             fontStyle:"italic" }}>~25 min</span>
-          <span style={{ background:"rgba(201,160,90,0.1)", border:`1px solid ${BORD}`,
+          <span style={{ background:"rgba(212,168,67,0.1)", border:`1px solid ${BORD}`,
             borderRadius:3, padding:"3px 10px", fontFamily:"'Oswald',sans-serif",
-            fontSize:9, letterSpacing:"0.1em", color:GOLD }}>INTERMEDIATE</span>
+            fontSize:11, letterSpacing:"0.1em", color:GOLD }}>INTERMEDIATE</span>
         </div>
       </div>
 
       {/* ── BODY: SPINE + CONTENT ── */}
-      <div style={{ flex:1, display:"flex", gap:0, overflow:"hidden" }}>
+      <div className="res-layout" style={{ flex:1, display:"flex", gap:0, overflow:"hidden" }}>
 
         {/* Left: Progress Spine */}
-        <div style={{ width:220, flexShrink:0, borderRight:`1px solid ${BORD}`,
+        <div className="res-spine" style={{ width:220, flexShrink:0, borderRight:`1px solid ${BORD}`,
           padding:"20px 14px", overflowY:"auto" }}>
           <ProgressSpine completed={completed} active={active} onJump={jumpTo}/>
         </div>
 
         {/* Center: Lesson content */}
-        <div ref={mainRef} data-scroll="" style={{ flex:1, overflowY:"auto", padding:"32px 48px 80px" }}>
+        <div ref={mainRef} data-scroll="" className="res-content" style={{ flex:1, overflowY:"auto", padding:"32px 48px 80px" }}>
 
           {/* ═══ SECTION 1: INTRO ═══ */}
           <Section id="intro" onVisible={markVisible}>
             <div style={{ marginBottom:6 }}>
-              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
+              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
                 color:GOLD, letterSpacing:"0.14em" }}>LESSON 2.3</span>
             </div>
-            <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:38, fontWeight:700,
+            <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:46, fontWeight:700,
               color:CREAM, letterSpacing:"0.01em", lineHeight:1.05, marginBottom:6 }}>
               The Present Subjunctive
             </h1>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:MUTED,
+            <p style={{ fontFamily:"'Lora',serif", fontSize:17, color:MUTED,
               fontStyle:"italic", letterSpacing:"0.02em", marginBottom:24 }}>
               El subjuntivo presente — expressing wishes, doubt, and emotion
             </p>
             <div style={{ width:48, height:2, background:`linear-gradient(90deg,${GOLD},transparent)`,
               marginBottom:24 }}/>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:14.5, color:BODY,
+            <p style={{ fontFamily:"'Lora',serif", fontSize:16.5, color:BODY,
               lineHeight:1.85, maxWidth:680 }}>
               The subjunctive is one of the most important — and most feared — grammar concepts
               in Spanish. Unlike the indicative, which deals in facts, the subjunctive lives in the realm
@@ -406,9 +425,9 @@ function Lesson23({ onBack }) {
               ].map((t,i) => (
                 <div key={i} style={{ background:`${t.c}0a`, border:`1px solid ${t.c}25`,
                   borderRadius:5, padding:"10px 14px", minWidth:100 }}>
-                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:t.c,
+                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, color:t.c,
                     letterSpacing:"0.08em" }}>{t.label}</p>
-                  <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:MUTED,
+                  <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:MUTED,
                     fontStyle:"italic", marginTop:2 }}>{t.desc}</p>
                 </div>
               ))}
@@ -417,10 +436,10 @@ function Lesson23({ onBack }) {
 
           {/* ═══ SECTION 2: CONCEPT ═══ */}
           <Section id="concept" onVisible={markVisible}>
-            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:24, color:CREAM,
+            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, color:CREAM,
               letterSpacing:"0.03em", marginBottom:16 }}>What is the Subjunctive?</h2>
 
-            <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:BODY,
+            <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:BODY,
               lineHeight:1.85, marginBottom:18, maxWidth:680 }}>
               In Spanish, <em style={{ color:GOLDLT }}>moods</em> don't describe time — they describe
               the speaker's attitude toward what they're saying. The <strong style={{ color:CREAM }}>
@@ -429,10 +448,10 @@ function Lesson23({ onBack }) {
             </p>
 
             {/* Indicative vs Subjunctive comparison */}
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:22 }}>
+            <div className="res-grid-2col" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:22 }}>
               <div style={{ background:CARD, border:`1px solid rgba(78,159,232,0.2)`,
                 borderRadius:6, padding:"16px 18px" }}>
-                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, color:A_BLUE,
+                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, color:A_BLUE,
                   letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:12 }}>
                   Indicative — Facts</p>
                 {[
@@ -441,17 +460,17 @@ function Lesson23({ onBack }) {
                   ["Creo que", "tiene razón.","I think she's right."],
                 ].map(([s1,s2,eng],i) => (
                   <div key={i} style={{ marginBottom:10 }}>
-                    <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY }}>
+                    <p style={{ fontFamily:"'Lora',serif", fontSize:15, color:BODY }}>
                       {s1} <span style={{ color:A_BLUE, fontWeight:600 }}>{s2}</span>
                     </p>
-                    <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
+                    <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:MUTED,
                       fontStyle:"italic" }}>{eng}</p>
                   </div>
                 ))}
               </div>
-              <div style={{ background:CARD, border:`1px solid rgba(201,160,90,0.2)`,
+              <div style={{ background:CARD, border:`1px solid rgba(212,168,67,0.2)`,
                 borderRadius:6, padding:"16px 18px" }}>
-                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, color:GOLD,
+                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, color:GOLD,
                   letterSpacing:"0.12em", textTransform:"uppercase", marginBottom:12 }}>
                   Subjunctive — Subjectivity</p>
                 {[
@@ -460,10 +479,10 @@ function Lesson23({ onBack }) {
                   ["No creo que", "tenga razón.","I don't think she's right."],
                 ].map(([s1,s2,eng],i) => (
                   <div key={i} style={{ marginBottom:10 }}>
-                    <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY }}>
+                    <p style={{ fontFamily:"'Lora',serif", fontSize:15, color:BODY }}>
                       {s1} <span style={{ color:GOLDLT, fontWeight:600 }}>{s2}</span>
                     </p>
-                    <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
+                    <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:MUTED,
                       fontStyle:"italic" }}>{eng}</p>
                   </div>
                 ))}
@@ -475,7 +494,7 @@ function Lesson23({ onBack }) {
               <strong style={{color:CREAM}}>que</strong>, when there is a <strong style={{color:CREAM}}>change of subject</strong> between
               the main clause and the dependent clause.
               <br/><br/>
-              <span style={{color:GOLDLT,fontFamily:"'Share Tech Mono',monospace", fontSize:12}}>
+              <span style={{color:GOLDLT,fontFamily:"'Share Tech Mono',monospace", fontSize:14}}>
                 [Subject A] + [trigger verb] + que + [Subject B] + [subjunctive verb]
               </span>
             </Callout>
@@ -483,9 +502,9 @@ function Lesson23({ onBack }) {
 
           {/* ═══ SECTION 3: CONJUGATION ═══ */}
           <Section id="conjugate" onVisible={markVisible}>
-            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:24, color:CREAM,
+            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, color:CREAM,
               letterSpacing:"0.03em", marginBottom:8 }}>Forming the Present Subjunctive</h2>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY,
+            <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:BODY,
               lineHeight:1.8, marginBottom:22, maxWidth:680 }}>
               The formula is elegantly simple: take the <em style={{color:GOLDLT}}>yo</em> form of the
               present indicative, drop the <strong style={{color:CREAM}}>-o</strong>, then add the{" "}
@@ -496,7 +515,7 @@ function Lesson23({ onBack }) {
             {/* Step by step */}
             <div style={{ background:CARD2, border:`1px solid ${BORD}`, borderRadius:6,
               padding:"18px 22px", marginBottom:24 }}>
-              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, color:MUTED,
+              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, color:MUTED,
                 letterSpacing:"0.14em", textTransform:"uppercase", marginBottom:14 }}>
                 Step-by-step: hablar → yo hablo</p>
               <div style={{ display:"flex", alignItems:"center", gap:10, flexWrap:"wrap" }}>
@@ -511,11 +530,11 @@ function Lesson23({ onBack }) {
                 ) : (
                   <div key={i} style={{ background:`${s.c}10`, border:`1px solid ${s.c}30`,
                     borderRadius:4, padding:"10px 14px", textAlign:"center" }}>
-                    <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+                    <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       color:s.c, letterSpacing:"0.1em", marginBottom:4 }}>STEP {s.step}</p>
-                    <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:14, color:CREAM }}>
+                    <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:17, color:CREAM }}>
                       {s.val}</p>
-                    <p style={{ fontFamily:"'Lora',serif", fontSize:9, color:MUTED,
+                    <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
                       fontStyle:"italic", marginTop:2 }}>{s.label}</p>
                   </div>
                 ))}
@@ -545,7 +564,7 @@ function Lesson23({ onBack }) {
                   ["salir","salgo →","salg-"],
                 ].map(([v,yo,stem],i) => (
                   <span key={i} style={{ fontFamily:"'Share Tech Mono',monospace",
-                    fontSize:11, color:BODY }}>
+                    fontSize:13, color:BODY }}>
                     <span style={{color:MUTED}}>{v}: </span>
                     <span style={{color:A_AMBER}}>{yo}</span>
                     <span style={{color:CREAM}}> {stem}</span>
@@ -557,15 +576,15 @@ function Lesson23({ onBack }) {
 
           {/* ═══ SECTION 4: WEIRDOS ═══ */}
           <Section id="weirdos" onVisible={markVisible}>
-            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:24, color:CREAM,
+            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, color:CREAM,
               letterSpacing:"0.03em", marginBottom:8 }}>When to Use It: W.E.I.R.D.O.S</h2>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY,
+            <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:BODY,
               lineHeight:1.8, marginBottom:22, maxWidth:680 }}>
               This acronym covers the six main contexts where the subjunctive is triggered.
               Knowing these triggers is the key to subjunctive mastery.
             </p>
 
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))", gap:12 }}>
+            <div className="res-weirdos-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))", gap:12 }}>
               {[
                 { letter:"W", word:"Wishes & Desires", color:A_BLUE,
                   triggers:["querer que","desear que","necesitar que"],
@@ -591,23 +610,23 @@ function Lesson23({ onBack }) {
                   <div style={{ position:"absolute", top:10, right:14,
                     fontFamily:"'Oswald',sans-serif", fontSize:42, fontWeight:700,
                     color:`${item.color}12`, lineHeight:1 }}>{item.letter}</div>
-                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:9, color:item.color,
+                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:item.color,
                     letterSpacing:"0.14em", textTransform:"uppercase", marginBottom:4 }}>
                     {item.letter} — </p>
-                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:15, color:CREAM,
+                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:18, color:CREAM,
                     letterSpacing:"0.02em", marginBottom:10 }}>{item.word}</p>
                   <div style={{ display:"flex", gap:5, flexWrap:"wrap", marginBottom:12 }}>
                     {item.triggers.map((t,j) => (
                       <span key={j} style={{ fontFamily:"'Share Tech Mono',monospace",
-                        fontSize:9, color:MUTED, background:`${item.color}0a`,
+                        fontSize:11, color:MUTED, background:`${item.color}0a`,
                         border:`1px solid ${item.color}20`, borderRadius:2,
                         padding:"2px 7px" }}>{t}</span>
                     ))}
                   </div>
                   <div style={{ borderLeft:`2px solid ${item.color}40`, paddingLeft:10 }}>
-                    <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:BODY,
+                    <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:BODY,
                       fontStyle:"italic" }}>{item.ex}</p>
-                    <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
+                    <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:MUTED,
                       marginTop:2 }}>{item.eng}</p>
                   </div>
                 </div>
@@ -617,9 +636,9 @@ function Lesson23({ onBack }) {
 
           {/* ═══ SECTION 5: VIDEO ═══ */}
           <Section id="video" onVisible={markVisible}>
-            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:24, color:CREAM,
+            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, color:CREAM,
               letterSpacing:"0.03em", marginBottom:6 }}>Video Lesson</h2>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY,
+            <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:BODY,
               fontStyle:"italic", marginBottom:20 }}>
               Señor Jordan — Introduction to the Present Subjunctive
             </p>
@@ -645,9 +664,9 @@ function Lesson23({ onBack }) {
                 <div key={i} style={{ display:"flex", gap:6, alignItems:"center",
                   background:CARD, border:`1px solid ${BORD}`, borderRadius:3,
                   padding:"5px 10px" }}>
-                  <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:9,
-                    color:MUTED, letterSpacing:"0.1em" }}>{t.label}:</span>
                   <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
+                    color:MUTED, letterSpacing:"0.1em" }}>{t.label}:</span>
+                  <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
                     color:t.c, letterSpacing:"0.04em" }}>{t.val}</span>
                 </div>
               ))}
@@ -656,7 +675,7 @@ function Lesson23({ onBack }) {
 
           {/* ═══ SECTION 6: EXAMPLES ═══ */}
           <Section id="examples" onVisible={markVisible}>
-            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:24, color:CREAM,
+            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, color:CREAM,
               letterSpacing:"0.03em", marginBottom:20 }}>Examples in Context</h2>
 
             {/* Example sentences annotated */}
@@ -685,7 +704,7 @@ function Lesson23({ onBack }) {
               <div key={i} style={{ background:CARD, border:`1px solid ${ex.c}18`,
                 borderLeft:`3px solid ${ex.c}`, borderRadius:"0 6px 6px 0",
                 padding:"16px 20px", marginBottom:14 }}>
-                <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:CREAM,
+                <p style={{ fontFamily:"'Lora',serif", fontSize:18, color:CREAM,
                   lineHeight:1.5, marginBottom:6 }}>
                   <span style={{ color:MUTED }}>{ex.sp.replace(ex.trigger,"").replace(ex.verb,"")}</span>
                   <span style={{ color:ex.c }}>{ex.trigger}</span>
@@ -696,12 +715,12 @@ function Lesson23({ onBack }) {
                     padding:"0 4px", fontWeight:600 }}>{ex.verb}</span>
                   <span style={{ color:CREAM }}>{ex.sp.replace(ex.trigger+" ","").split(ex.verb)[1]}</span>
                 </p>
-                <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:MUTED,
+                <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:MUTED,
                   fontStyle:"italic", marginBottom:8 }}>{ex.en}</p>
                 <div style={{ display:"flex", gap:8, alignItems:"flex-start" }}>
-                  <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:9,
+                  <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
                     color:ex.c, letterSpacing:"0.1em", flexShrink:0, marginTop:1 }}>NOTE</span>
-                  <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:BODY }}>{ex.note}</p>
+                  <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY }}>{ex.note}</p>
                 </div>
               </div>
             ))}
@@ -709,13 +728,13 @@ function Lesson23({ onBack }) {
 
           {/* ═══ SECTION 7: PDF PRACTICE ═══ */}
           <Section id="practice" onVisible={markVisible}>
-            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:24, color:CREAM,
+            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, color:CREAM,
               letterSpacing:"0.03em", marginBottom:8 }}>Practice Materials</h2>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY,
+            <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:BODY,
               fontStyle:"italic", marginBottom:22 }}>
               Download these PDFs for extra practice outside the app.
             </p>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(270px,1fr))", gap:14 }}>
+            <div className="res-pdf-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(270px,1fr))", gap:14 }}>
               {PDFS.map((pdf, i) => (
                 <div key={i} className="pdf-card"
                   style={{ background:CARD, border:`1px solid ${BORD}`,
@@ -738,22 +757,22 @@ function Lesson23({ onBack }) {
                       </svg>
                     </div>
                     <div>
-                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
                         color:pdf.color, letterSpacing:"0.1em" }}>PDF · {pdf.pages} PAGES</span>
-                      <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:9,
+                      <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
                         color:MUTED, letterSpacing:"0.08em", marginLeft:8 }}>{pdf.level}</span>
                     </div>
                   </div>
-                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:14, color:CREAM,
+                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:16, color:CREAM,
                     letterSpacing:"0.02em", marginBottom:6, lineHeight:1.3 }}>{pdf.title}</p>
-                  <p style={{ fontFamily:"'Lora',serif", fontSize:11.5, color:BODY,
+                  <p style={{ fontFamily:"'Lora',serif", fontSize:13.5, color:BODY,
                     lineHeight:1.65, fontStyle:"italic", marginBottom:16 }}>{pdf.desc}</p>
                   <a href={pdf.url} target="_blank" rel="noopener noreferrer"
                     className="pdf-dl"
                     style={{ display:"inline-flex", alignItems:"center", gap:6,
                       background:`${pdf.color}12`, border:`1px solid ${pdf.color}35`,
                       borderRadius:4, padding:"7px 14px", fontFamily:"'Oswald',sans-serif",
-                      fontSize:10, letterSpacing:"0.1em", textTransform:"uppercase",
+                      fontSize:12, letterSpacing:"0.1em", textTransform:"uppercase",
                       color:pdf.color, textDecoration:"none", transition:"all .15s" }}>
                     <svg width={11} height={11} viewBox="0 0 24 24" fill="none"
                       stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -768,9 +787,9 @@ function Lesson23({ onBack }) {
 
           {/* ═══ SECTION 8: QUIZ ═══ */}
           <Section id="quiz" onVisible={markVisible}>
-            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:24, color:CREAM,
+            <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, color:CREAM,
               letterSpacing:"0.03em", marginBottom:6 }}>Lesson Quiz</h2>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY,
+            <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:BODY,
               fontStyle:"italic", marginBottom:24 }}>
               6 questions · Test your understanding of the present subjunctive
             </p>
@@ -784,13 +803,13 @@ function Lesson23({ onBack }) {
                   position:"relative", overflow:"hidden" }}>
                   <div style={{ position:"absolute", inset:0, background:
                     `radial-gradient(circle at 50% 0%, ${quizScore>=5?A_GREEN:quizScore>=3?A_AMBER:A_ROSE}08, transparent 70%)` }}/>
-                  <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
+                  <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:13,
                     color:MUTED, letterSpacing:"0.14em", marginBottom:8 }}>FINAL SCORE</p>
                   <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:64,
                     color:quizScore>=5?GOLDLT:quizScore>=3?A_AMBER:A_ROSE, lineHeight:1 }}>
                     {quizScore}/{QUIZ.length}
                   </p>
-                  <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:BODY,
+                  <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:BODY,
                     fontStyle:"italic", marginTop:8 }}>
                     {quizScore===6 ? "¡Perfecto! Outstanding work." :
                      quizScore>=4 ? "¡Muy bien! Strong understanding." :
@@ -814,26 +833,26 @@ function Lesson23({ onBack }) {
                       borderLeft:`3px solid ${correct ? GOLDLT : "#7a5535"}`,
                       borderRadius:"0 6px 6px 0", padding:"16px 18px", marginBottom:12 }}>
                       <div style={{ display:"flex", gap:8, alignItems:"flex-start", marginBottom:10 }}>
-                        <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
+                        <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
                           color:correct?GOLDLT:"#a8855a", flexShrink:0 }}>
                           Q{qi+1} {correct ? "✓" : "✗"}
                         </span>
-                        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
+                        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:15,
                           color:CREAM, letterSpacing:"0.02em" }}>{q.q}</p>
                       </div>
-                      <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:BODY,
+                      <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:BODY,
                         fontStyle:"italic", marginBottom:6 }}>
                         Your answer: <span style={{ color:correct?GOLDLT:"#a8855a" }}>
                           {q.opts[quizAnswers[qi]]}
                         </span>
                       </p>
                       {!correct && (
-                        <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:A_GREEN,
+                        <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:A_GREEN,
                           marginBottom:6 }}>
                           Correct: <strong>{q.opts[q.ans]}</strong>
                         </p>
                       )}
-                      <p style={{ fontFamily:"'Lora',serif", fontSize:11.5, color:MUTED,
+                      <p style={{ fontFamily:"'Lora',serif", fontSize:13.5, color:MUTED,
                         lineHeight:1.65, borderLeft:`2px solid ${BORD}`, paddingLeft:10,
                         marginTop:6 }}>{q.explain}</p>
                     </div>
@@ -842,7 +861,7 @@ function Lesson23({ onBack }) {
 
                 <button onClick={() => {
                   setQuizAnswers({}); setQuizSubmitted(false); setQuizScore(null);
-                }} style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, letterSpacing:"0.1em",
+                }} style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, letterSpacing:"0.1em",
                   textTransform:"uppercase", padding:"10px 24px", borderRadius:4,
                   border:`1px solid ${BORD}`, background:"transparent",
                   color:MUTED, cursor:"pointer", marginTop:8 }}>
@@ -854,29 +873,34 @@ function Lesson23({ onBack }) {
               <div>
                 {QUIZ.map((q, qi) => (
                   <div key={qi} style={{ background:CARD, border:`1px solid ${BORD}`,
-                    borderRadius:6, padding:"20px 22px", marginBottom:16 }}>
-                    <div style={{ display:"flex", gap:10, alignItems:"flex-start", marginBottom:14 }}>
-                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
-                        color:GOLD, flexShrink:0, marginTop:1 }}>Q{qi+1}</span>
-                      <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:14,
+                    borderRadius:6, padding:"24px 26px", marginBottom:20 }}>
+                    <div style={{ display:"flex", gap:12, alignItems:"flex-start", marginBottom:18 }}>
+                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:13,
+                        color:GOLD, flexShrink:0, marginTop:2 }}>Q{qi+1}</span>
+                      <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:18,
                         color:CREAM, letterSpacing:"0.02em", lineHeight:1.4 }}>{q.q}</p>
                     </div>
-                    <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+                    <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
                       {q.opts.map((opt, oi) => {
                         const sel = quizAnswers[qi] === oi;
+                        const letter = String.fromCharCode(65 + oi);
                         return (
                           <button key={oi} onClick={() => setQuizAnswers(prev => ({...prev,[qi]:oi}))}
                             className="quiz-opt"
-                            style={{ display:"flex", alignItems:"center", gap:10,
-                              padding:"10px 14px", borderRadius:4,
+                            style={{ display:"flex", alignItems:"center", gap:12,
+                              padding:"13px 16px", borderRadius:5,
                               border:`1px solid ${sel ? GOLD+"60" : BORD}`,
-                              background: sel ? "rgba(201,160,90,0.09)" : "transparent",
+                              background: sel ? "rgba(212,168,67,0.14)" : "transparent",
                               cursor:"pointer", textAlign:"left", transition:"all .14s" }}>
-                            <div style={{ width:16, height:16, borderRadius:"50%", flexShrink:0,
+                            <div style={{ width:26, height:26, borderRadius:"50%", flexShrink:0,
                               border:`1.5px solid ${sel ? GOLD : DIM}`,
                               background: sel ? GOLD : "transparent",
-                              transition:"all .14s" }}/>
-                            <span style={{ fontFamily:"'Lora',serif", fontSize:13,
+                              display:"flex", alignItems:"center", justifyContent:"center",
+                              transition:"all .14s" }}>
+                              <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:12,
+                                color: sel ? DARK : MUTED, lineHeight:1 }}>{letter}</span>
+                            </div>
+                            <span style={{ fontFamily:"'Lora',serif", fontSize:16,
                               color: sel ? CREAM : BODY }}>{opt}</span>
                           </button>
                         );
@@ -885,8 +909,8 @@ function Lesson23({ onBack }) {
                   </div>
                 ))}
                 <button onClick={handleQuizSubmit} disabled={!quizComplete}
-                  style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.1em",
-                    textTransform:"uppercase", padding:"13px 36px", borderRadius:5,
+                  style={{ fontFamily:"'Oswald',sans-serif", fontSize:14, letterSpacing:"0.1em",
+                    textTransform:"uppercase", padding:"15px 40px", borderRadius:5,
                     border:"none", background: quizComplete ? GOLD : "#2a1508",
                     color:quizComplete ? DARK : MUTED, cursor:quizComplete ? "pointer" : "default",
                     fontWeight:700, transition:"all .2s",
@@ -894,8 +918,8 @@ function Lesson23({ onBack }) {
                   Submit Quiz →
                 </button>
                 {!quizComplete && (
-                  <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
-                    fontStyle:"italic", marginTop:8 }}>
+                  <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:MUTED,
+                    fontStyle:"italic", marginTop:10 }}>
                     Answer all {QUIZ.length} questions to submit.
                   </p>
                 )}
@@ -905,7 +929,7 @@ function Lesson23({ onBack }) {
 
         </div>
         {/* Right margin: intentional breathing room */}
-        <div style={{ width:32, flexShrink:0 }}/>
+        <div className="res-right-margin" style={{ width:32, flexShrink:0 }}/>
       </div>
     </div>
   );

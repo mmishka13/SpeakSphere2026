@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LandingPage  from "./home.jsx";
 import AuthPage     from "./authpage.jsx";
 import Dashboard    from "./dashboard.jsx";
@@ -8,16 +8,17 @@ import PronunciationPage from "./pronunciationpage.jsx";
 import ResourcesPage  from "./resourcespage.jsx";
 import CommunityPage  from "./communitypage.jsx";
 import PenPalsPage    from "./penpals.jsx";
+import SettingsPage   from "./settingspage.jsx";
 
 /* ── Design tokens (dark academia — matches Dashboard) ── */
-const DARK   = "#140b04";
-const CARD   = "#1a0d05";
-const GOLD   = "#c9a05a";
-const GOLDLT = "#e8c07a";
-const CREAM  = "#eadcca";
-const MUTED  = "#9a7d5a";
-const DIM    = "#5a3a22";
-const BORD   = "rgba(201,160,90,0.12)";
+const DARK   = "#0d0702";
+const CARD   = "#1b0f06";
+const GOLD   = "#d4a843";
+const GOLDLT = "#f0cc55";
+const CREAM  = "#f5ede0";
+const MUTED  = "#c8aa80";
+const DIM    = "#a08050";
+const BORD   = "rgba(212,168,67,0.20)";
 const GRAIN  = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E")`;
 
 /* ── SVG Icons ────────────────────────────────────────── */
@@ -46,6 +47,17 @@ const NAV_ITEMS = [
   { path:"/community",     label:"Community",     Icon:ChatIcon  },
 ];
 
+/* ── Screen-width hook ───────────────────────────────── */
+function useScreenWidth() {
+  const [w, setW] = useState(() => window.innerWidth);
+  useEffect(() => {
+    const fn = () => setW(window.innerWidth);
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
+  }, []);
+  return w;
+}
+
 /* ── Coming Soon ─────────────────────────────────────── */
 function ComingSoon({ label }) {
   return (
@@ -63,15 +75,17 @@ function ComingSoon({ label }) {
   );
 }
 
-/* ── Sidebar ─────────────────────────────────────────── */
-function Sidebar({ onExpand }) {
+/* ── Sidebar (tablet + desktop) ──────────────────────── */
+function Sidebar({ onExpand, forceCollapsed }) {
   const location  = useLocation();
   const navigate  = useNavigate();
   const active    = location.pathname;
   const [expanded, setExpanded] = useState(false);
-  const sideW = expanded ? 210 : 56;
+  const isExpanded = expanded && !forceCollapsed;
+  const sideW = isExpanded ? 240 : 66;
 
   function handleExpand(val) {
+    if (forceCollapsed) return;
     setExpanded(val);
     onExpand?.(val);
   }
@@ -80,54 +94,55 @@ function Sidebar({ onExpand }) {
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Lora:ital,wght@0,400;1,400&display=swap');
-        .app-nav-btn:hover { background:rgba(201,160,90,0.07) !important; }
-        .app-nav-btn:hover span { opacity:1 !important; color:#eadcca !important; }
+        .app-nav-btn:hover { background:rgba(212,168,67,0.12) !important; }
+        .app-nav-btn:hover span { opacity:1 !important; color:#f5ede0 !important; }
       `}</style>
       <aside
         onMouseEnter={() => handleExpand(true)}
         onMouseLeave={() => handleExpand(false)}
-        style={{ width:sideW, flexShrink:0, background:DARK,
+        style={{ width:sideW, flexShrink:0, background:"#0d0702",
           borderRight:`1px solid ${BORD}`, position:"fixed", top:0, left:0, bottom:0,
           zIndex:50, display:"flex", flexDirection:"column",
           backgroundImage:GRAIN, backgroundRepeat:"repeat", backgroundSize:"300px",
+          boxShadow:"2px 0 12px rgba(212,168,67,0.08)",
           transition:"width .22s cubic-bezier(.4,0,.2,1)", overflow:"hidden" }}>
 
         {/* Logo */}
-        <div style={{ padding:"20px 14px 16px", borderBottom:`1px solid rgba(201,160,90,0.08)`,
-          cursor:"pointer", display:"flex", alignItems:"center", gap:10, flexShrink:0, minWidth:210 }}
+        <div style={{ padding:"24px 16px 18px", borderBottom:`1px solid rgba(212,168,67,0.14)`,
+          cursor:"pointer", display:"flex", alignItems:"center", gap:12, flexShrink:0, minWidth:240 }}
           onClick={() => navigate("/")}>
-          <svg width={26} height={26} viewBox="0 0 26 26" fill="none" style={{ flexShrink:0 }}>
+          <svg width={30} height={30} viewBox="0 0 26 26" fill="none" style={{ flexShrink:0 }}>
             <circle cx="13" cy="13" r="11" stroke={GOLD} strokeWidth="1.2"/>
             <ellipse cx="13" cy="13" rx="5" ry="11" stroke={GOLD} strokeWidth="0.8" opacity=".5"/>
             <line x1="2" y1="13" x2="24" y2="13" stroke={GOLD} strokeWidth="0.8" opacity=".4"/>
           </svg>
-          <div style={{ opacity: expanded ? 1 : 0, transition:"opacity .15s", whiteSpace:"nowrap" }}>
-            <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, fontWeight:600,
+          <div style={{ opacity: isExpanded ? 1 : 0, transition:"opacity .15s", whiteSpace:"nowrap" }}>
+            <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:16, fontWeight:600,
               color:CREAM, letterSpacing:"0.08em" }}>SPEAKSPHERE</p>
-            <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:8, color:DIM, letterSpacing:"0.14em" }}>
+            <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:DIM, letterSpacing:"0.14em" }}>
               LANGUAGE HUB</p>
           </div>
         </div>
 
         {/* Nav */}
-        <nav style={{ flex:1, padding:"12px 8px", overflowY:"auto" }}>
+        <nav style={{ flex:1, padding:"14px 10px", overflowY:"auto" }}>
           {NAV_ITEMS.map(({ path, label, Icon }) => {
             const isActive = active === path || active.startsWith(path + "/");
             return (
               <button key={path} onClick={() => navigate(path)}
                 className="app-nav-btn"
-                style={{ display:"flex", alignItems:"center", gap:10, width:"100%",
-                  padding:"9px 11px", borderRadius:4, border:"none", marginBottom:2,
-                  background: isActive ? "rgba(201,160,90,0.09)" : "transparent",
+                style={{ display:"flex", alignItems:"center", gap:12, width:"100%",
+                  padding:"11px 13px", borderRadius:4, border:"none", marginBottom:2,
+                  background: isActive ? "rgba(212,168,67,0.14)" : "transparent",
                   borderLeft: isActive ? `2px solid ${GOLD}` : "2px solid transparent",
-                  cursor:"pointer", transition:"all .14s", textAlign:"left", minWidth:210 }}>
-                <div style={{ flexShrink:0, width:20, display:"flex", justifyContent:"center" }}>
-                  <Icon size={16} color={isActive ? GOLD : MUTED}/>
+                  cursor:"pointer", transition:"all .14s", textAlign:"left", minWidth:240 }}>
+                <div style={{ flexShrink:0, width:24, display:"flex", justifyContent:"center" }}>
+                  <Icon size={20} color={isActive ? GOLD : MUTED}/>
                 </div>
-                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
+                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:14,
                   letterSpacing:"0.08em", textTransform:"uppercase", whiteSpace:"nowrap",
                   color: isActive ? CREAM : MUTED, fontWeight: isActive ? 600 : 400,
-                  opacity: expanded ? 1 : 0, transition:"opacity .12s" }}>
+                  opacity: isExpanded ? 1 : 0, transition:"opacity .12s" }}>
                   {label}
                 </span>
               </button>
@@ -136,26 +151,26 @@ function Sidebar({ onExpand }) {
         </nav>
 
         {/* User card */}
-        <div style={{ margin:"0 8px 12px", padding:"11px 10px",
+        <div style={{ margin:"0 10px 14px", padding:"13px 12px",
           border:`1px solid ${BORD}`, borderRadius:6, background:"rgba(255,255,255,0.01)",
-          flexShrink:0, minWidth:194, overflow:"hidden" }}>
+          flexShrink:0, minWidth:216, overflow:"hidden" }}>
           <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-            <div style={{ width:32, height:32, borderRadius:6, flexShrink:0,
+            <div style={{ width:38, height:38, borderRadius:6, flexShrink:0,
               background:`linear-gradient(135deg,${GOLD},#8a5a20)`,
               display:"flex", alignItems:"center", justifyContent:"center",
-              fontFamily:"'Oswald',sans-serif", fontSize:11, fontWeight:700, color:DARK }}>
+              fontFamily:"'Oswald',sans-serif", fontSize:13, fontWeight:700, color:CREAM }}>
               MM</div>
-            <div style={{ flex:1, minWidth:0, opacity: expanded ? 1 : 0, transition:"opacity .12s" }}>
-              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, color:CREAM,
+            <div style={{ flex:1, minWidth:0, opacity: isExpanded ? 1 : 0, transition:"opacity .12s" }}>
+              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:14, color:CREAM,
                 letterSpacing:"0.04em", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                 Mishka Mittal</p>
-              <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:MUTED, fontStyle:"italic" }}>
+              <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:MUTED, fontStyle:"italic" }}>
                 Journeyman · ES</p>
             </div>
-            <button onClick={() => navigate("/dashboard")}
+            <button onClick={() => navigate("/settings")}
               style={{ background:"none", border:"none", cursor:"pointer", padding:3, flexShrink:0,
-                opacity: expanded ? 1 : 0, transition:"opacity .12s" }}>
-              <GearIcon size={13} color={DIM}/>
+                opacity: isExpanded ? 1 : 0, transition:"opacity .12s" }}>
+              <GearIcon size={15} color={DIM}/>
             </button>
           </div>
         </div>
@@ -164,16 +179,78 @@ function Sidebar({ onExpand }) {
   );
 }
 
+/* ── Bottom nav (mobile) ─────────────────────────────── */
+function BottomNav() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const active   = location.pathname;
+
+  return (
+    <nav style={{
+      position:"fixed", bottom:0, left:0, right:0,
+      height:62, background:"#0d0702",
+      borderTop:`1px solid ${BORD}`,
+      boxShadow:"0 -2px 12px rgba(212,168,67,0.08)",
+      display:"flex", alignItems:"stretch",
+      zIndex:50,
+      paddingBottom:"env(safe-area-inset-bottom,0px)",
+    }}>
+      {NAV_ITEMS.map(({ path, label, Icon }) => {
+        const isActive = active === path || active.startsWith(path + "/");
+        return (
+          <button key={path} onClick={() => navigate(path)}
+            style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center",
+              justifyContent:"center", gap:3, background:"none", border:"none",
+              cursor:"pointer", padding:"8px 4px",
+              borderTop: isActive ? `2px solid ${GOLD}` : "2px solid transparent",
+              transition:"all .12s" }}>
+            <Icon size={18} color={isActive ? GOLD : DIM}/>
+            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:8,
+              letterSpacing:"0.07em", textTransform:"uppercase",
+              color: isActive ? GOLD : DIM }}>
+              {label}
+            </span>
+          </button>
+        );
+      })}
+      {/* Settings icon */}
+      <button onClick={() => navigate("/settings")}
+        style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center",
+          justifyContent:"center", gap:3, background:"none", border:"none",
+          cursor:"pointer", padding:"8px 4px",
+          borderTop: active === "/settings" ? `2px solid ${GOLD}` : "2px solid transparent",
+          transition:"all .12s" }}>
+        <GearIcon size={18} color={active === "/settings" ? GOLD : DIM}/>
+        <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:8,
+          letterSpacing:"0.07em", textTransform:"uppercase",
+          color: active === "/settings" ? GOLD : DIM }}>
+          Settings
+        </span>
+      </button>
+    </nav>
+  );
+}
+
 /* ── App shell ───────────────────────────────────────── */
 function AppShell() {
-  const location    = useLocation();
+  const screenW     = useScreenWidth();
+  const isMobile    = screenW < 768;
+  const isTablet    = screenW >= 768 && screenW < 1024;
   const [sideExpanded, setSideExpanded] = useState(false);
+
+  const marginLeft = isMobile ? 0 : (isTablet ? 66 : (sideExpanded ? 240 : 66));
 
   return (
     <div style={{ display:"flex", height:"100vh", background:DARK }}>
-      <Sidebar onExpand={setSideExpanded}/>
+      {!isMobile && (
+        <Sidebar
+          onExpand={setSideExpanded}
+          forceCollapsed={isTablet}
+        />
+      )}
       <div style={{
-        marginLeft: sideExpanded ? 210 : 56,
+        marginLeft,
+        paddingBottom: isMobile ? 62 : 0,
         flex:1, overflow:"hidden", display:"flex", flexDirection:"column",
         transition:"margin-left .22s cubic-bezier(.4,0,.2,1)"
       }}>
@@ -184,9 +261,11 @@ function AppShell() {
           <Route path="/pronunciation" element={<PronunciationPage/>}/>
           <Route path="/pen-pals"      element={<PenPalsPage/>}/>
           <Route path="/community"     element={<CommunityPage/>}/>
+          <Route path="/settings"      element={<SettingsPage/>}/>
           <Route path="*"              element={<Navigate to="/dashboard" replace/>}/>
         </Routes>
       </div>
+      {isMobile && <BottomNav/>}
     </div>
   );
 }

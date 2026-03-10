@@ -1,17 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 
 /* ─── DESIGN TOKENS ─────────────────────────────────────────── */
-const DARK   = "#140b04";
-const CARD   = "#1a0d05";
+const DARK   = "#0d0702";
+const CARD   = "#1b0f06";
 const CARD2  = "#200f06";
-const GOLD   = "#c9a05a";
-const GOLDLT = "#e8c07a";
-const CREAM  = "#eadcca";
-const MUTED  = "#9a7d5a";
-const DIM    = "#5a3a22";
-const BORD   = "rgba(201,160,90,0.12)";
-const BORD2  = "rgba(201,160,90,0.06)";
-const BODY   = "#c4aa80";
+const GOLD   = "#d4a843";
+const GOLDLT = "#f0cc55";
+const CREAM  = "#f5ede0";
+const MUTED  = "#c8aa80";
+const DIM    = "#a08050";
+const BORD   = "rgba(212,168,67,0.20)";
+const BORD2  = "rgba(212,168,67,0.06)";
+const BODY   = "#c8aa80";
 const A_GREEN  = "#7db87d";
 const A_BLUE   = "#6a9ec0";
 const A_ROSE   = "#c07070";
@@ -24,7 +24,7 @@ const CSS = `
   html, body { height:100%; }
   ::-webkit-scrollbar { width:4px; }
   ::-webkit-scrollbar-track { background:transparent; }
-  ::-webkit-scrollbar-thumb { background:rgba(201,160,90,0.2); border-radius:2px; }
+  ::-webkit-scrollbar-thumb { background:rgba(212,168,67,0.2); border-radius:2px; }
 
   @keyframes fadeUp   { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
   @keyframes pulse    { 0%,100%{opacity:1} 50%{opacity:0.4} }
@@ -33,11 +33,22 @@ const CSS = `
   @keyframes scoreIn  { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
   @keyframes shimmer  { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
-  .lang-pill:hover  { border-color:rgba(201,160,90,0.4) !important; background:rgba(201,160,90,0.08) !important; }
+  .lang-pill:hover  { border-color:rgba(212,168,67,0.4) !important; background:rgba(212,168,67,0.14) !important; }
   .rec-btn:hover    { filter:brightness(1.1); transform:scale(1.04); }
   .word-chip:hover  { transform:translateY(-1px); filter:brightness(1.15); }
-  .history-row:hover { background:rgba(201,160,90,0.04) !important; }
-  .tip-card:hover   { border-color:rgba(201,160,90,0.22) !important; }
+  .history-row:hover { background:rgba(212,168,67,0.04) !important; }
+  .tip-card:hover   { border-color:rgba(212,168,67,0.22) !important; }
+
+  @media(max-width:768px){
+    .pron-layout { flex-direction:column !important; }
+    .pron-history { width:100% !important; max-height:220px !important; border-left:none !important; border-top:1px solid rgba(212,168,67,0.20) !important; }
+    .pron-results-grid { grid-template-columns:1fr 1fr !important; }
+    .pron-topbar { flex-wrap:wrap !important; gap:8px !important; }
+    .pron-content { padding:14px !important; }
+  }
+  @media(min-width:768px) and (max-width:1023px){
+    .pron-history { width:260px !important; }
+  }
 `;
 
 /* ─── LANGUAGE DATA ─────────────────────────────────────────── */
@@ -231,7 +242,7 @@ export default function PronunciationPage() {
       <style>{CSS}</style>
 
       {/* ── TOPBAR ── */}
-      <header style={{ borderBottom:`1px solid ${BORD}`, padding:"14px 24px",
+      <header className="pron-topbar" style={{ borderBottom:`1px solid ${BORD}`, padding:"14px 24px",
         background:CARD2, flexShrink:0, display:"flex", alignItems:"center", gap:16 }}>
         <div>
           <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
@@ -263,20 +274,20 @@ export default function PronunciationPage() {
       </header>
 
       {/* ── BODY ── */}
-      <div style={{ flex:1, display:"flex", overflow:"hidden" }}>
+      <div className="pron-layout" style={{ flex:1, display:"flex", overflow:"hidden" }}>
 
         {/* ── LEFT: INPUT + RECORDER ── */}
-        <div style={{ flex:1, display:"flex", flexDirection:"column",
+        <div className="pron-content" style={{ flex:1, display:"flex", flexDirection:"column",
           padding:"24px 28px", overflowY:"auto", gap:20 }}>
 
           {/* Sentence input */}
           <div style={{ animation:"fadeUp .3s ease both" }}>
             <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
-              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
                 letterSpacing:"0.16em", textTransform:"uppercase", color:MUTED }}>
                 Type your sentence
               </span>
-              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
                 color:DIM }}>{sentence.length} chars</span>
             </div>
             <div style={{ position:"relative" }}>
@@ -293,8 +304,8 @@ export default function PronunciationPage() {
                 rows={3}
                 disabled={phase === "recording" || phase === "analyzing"}
                 style={{ width:"100%", background:CARD, border:`1px solid ${BORD}`,
-                  borderRadius:4, padding:"14px 16px", fontFamily:"'Lora',serif",
-                  fontSize:16, color:CREAM, resize:"none", outline:"none",
+                  borderRadius:4, padding:"16px 18px", fontFamily:"'Lora',serif",
+                  fontSize:18, color:CREAM, resize:"none", outline:"none",
                   lineHeight:1.6, transition:"border-color .2s",
                   borderColor: sentence ? `${lm.c}30` : BORD,
                   opacity: (phase==="recording"||phase==="analyzing") ? 0.6 : 1 }}
@@ -302,14 +313,14 @@ export default function PronunciationPage() {
             </div>
 
             {/* Sample sentences */}
-            <div style={{ marginTop:10, display:"flex", gap:6, flexWrap:"wrap", alignItems:"center" }}>
-              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+            <div style={{ marginTop:12, display:"flex", gap:8, flexWrap:"wrap", alignItems:"center" }}>
+              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:13,
                 letterSpacing:"0.12em", color:DIM, textTransform:"uppercase" }}>Try:</span>
               {SAMPLES[langCode].map((s, i) => (
                 <button key={i} onClick={() => useSample(s)}
-                  style={{ fontFamily:"'Lora',serif", fontSize:11, color:BODY,
+                  style={{ fontFamily:"'Lora',serif", fontSize:15, color:BODY,
                     fontStyle:"italic", background:"transparent",
-                    border:`1px solid ${BORD2}`, borderRadius:3, padding:"3px 8px",
+                    border:`1px solid ${BORD2}`, borderRadius:4, padding:"5px 12px",
                     cursor:"pointer", transition:"all .15s" }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor=`${lm.c}40`; e.currentTarget.style.color=CREAM; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor=BORD2; e.currentTarget.style.color=BODY; }}>
@@ -330,7 +341,7 @@ export default function PronunciationPage() {
             <Waveform active={phase === "recording"} color={lm.c}/>
 
             {/* Timer */}
-            <div style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:22,
+            <div style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:28,
               color: phase==="recording" ? lm.c : DIM,
               letterSpacing:"0.2em", transition:"color .3s",
               animation: phase==="recording" ? "pulse 1.5s infinite" : "none" }}>
@@ -338,7 +349,7 @@ export default function PronunciationPage() {
             </div>
 
             {/* Status text */}
-            <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY,
+            <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:BODY,
               fontStyle:"italic", textAlign:"center", minHeight:20 }}>
               {phase === "idle"      && (sentence.trim() ? "Ready to record — press the button below." : "Enter a sentence above to begin.")}
               {phase === "recording" && "Recording… speak clearly into your microphone."}
@@ -401,9 +412,9 @@ export default function PronunciationPage() {
 
             {phase === "result" && (
               <button onClick={reset} className="rec-btn"
-                style={{ padding:"10px 28px", borderRadius:4, border:`1px solid ${lm.c}50`,
+                style={{ padding:"12px 32px", borderRadius:4, border:`1px solid ${lm.c}50`,
                   background:"transparent", color:lm.c, cursor:"pointer",
-                  fontFamily:"'Oswald',sans-serif", fontSize:12,
+                  fontFamily:"'Oswald',sans-serif", fontSize:14,
                   letterSpacing:"0.1em", textTransform:"uppercase",
                   transition:"all .2s" }}
                 onMouseEnter={e => { e.currentTarget.style.background=`${lm.c}18`; }}
@@ -421,28 +432,28 @@ export default function PronunciationPage() {
               {/* Score rings */}
               <div style={{ background:CARD, border:`1px solid ${BORD}`, borderRadius:6,
                 padding:"24px", backgroundImage:GRAIN, backgroundRepeat:"repeat", backgroundSize:"300px" }}>
-                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:20 }}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:24 }}>
                   <div>
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
                       letterSpacing:"0.14em", color:MUTED, textTransform:"uppercase" }}>
                       Pronunciation Score
                     </span>
-                    <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY,
-                      fontStyle:"italic", marginTop:4 }}>{result.comment}</p>
+                    <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:BODY,
+                      fontStyle:"italic", marginTop:6 }}>{result.comment}</p>
                   </div>
-                  <div style={{ fontFamily:"'Oswald',sans-serif", fontSize:42, fontWeight:700,
+                  <div style={{ fontFamily:"'Oswald',sans-serif", fontSize:54, fontWeight:700,
                     color:scoreColor(result.overall), lineHeight:1 }}>
                     {result.overall}
-                    <span style={{ fontSize:18, color:MUTED }}>/100</span>
+                    <span style={{ fontSize:22, color:MUTED }}>/100</span>
                   </div>
                 </div>
 
                 <div style={{ display:"flex", justifyContent:"space-around" }}>
-                  <ArcRing pct={result.fluency}  size={90} stroke={7}
+                  <ArcRing pct={result.fluency}  size={110} stroke={8}
                     color={scoreColor(result.fluency)}  label="Fluency"   value={result.fluency}/>
-                  <ArcRing pct={result.accuracy} size={90} stroke={7}
+                  <ArcRing pct={result.accuracy} size={110} stroke={8}
                     color={scoreColor(result.accuracy)} label="Accuracy"  value={result.accuracy}/>
-                  <ArcRing pct={result.rhythm}   size={90} stroke={7}
+                  <ArcRing pct={result.rhythm}   size={110} stroke={8}
                     color={scoreColor(result.rhythm)}   label="Rhythm"    value={result.rhythm}/>
                 </div>
               </div>
@@ -450,31 +461,31 @@ export default function PronunciationPage() {
               {/* Word-by-word breakdown */}
               <div style={{ background:CARD, border:`1px solid ${BORD}`, borderRadius:6,
                 padding:"20px 22px", backgroundImage:GRAIN, backgroundRepeat:"repeat", backgroundSize:"300px" }}>
-                <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+                <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
                   letterSpacing:"0.14em", color:MUTED, textTransform:"uppercase",
-                  display:"block", marginBottom:14 }}>Word Breakdown</span>
-                <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
+                  display:"block", marginBottom:16 }}>Word Breakdown</span>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:10 }}>
                   {result.wordScores.map((ws, i) => (
                     <div key={i} className="word-chip"
                       style={{ display:"flex", flexDirection:"column", alignItems:"center",
-                        gap:4, padding:"8px 12px", borderRadius:4, cursor:"default",
+                        gap:5, padding:"10px 16px", borderRadius:5, cursor:"default",
                         background:`${scoreColor(ws.score)}10`,
                         border:`1px solid ${scoreColor(ws.score)}35`,
                         transition:"all .15s" }}>
-                      <span style={{ fontFamily:"'Lora',serif", fontSize:14,
+                      <span style={{ fontFamily:"'Lora',serif", fontSize:17,
                         color:CREAM, lineHeight:1 }}>{ws.word}</span>
-                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
                         color:scoreColor(ws.score), letterSpacing:"0.06em" }}>{ws.score}%</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Legend */}
-                <div style={{ display:"flex", gap:14, marginTop:14 }}>
+                <div style={{ display:"flex", gap:16, marginTop:16 }}>
                   {[[A_GREEN,"85–100 Excellent"],[A_AMBER,"65–84 Good"],[A_ROSE,"<65 Needs work"]].map(([c,l]) => (
-                    <div key={l} style={{ display:"flex", alignItems:"center", gap:5 }}>
-                      <div style={{ width:6, height:6, borderRadius:1, background:c }}/>
-                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                    <div key={l} style={{ display:"flex", alignItems:"center", gap:6 }}>
+                      <div style={{ width:8, height:8, borderRadius:2, background:c }}/>
+                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                         color:MUTED, letterSpacing:"0.08em" }}>{l}</span>
                     </div>
                   ))}
@@ -635,41 +646,41 @@ export default function PronunciationPage() {
         </div>
 
         {/* ── RIGHT: HISTORY ── */}
-        <div style={{ width:240, borderLeft:`1px solid ${BORD}`, background:CARD2,
+        <div className="pron-history" style={{ width:320, borderLeft:`1px solid ${BORD}`, background:CARD2,
           display:"flex", flexDirection:"column", flexShrink:0, overflow:"hidden" }}>
 
-          <div style={{ padding:"16px 16px 12px", borderBottom:`1px solid ${BORD}` }}>
-            <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+          <div style={{ padding:"18px 18px 14px", borderBottom:`1px solid ${BORD}` }}>
+            <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:14,
               letterSpacing:"0.14em", color:MUTED, textTransform:"uppercase" }}>Session History</span>
-            <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:18, color:CREAM,
+            <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:26, color:CREAM,
               marginTop:4, letterSpacing:"0.02em" }}>{history.length} attempts</p>
           </div>
 
           <div style={{ flex:1, overflowY:"auto", padding:"8px 0" }}>
             {history.length === 0 ? (
-              <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:DIM,
-                fontStyle:"italic", textAlign:"center", padding:"24px 16px", lineHeight:1.6 }}>
+              <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:DIM,
+                fontStyle:"italic", textAlign:"center", padding:"28px 18px", lineHeight:1.6 }}>
                 Your scored attempts will appear here.
               </p>
             ) : history.map((h, i) => {
               const hlm = LANGS.find(l => l.code === h.lang) || LANGS[0];
               return (
                 <div key={i} className="history-row"
-                  style={{ padding:"10px 16px", borderBottom:`1px solid ${BORD2}`,
+                  style={{ padding:"14px 20px", borderBottom:`1px solid ${BORD2}`,
                     cursor:"default", transition:"background .12s" }}>
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:4 }}>
-                    <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
+                    <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:18,
                       color:CREAM, letterSpacing:"0.02em", flex:1, marginRight:8,
                       overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                       {h.sentence.length > 24 ? h.sentence.slice(0,24)+"…" : h.sentence}
                     </span>
-                    <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:15,
+                    <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:22,
                       fontWeight:700, color:scoreColor(h.score), flexShrink:0 }}>{h.score}</span>
                   </div>
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:13,
                       color:hlm.c, letterSpacing:"0.08em" }}>{hlm.name}</span>
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8, color:DIM }}>
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:13, color:DIM }}>
                       {h.date.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"})}
                     </span>
                   </div>
@@ -687,16 +698,16 @@ export default function PronunciationPage() {
 
           {/* Average score */}
           {history.length > 0 && (
-            <div style={{ padding:"12px 16px", borderTop:`1px solid ${BORD}` }}>
-              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+            <div style={{ padding:"14px 18px", borderTop:`1px solid ${BORD}` }}>
+              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:13,
                 letterSpacing:"0.12em", color:MUTED, textTransform:"uppercase",
                 display:"block", marginBottom:6 }}>Session Average</span>
               <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
-                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, fontWeight:700,
+                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:38, fontWeight:700,
                   color:scoreColor(Math.round(history.reduce((a,h)=>a+h.score,0)/history.length)) }}>
                   {Math.round(history.reduce((a,h)=>a+h.score,0)/history.length)}
                 </span>
-                <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9, color:MUTED }}>/100</span>
+                <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:14, color:MUTED }}>/100</span>
               </div>
             </div>
           )}

@@ -6,63 +6,63 @@ import { useState, useEffect, useRef } from "react";
 
 const IconAI = () => (
   <svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-    <rect x="1" y="1" width="36" height="36" rx="10" stroke="#c9a05a" strokeWidth="1.2"/>
-    <circle cx="19" cy="15" r="5" stroke="#c9a05a" strokeWidth="1.2"/>
-    <path d="M10 28c0-4.418 4.03-8 9-8s9 3.582 9 8" stroke="#c9a05a" strokeWidth="1.2" strokeLinecap="round"/>
-    <path d="M26 9l2-2M26 9h3M26 9v3" stroke="#e8c07a" strokeWidth="1" strokeLinecap="round"/>
+    <rect x="1" y="1" width="36" height="36" rx="10" stroke="#d4a843" strokeWidth="1.2"/>
+    <circle cx="19" cy="15" r="5" stroke="#d4a843" strokeWidth="1.2"/>
+    <path d="M10 28c0-4.418 4.03-8 9-8s9 3.582 9 8" stroke="#d4a843" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M26 9l2-2M26 9h3M26 9v3" stroke="#f0cc55" strokeWidth="1" strokeLinecap="round"/>
   </svg>
 );
 
 const IconCalendar = () => (
   <svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-    <rect x="1" y="5" width="36" height="32" rx="6" stroke="#c9a05a" strokeWidth="1.2"/>
-    <path d="M1 13h36" stroke="#c9a05a" strokeWidth="1.2"/>
-    <path d="M12 1v8M26 1v8" stroke="#c9a05a" strokeWidth="1.2" strokeLinecap="round"/>
-    <rect x="8" y="18" width="5" height="5" rx="1" fill="#c9a05a" opacity=".5"/>
-    <rect x="16.5" y="18" width="5" height="5" rx="1" fill="#c9a05a" opacity=".5"/>
-    <rect x="25" y="18" width="5" height="5" rx="1" fill="#e8c07a" opacity=".7"/>
-    <rect x="8" y="26" width="5" height="5" rx="1" fill="#c9a05a" opacity=".3"/>
-    <rect x="16.5" y="26" width="5" height="5" rx="1" fill="#c9a05a" opacity=".3"/>
+    <rect x="1" y="5" width="36" height="32" rx="6" stroke="#d4a843" strokeWidth="1.2"/>
+    <path d="M1 13h36" stroke="#d4a843" strokeWidth="1.2"/>
+    <path d="M12 1v8M26 1v8" stroke="#d4a843" strokeWidth="1.2" strokeLinecap="round"/>
+    <rect x="8" y="18" width="5" height="5" rx="1" fill="#d4a843" opacity=".5"/>
+    <rect x="16.5" y="18" width="5" height="5" rx="1" fill="#d4a843" opacity=".5"/>
+    <rect x="25" y="18" width="5" height="5" rx="1" fill="#f0cc55" opacity=".7"/>
+    <rect x="8" y="26" width="5" height="5" rx="1" fill="#d4a843" opacity=".3"/>
+    <rect x="16.5" y="26" width="5" height="5" rx="1" fill="#d4a843" opacity=".3"/>
   </svg>
 );
 
 const IconMic = () => (
   <svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-    <rect x="13" y="2" width="12" height="20" rx="6" stroke="#c9a05a" strokeWidth="1.2"/>
-    <path d="M6 19c0 7.18 5.82 13 13 13s13-5.82 13-13" stroke="#c9a05a" strokeWidth="1.2" strokeLinecap="round"/>
-    <path d="M19 32v4" stroke="#c9a05a" strokeWidth="1.2" strokeLinecap="round"/>
-    <line x1="14" y1="36" x2="24" y2="36" stroke="#e8c07a" strokeWidth="1.2" strokeLinecap="round"/>
-    <line x1="19" y1="8" x2="19" y2="14" stroke="#e8c07a" strokeWidth="1" strokeLinecap="round" opacity=".6"/>
+    <rect x="13" y="2" width="12" height="20" rx="6" stroke="#d4a843" strokeWidth="1.2"/>
+    <path d="M6 19c0 7.18 5.82 13 13 13s13-5.82 13-13" stroke="#d4a843" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M19 32v4" stroke="#d4a843" strokeWidth="1.2" strokeLinecap="round"/>
+    <line x1="14" y1="36" x2="24" y2="36" stroke="#f0cc55" strokeWidth="1.2" strokeLinecap="round"/>
+    <line x1="19" y1="8" x2="19" y2="14" stroke="#f0cc55" strokeWidth="1" strokeLinecap="round" opacity=".6"/>
   </svg>
 );
 
 const IconBook = () => (
   <svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-    <path d="M5 6h16a4 4 0 014 4v22a4 4 0 01-4 4H5V6z" stroke="#c9a05a" strokeWidth="1.2"/>
-    <path d="M33 6H21a2 2 0 00-2 2v22a2 2 0 002 2h12V6z" stroke="#c9a05a" strokeWidth="1.2"/>
-    <line x1="9" y1="13" x2="17" y2="13" stroke="#e8c07a" strokeWidth="1" strokeLinecap="round"/>
-    <line x1="9" y1="18" x2="17" y2="18" stroke="#c9a05a" strokeWidth="1" strokeLinecap="round" opacity=".5"/>
-    <line x1="9" y1="23" x2="14" y2="23" stroke="#c9a05a" strokeWidth="1" strokeLinecap="round" opacity=".4"/>
+    <path d="M5 6h16a4 4 0 014 4v22a4 4 0 01-4 4H5V6z" stroke="#d4a843" strokeWidth="1.2"/>
+    <path d="M33 6H21a2 2 0 00-2 2v22a2 2 0 002 2h12V6z" stroke="#d4a843" strokeWidth="1.2"/>
+    <line x1="9" y1="13" x2="17" y2="13" stroke="#f0cc55" strokeWidth="1" strokeLinecap="round"/>
+    <line x1="9" y1="18" x2="17" y2="18" stroke="#d4a843" strokeWidth="1" strokeLinecap="round" opacity=".5"/>
+    <line x1="9" y1="23" x2="14" y2="23" stroke="#d4a843" strokeWidth="1" strokeLinecap="round" opacity=".4"/>
   </svg>
 );
 
 const IconPenPal = () => (
   <svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-    <circle cx="13" cy="13" r="7" stroke="#c9a05a" strokeWidth="1.2"/>
-    <circle cx="27" cy="13" r="7" stroke="#c9a05a" strokeWidth="1.2"/>
-    <path d="M2 33c0-5 4.925-9 11-9" stroke="#c9a05a" strokeWidth="1.2" strokeLinecap="round"/>
-    <path d="M36 33c0-5-4.925-9-11-9" stroke="#c9a05a" strokeWidth="1.2" strokeLinecap="round"/>
-    <path d="M16 28h6" stroke="#e8c07a" strokeWidth="1.4" strokeLinecap="round"/>
-    <path d="M19 25v6" stroke="#e8c07a" strokeWidth="1.4" strokeLinecap="round"/>
+    <circle cx="13" cy="13" r="7" stroke="#d4a843" strokeWidth="1.2"/>
+    <circle cx="27" cy="13" r="7" stroke="#d4a843" strokeWidth="1.2"/>
+    <path d="M2 33c0-5 4.925-9 11-9" stroke="#d4a843" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M36 33c0-5-4.925-9-11-9" stroke="#d4a843" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M16 28h6" stroke="#f0cc55" strokeWidth="1.4" strokeLinecap="round"/>
+    <path d="M19 25v6" stroke="#f0cc55" strokeWidth="1.4" strokeLinecap="round"/>
   </svg>
 );
 
 const IconForum = () => (
   <svg width="38" height="38" viewBox="0 0 38 38" fill="none" aria-hidden="true">
-    <path d="M3 5h24a2 2 0 012 2v14a2 2 0 01-2 2H9l-6 5V7a2 2 0 012-2z" stroke="#c9a05a" strokeWidth="1.2"/>
-    <path d="M13 26h16a2 2 0 012 2v6l-4-3H13a2 2 0 01-2-2v-1" stroke="#c9a05a" strokeWidth="1.2" opacity=".6"/>
-    <line x1="9" y1="11" x2="21" y2="11" stroke="#e8c07a" strokeWidth="1" strokeLinecap="round"/>
-    <line x1="9" y1="16" x2="16" y2="16" stroke="#c9a05a" strokeWidth="1" strokeLinecap="round" opacity=".5"/>
+    <path d="M3 5h24a2 2 0 012 2v14a2 2 0 01-2 2H9l-6 5V7a2 2 0 012-2z" stroke="#d4a843" strokeWidth="1.2"/>
+    <path d="M13 26h16a2 2 0 012 2v6l-4-3H13a2 2 0 01-2-2v-1" stroke="#d4a843" strokeWidth="1.2" opacity=".6"/>
+    <line x1="9" y1="11" x2="21" y2="11" stroke="#f0cc55" strokeWidth="1" strokeLinecap="round"/>
+    <line x1="9" y1="16" x2="16" y2="16" stroke="#d4a843" strokeWidth="1" strokeLinecap="round" opacity=".5"/>
   </svg>
 );
 
@@ -75,10 +75,10 @@ const LangBadge = ({ code, size = 52 }) => {
   }).join(" ");
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" aria-hidden="true">
-      <polygon points={hex} stroke="#c9a05a" strokeWidth="1.2" fill="rgba(61,36,20,0.55)"/>
+      <polygon points={hex} stroke="#d4a843" strokeWidth="1.2" fill="rgba(61,36,20,0.55)"/>
       <text x={cx} y={cy + 1} textAnchor="middle" dominantBaseline="middle"
         fontFamily="'Oswald', sans-serif" fontWeight="700" fontSize={size * 0.26}
-        fill="#e8c07a" letterSpacing="1">{code}</text>
+        fill="#f0cc55" letterSpacing="1">{code}</text>
     </svg>
   );
 };
@@ -86,25 +86,25 @@ const LangBadge = ({ code, size = 52 }) => {
 // Circular hero orb badge
 const OrbBadge = ({ code, size = 60 }) => (
   <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" aria-hidden="true">
-    <circle cx={size/2} cy={size/2} r={size/2 - 1} stroke="#c9a05a" strokeWidth="1" fill="rgba(30,12,4,0.82)"/>
+    <circle cx={size/2} cy={size/2} r={size/2 - 1} stroke="#d4a843" strokeWidth="1" fill="rgba(30,12,4,0.82)"/>
     <text x={size/2} y={size/2 + 1} textAnchor="middle" dominantBaseline="middle"
       fontFamily="'Oswald', sans-serif" fontWeight="700" fontSize={size * 0.28}
-      fill="#e8c07a" letterSpacing="1">{code}</text>
+      fill="#f0cc55" letterSpacing="1">{code}</text>
   </svg>
 );
 
 const IconGlobe = ({ size = 26 }) => (
   <svg width={size} height={size} viewBox="0 0 26 26" fill="none" aria-hidden="true">
-    <circle cx="13" cy="13" r="11" stroke="#e8c07a" strokeWidth="1.4"/>
-    <ellipse cx="13" cy="13" rx="5" ry="11" stroke="#e8c07a" strokeWidth="1" opacity=".6"/>
-    <line x1="2" y1="13" x2="24" y2="13" stroke="#e8c07a" strokeWidth="1" opacity=".5"/>
-    <line x1="4" y1="8" x2="22" y2="8" stroke="#e8c07a" strokeWidth="1" opacity=".3"/>
-    <line x1="4" y1="18" x2="22" y2="18" stroke="#e8c07a" strokeWidth="1" opacity=".3"/>
+    <circle cx="13" cy="13" r="11" stroke="#f0cc55" strokeWidth="1.4"/>
+    <ellipse cx="13" cy="13" rx="5" ry="11" stroke="#f0cc55" strokeWidth="1" opacity=".6"/>
+    <line x1="2" y1="13" x2="24" y2="13" stroke="#f0cc55" strokeWidth="1" opacity=".5"/>
+    <line x1="4" y1="8" x2="22" y2="8" stroke="#f0cc55" strokeWidth="1" opacity=".3"/>
+    <line x1="4" y1="18" x2="22" y2="18" stroke="#f0cc55" strokeWidth="1" opacity=".3"/>
   </svg>
 );
 
 const StarIcon = () => (
-  <svg width="13" height="13" viewBox="0 0 14 14" fill="#c9a05a" aria-hidden="true">
+  <svg width="13" height="13" viewBox="0 0 14 14" fill="#d4a843" aria-hidden="true">
     <polygon points="7,1 8.8,5.2 13.5,5.6 10,8.7 11.1,13.3 7,10.8 2.9,13.3 4,8.7 0.5,5.6 5.2,5.2"/>
   </svg>
 );
@@ -117,7 +117,7 @@ const ArrowRight = ({ size = 15 }) => (
 );
 
 const InfoIcon = () => (
-  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#c9a05a" strokeWidth="1.2" aria-hidden="true">
+  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#d4a843" strokeWidth="1.2" aria-hidden="true">
     <circle cx="7" cy="7" r="6"/>
     <path d="M7 6v4M7 4.5v.01" strokeLinecap="round"/>
   </svg>
@@ -128,12 +128,12 @@ const InfoIcon = () => (
 // ─────────────────────────────────────────────
 
 const LANGUAGE_ORBS = [
-  { code: "FR", label: "French",   top: "18%", left: "7%",   delay: "0s",   size: 62 },
-  { code: "ES", label: "Spanish",  top: "62%", left: "5%",   delay: "1.3s", size: 50 },
-  { code: "JP", label: "Japanese", top: "22%", right: "7%",  delay: "0.7s", size: 66 },
-  { code: "KO", label: "Korean",   top: "64%", right: "7%",  delay: "1.9s", size: 48 },
-  { code: "DE", label: "German",   top: "82%", left: "18%",  delay: "1.0s", size: 44 },
-  { code: "HI", label: "Hindi",    top: "14%", right: "20%", delay: "1.6s", size: 54 },
+  { code: "FR", label: "French",   top: "18%", left: "7%",   delay: "0s",   size: 84 },
+  { code: "ES", label: "Spanish",  top: "62%", left: "5%",   delay: "1.3s", size: 72 },
+  { code: "JP", label: "Japanese", top: "22%", right: "7%",  delay: "0.7s", size: 90 },
+  { code: "KO", label: "Korean",   top: "64%", right: "7%",  delay: "1.9s", size: 68 },
+  { code: "DE", label: "German",   top: "82%", left: "18%",  delay: "1.0s", size: 62 },
+  { code: "HI", label: "Hindi",    top: "14%", right: "20%", delay: "1.6s", size: 76 },
 ];
 
 const FEATURES = [
@@ -236,7 +236,7 @@ export default function LandingPage() {
 
       {/* ── NAV ── */}
       <nav style={{ ...s.nav, ...(scrolled ? s.navScrolled : {}) }} aria-label="Main navigation">
-        <div style={s.navInner}>
+        <div className="home-nav" style={s.navInner}>
           <a href="/" style={s.navLogo} aria-label="SpeakSphere home">
             <IconGlobe size={23}/>
             <span style={s.logoTxt}>SpeakSphere</span>
@@ -256,7 +256,7 @@ export default function LandingPage() {
       <main id="main-content">
 
         {/* ── HERO ── */}
-        <section style={s.hero} aria-label="Hero">
+        <section className="home-hero" style={s.hero} aria-label="Hero">
           <div style={s.grain}      aria-hidden="true"/>
           <div style={s.ambient1}   aria-hidden="true"/>
           <div style={s.ambient2}   aria-hidden="true"/>
@@ -285,7 +285,7 @@ export default function LandingPage() {
               A peer-powered hub with live tutoring, AI conversation practice,
               pronunciation coaching, and a global student community.
             </p>
-            <div style={s.heroCTAs}>
+            <div className="home-cta-row" style={s.heroCTAs}>
               <a href="/signup" style={s.ctaPrimary}>
                 Start Learning Free <ArrowRight size={14}/>
               </a>
@@ -307,7 +307,7 @@ export default function LandingPage() {
         </section>
 
         {/* ── FEATURES ── */}
-        <section id="features" style={s.section} aria-labelledby="feat-h">
+        <section id="features" className="home-section" style={s.section} aria-labelledby="feat-h">
           <div style={s.inner}>
             <p style={s.eyebrow}>EVERYTHING YOU NEED</p>
             <h2 id="feat-h" style={s.h2}>One Hub. Every Tool.</h2>
@@ -315,7 +315,7 @@ export default function LandingPage() {
               From AI conversation practice to live peer tutoring — everything you need
               to go from beginner to confident speaker.
             </p>
-            <div style={s.featGrid} role="list">
+            <div className="home-features-grid" style={s.featGrid} role="list">
               {FEATURES.map(({ Icon, title, desc }, i) => (
                 <div key={title} role="listitem" tabIndex={0}
                   style={{
@@ -332,14 +332,14 @@ export default function LandingPage() {
                   <div style={{
                     ...s.featIconWrap,
                     background: hovFeat === i
-                      ? "rgba(201,160,90,0.09)"
-                      : "rgba(201,160,90,0.03)",
+                      ? "rgba(212,168,67,0.14)"
+                      : "rgba(212,168,67,0.03)",
                   }}>
                     <Icon/>
                   </div>
                   <h3 style={{
                     ...s.featTitle,
-                    color: hovFeat === i ? "#e8c07a" : "#eadcca",
+                    color: hovFeat === i ? "#f0cc55" : "#f5ede0",
                   }}>{title}</h3>
                   <p style={s.featDesc}>{desc}</p>
                   <div style={{
@@ -369,7 +369,7 @@ export default function LandingPage() {
         </div>
 
         {/* ── LANGUAGES ── */}
-        <section style={s.section} aria-labelledby="lang-h">
+        <section className="home-section" style={s.section} aria-labelledby="lang-h">
           <div style={s.inner}>
             <p style={s.eyebrow}>LAUNCH LANGUAGES</p>
             <h2 id="lang-h" style={s.h2}>6 Languages. Endless Possibilities.</h2>
@@ -389,7 +389,7 @@ export default function LandingPage() {
                   onBlur={() => setHovLang(null)}
                   aria-label={`${lang.name}: ${lang.learners} learners, ${lang.region}`}
                 >
-                  <LangBadge code={lang.code} size={56}/>
+                  <LangBadge code={lang.code} size={72}/>
                   <span style={s.langName}>{lang.name}</span>
                   <span style={s.langRegion}>{lang.region}</span>
                   <span style={s.langCount}>{lang.learners} learners</span>
@@ -409,7 +409,7 @@ export default function LandingPage() {
         </section>
 
         {/* ── TESTIMONIALS ── */}
-        <section style={{ ...s.section, background: "rgba(14,7,2,0.7)" }} aria-labelledby="test-h">
+        <section className="home-section" style={{ ...s.section, background: "rgba(14,7,2,0.7)" }} aria-labelledby="test-h">
           <div style={s.inner}>
             <p style={s.eyebrow}>STUDENT STORIES</p>
             <h2 id="test-h" style={s.h2}>Real Students. Real Results.</h2>
@@ -434,7 +434,7 @@ export default function LandingPage() {
         </section>
 
         {/* ── CTA BANNER ── */}
-        <section style={s.ctaBanner} aria-labelledby="cta-h">
+        <section className="home-section" style={s.ctaBanner} aria-labelledby="cta-h">
           <div style={s.grain} aria-hidden="true"/>
           <div style={s.ctaAmbient} aria-hidden="true"/>
           <p style={s.eyebrow}>READY TO START?</p>
@@ -458,7 +458,7 @@ export default function LandingPage() {
           <div>
             <div style={s.footerLogoRow}>
               <IconGlobe size={19}/>
-              <strong style={{ fontFamily:"'Oswald',sans-serif", letterSpacing:"0.05em", fontSize:17, color:"#e8c07a" }}>
+              <strong style={{ fontFamily:"'Oswald',sans-serif", letterSpacing:"0.05em", fontSize:17, color:"#f0cc55" }}>
                 SpeakSphere
               </strong>
             </div>
@@ -480,13 +480,13 @@ export default function LandingPage() {
 // ─────────────────────────────────────────────
 // DESIGN TOKENS — earthy, matte-rich
 // ─────────────────────────────────────────────
-const GOLD   = "#c9a05a";
-const GOLD_L = "#e8c07a";
-const CREAM  = "#eadcca";
-const MUTED  = "#9a7d5a";
-const DARK   = "#140b04";
-const CARD   = "#1c0f06";
-const SURF   = "#231208";
+const GOLD   = "#d4a843";
+const GOLD_L = "#f0cc55";
+const CREAM  = "#f5ede0";
+const MUTED  = "#c8aa80";
+const DARK   = "#0d0702";
+const CARD   = "#1b0f06";
+const SURF   = "#0d0702";
 
 const s = {
   root: {
@@ -505,7 +505,7 @@ const s = {
   },
   navScrolled: {
     background:"rgba(20,11,4,0.97)",
-    borderBottom:`1px solid rgba(201,160,90,0.13)`,
+    borderBottom:`1px solid rgba(212,168,67,0.20)`,
     backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)",
   },
   navInner: {
@@ -525,12 +525,12 @@ const s = {
   navActions: { display:"flex", gap:10, alignItems:"center" },
   btnGhost: {
     fontFamily:"'Oswald',sans-serif", fontSize:13, letterSpacing:"0.06em",
-    color: GOLD_L, border:`1px solid rgba(201,160,90,0.28)`, borderRadius:5,
+    color: GOLD_L, border:`1px solid rgba(212,168,67,0.28)`, borderRadius:5,
     padding:"7px 16px", textDecoration:"none",
   },
   btnSolid: {
     fontFamily:"'Oswald',sans-serif", fontSize:13, letterSpacing:"0.06em",
-    color: DARK, background: GOLD, borderRadius:5,
+    color:CREAM, background: GOLD, borderRadius:5,
     padding:"7px 16px", textDecoration:"none", fontWeight:600,
   },
 
@@ -564,7 +564,7 @@ const s = {
     animation:"floatOrb 5s ease-in-out infinite",
   },
   orbLabel: {
-    fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.1em",
+    fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.1em",
     color: MUTED, textTransform:"uppercase",
   },
   heroContent: {
@@ -576,7 +576,7 @@ const s = {
     display:"inline-flex", alignItems:"center", gap:8,
     fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.13em",
     color: MUTED, background:"rgba(28,15,6,0.95)",
-    border:`1px solid rgba(201,160,90,0.16)`, borderRadius:100,
+    border:`1px solid rgba(212,168,67,0.16)`, borderRadius:100,
     padding:"5px 14px", marginBottom:26,
   },
   pillDot: {
@@ -603,7 +603,7 @@ const s = {
   heroCTAs: { display:"flex", gap:14, justifyContent:"center", flexWrap:"wrap" },
   ctaPrimary: {
     fontFamily:"'Oswald',sans-serif", fontSize:14, letterSpacing:"0.07em",
-    fontWeight:600, color: DARK, background: GOLD,
+    fontWeight:600, color:CREAM, background: GOLD,
     borderRadius:7, padding:"12px 26px",
     textDecoration:"none", display:"inline-flex", alignItems:"center", gap:9,
     // subtle shadow — matte-feel, not glassy
@@ -612,7 +612,7 @@ const s = {
   },
   ctaOutline: {
     fontFamily:"'Oswald',sans-serif", fontSize:14, letterSpacing:"0.07em",
-    color: GOLD_L, border:`1px solid rgba(201,160,90,0.3)`,
+    color: GOLD_L, border:`1px solid rgba(212,168,67,0.3)`,
     borderRadius:7, padding:"12px 22px", textDecoration:"none",
   },
   scrollHint: {
@@ -632,13 +632,13 @@ const s = {
   statsBar: {
     display:"flex", flexWrap:"wrap", justifyContent:"center",
     background:"rgba(16,8,2,0.9)",
-    borderTop:`1px solid rgba(201,160,90,0.09)`,
-    borderBottom:`1px solid rgba(201,160,90,0.09)`,
+    borderTop:`1px solid rgba(212,168,67,0.14)`,
+    borderBottom:`1px solid rgba(212,168,67,0.14)`,
   },
   statCard: {
     display:"flex", flexDirection:"column", alignItems:"center",
     padding:"26px 42px",
-    borderRight:`1px solid rgba(201,160,90,0.07)`,
+    borderRight:`1px solid rgba(212,168,67,0.12)`,
     flex:"1 1 120px",
   },
   statNum: {
@@ -677,7 +677,7 @@ const s = {
   },
   featCard: {
     background: CARD,
-    border:`1px solid rgba(201,160,90,0.09)`,
+    border:`1px solid rgba(212,168,67,0.14)`,
     borderRadius:13, padding:"30px 24px",
     transition:"transform 0.28s, border-color 0.28s, box-shadow 0.28s",
     position:"relative", overflow:"hidden",
@@ -686,13 +686,13 @@ const s = {
   },
   featCardHov: {
     transform:"translateY(-8px)",
-    borderColor:"rgba(201,160,90,0.32)",
+    borderColor:"rgba(212,168,67,0.32)",
     boxShadow:"0 14px 44px rgba(0,0,0,0.5)",
   },
   featIconWrap: {
     width:56, height:56, borderRadius:11,
     display:"flex", alignItems:"center", justifyContent:"center",
-    marginBottom:16, border:`1px solid rgba(201,160,90,0.09)`,
+    marginBottom:16, border:`1px solid rgba(212,168,67,0.14)`,
     transition:"background 0.28s",
   },
   featTitle: {
@@ -708,8 +708,8 @@ const s = {
   // MARQUEE
   marqueeWrap: {
     position:"relative", overflow:"hidden",
-    borderTop:`1px solid rgba(201,160,90,0.07)`,
-    borderBottom:`1px solid rgba(201,160,90,0.07)`,
+    borderTop:`1px solid rgba(212,168,67,0.12)`,
+    borderBottom:`1px solid rgba(212,168,67,0.12)`,
     background:"rgba(14,7,2,0.8)", padding:"16px 0",
   },
   marqueeFadeL: {
@@ -730,7 +730,7 @@ const s = {
   chip: {
     display:"flex", alignItems:"center", gap:7,
     background:"rgba(28,15,6,0.9)",
-    border:`1px solid rgba(201,160,90,0.11)`,
+    border:`1px solid rgba(212,168,67,0.11)`,
     borderRadius:100, padding:"6px 14px", flexShrink:0,
   },
   chipDot: {
@@ -750,7 +750,7 @@ const s = {
   },
   langCard: {
     background: SURF,
-    border:`1px solid rgba(201,160,90,0.09)`,
+    border:`1px solid rgba(212,168,67,0.14)`,
     borderRadius:13, padding:"26px 14px",
     display:"flex", flexDirection:"column", alignItems:"center", gap:7,
     transition:"transform 0.28s, border-color 0.28s, box-shadow 0.28s",
@@ -758,18 +758,18 @@ const s = {
   },
   langCardHov: {
     transform:"translateY(-7px)",
-    borderColor:"rgba(201,160,90,0.38)",
+    borderColor:"rgba(212,168,67,0.38)",
     boxShadow:"0 12px 36px rgba(0,0,0,0.5)",
   },
   langName: {
-    fontFamily:"'Oswald',sans-serif", fontSize:16, fontWeight:600,
+    fontFamily:"'Oswald',sans-serif", fontSize:19, fontWeight:600,
     color: CREAM, letterSpacing:"0.04em",
   },
-  langRegion: { fontSize:10, color: MUTED, letterSpacing:"0.06em" },
-  langCount:  { fontSize:11, color: GOLD, fontWeight:600 },
+  langRegion: { fontSize:12, color: MUTED, letterSpacing:"0.06em" },
+  langCount:  { fontSize:13, color: GOLD, fontWeight:600 },
   langBtn: {
     fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.06em",
-    color: DARK, background: GOLD, borderRadius:5,
+    color:CREAM, background: GOLD, borderRadius:5,
     padding:"5px 11px", textDecoration:"none",
     position:"absolute", bottom:11,
     display:"inline-flex", alignItems:"center", gap:4,
@@ -789,7 +789,7 @@ const s = {
   },
   testCard: {
     background: CARD,
-    border:`1px solid rgba(201,160,90,0.09)`,
+    border:`1px solid rgba(212,168,67,0.14)`,
     borderRadius:13, padding:"26px 22px", margin:0,
   },
   testStars: { display:"flex", gap:3, marginBottom:13 },
@@ -804,7 +804,7 @@ const s = {
     background:`linear-gradient(135deg, ${GOLD}, #8a6020)`,
     display:"flex", alignItems:"center", justifyContent:"center",
     fontFamily:"'Oswald',sans-serif", fontSize:12, fontWeight:700,
-    color: DARK, flexShrink:0,
+    color:CREAM, flexShrink:0,
   },
   testName: {
     fontFamily:"'Oswald',sans-serif", fontSize:13,
@@ -817,7 +817,7 @@ const s = {
     position:"relative", textAlign:"center",
     padding:"104px 24px",
     background:"rgba(12,6,1,0.98)",
-    borderTop:`1px solid rgba(201,160,90,0.08)`,
+    borderTop:`1px solid rgba(212,168,67,0.14)`,
     overflow:"hidden",
   },
   ctaAmbient: {
@@ -826,7 +826,7 @@ const s = {
   },
   ctaBannerBtn: {
     fontFamily:"'Oswald',sans-serif", fontSize:15, letterSpacing:"0.07em",
-    fontWeight:600, color: DARK, background: GOLD,
+    fontWeight:600, color:CREAM, background: GOLD,
     borderRadius:8, padding:"13px 32px",
     textDecoration:"none", display:"inline-flex",
     alignItems:"center", gap:9,
@@ -837,7 +837,7 @@ const s = {
   // FOOTER
   footer: {
     background:"#0a0501",
-    borderTop:`1px solid rgba(201,160,90,0.07)`,
+    borderTop:`1px solid rgba(212,168,67,0.12)`,
     padding:"48px 24px 32px",
   },
   footerInner: {
@@ -870,7 +870,7 @@ const CSS = `
   html { scroll-behavior: smooth; }
 
   :focus-visible {
-    outline: 2px solid #c9a05a;
+    outline: 2px solid #d4a843;
     outline-offset: 3px;
     border-radius: 4px;
   }
@@ -880,7 +880,7 @@ const CSS = `
 
   .skip-link {
     position: absolute; top: -48px; left: 16px;
-    background: #c9a05a; color: #140b04;
+    background: #d4a843; color: #0d0702;
     font-family: 'Oswald', sans-serif; font-size: 13px; letter-spacing: 0.06em;
     padding: 8px 16px; border-radius: 0 0 6px 6px; z-index: 9999;
     transition: top 0.2s;
@@ -917,5 +917,16 @@ const CSS = `
 
   @media (max-width: 680px) {
     nav { backdrop-filter: blur(14px) !important; background: rgba(20,11,4,0.97) !important; }
+  }
+
+  @media(max-width:640px){
+    .home-hero { padding:60px 20px 40px !important; }
+    .home-nav { padding:0 16px !important; }
+    .home-features-grid { grid-template-columns:1fr !important; }
+    .home-cta-row { flex-direction:column !important; align-items:stretch !important; }
+    .home-section { padding:60px 20px !important; }
+  }
+  @media(min-width:640px) and (max-width:1023px){
+    .home-features-grid { grid-template-columns:repeat(2,1fr) !important; }
   }
 `;

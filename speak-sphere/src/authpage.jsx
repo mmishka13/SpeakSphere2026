@@ -5,15 +5,15 @@ import { useNavigate } from "react-router-dom";
 // ─── CUSTOM SVG ICONS ────────────────────────────────────────
 const IconGlobe = ({ size = 26 }) => (
   <svg width={size} height={size} viewBox="0 0 26 26" fill="none" aria-hidden="true">
-    <circle cx="13" cy="13" r="11" stroke="#e8c07a" strokeWidth="1.4"/>
-    <ellipse cx="13" cy="13" rx="5" ry="11" stroke="#e8c07a" strokeWidth="1" opacity=".6"/>
-    <line x1="2" y1="13" x2="24" y2="13" stroke="#e8c07a" strokeWidth="1" opacity=".5"/>
-    <line x1="4" y1="8"  x2="22" y2="8"  stroke="#e8c07a" strokeWidth="1" opacity=".3"/>
-    <line x1="4" y1="18" x2="22" y2="18" stroke="#e8c07a" strokeWidth="1" opacity=".3"/>
+    <circle cx="13" cy="13" r="11" stroke="#f0cc55" strokeWidth="1.4"/>
+    <ellipse cx="13" cy="13" rx="5" ry="11" stroke="#f0cc55" strokeWidth="1" opacity=".6"/>
+    <line x1="2" y1="13" x2="24" y2="13" stroke="#f0cc55" strokeWidth="1" opacity=".5"/>
+    <line x1="4" y1="8"  x2="22" y2="8"  stroke="#f0cc55" strokeWidth="1" opacity=".3"/>
+    <line x1="4" y1="18" x2="22" y2="18" stroke="#f0cc55" strokeWidth="1" opacity=".3"/>
   </svg>
 );
 const IconEye = ({ open }) => (
-  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#9a7d5a" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true">
+  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#c8aa80" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true">
     <path d="M1 9s3-5.5 8-5.5S17 9 17 9s-3 5.5-8 5.5S1 9 1 9z"/>
     <circle cx="9" cy="9" r="2.5"/>
     {!open && <line x1="2" y1="2" x2="16" y2="16"/>}
@@ -36,11 +36,11 @@ const IconX = ({ size = 18 }) => (
     <path d="M6 6l6 6M12 6l-6 6" stroke="#e87a5a" strokeWidth="1.8" strokeLinecap="round"/>
   </svg>
 );
-const IconUser    = () => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#9a7d5a" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.314 2.686-6 6-6s6 2.686 6 6"/></svg>;
-const IconMail    = () => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#9a7d5a" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="2"/><path d="M1 5l7 5 7-5"/></svg>;
-const IconLock    = () => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#9a7d5a" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true"><rect x="3" y="7" width="10" height="8" rx="2"/><path d="M5 7V5a3 3 0 016 0v2"/></svg>;
-const IconCake    = () => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#9a7d5a" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true"><rect x="1" y="7" width="14" height="8" rx="1"/><path d="M4 7V5h8v2"/><path d="M8 1v4"/></svg>;
-const IconGradCap = () => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#9a7d5a" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true"><path d="M8 3L1 7l7 4 7-4-7-4z"/><path d="M3 9v4c0 1 2 2 5 2s5-1 5-2V9"/></svg>;
+const IconUser    = () => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#c8aa80" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.314 2.686-6 6-6s6 2.686 6 6"/></svg>;
+const IconMail    = () => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#c8aa80" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="2"/><path d="M1 5l7 5 7-5"/></svg>;
+const IconLock    = () => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#c8aa80" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true"><rect x="3" y="7" width="10" height="8" rx="2"/><path d="M5 7V5a3 3 0 016 0v2"/></svg>;
+const IconCake    = () => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#c8aa80" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true"><rect x="1" y="7" width="14" height="8" rx="1"/><path d="M4 7V5h8v2"/><path d="M8 1v4"/></svg>;
+const IconGradCap = () => <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#c8aa80" strokeWidth="1.3" strokeLinecap="round" aria-hidden="true"><path d="M8 3L1 7l7 4 7-4-7-4z"/><path d="M3 9v4c0 1 2 2 5 2s5-1 5-2V9"/></svg>;
 
 // ─── DATA ────────────────────────────────────────────────────
 const LANGUAGES = ["Spanish","French","Japanese","Korean","German","Hindi"];
@@ -97,7 +97,7 @@ const EXAM = {
 function getLevel(score){
   if(score<=4)  return {level:"Beginner",      color:"#5cb88a", pct:20};
   if(score<=8)  return {level:"Elementary",    color:"#7ab8e8", pct:40};
-  if(score<=11) return {level:"Intermediate",  color:"#c9a05a", pct:60};
+  if(score<=11) return {level:"Intermediate",  color:"#d4a843", pct:60};
   if(score<=13) return {level:"Upper-Inter.",  color:"#e8a05a", pct:80};
   return              {level:"Advanced",       color:"#e85a5a", pct:100};
 }
@@ -105,12 +105,12 @@ function getLevel(score){
 // ─── ANIMATED BACKGROUND ─────────────────────────────────────
 function Background({ children }) {
   return (
-    <div style={{ position:"fixed", inset:0, background:"#140b04", overflow:"hidden" }} aria-hidden="true">
+    <div style={{ position:"fixed", inset:0, background:"#0d0702", overflow:"hidden" }} aria-hidden="true">
       {/* grid lines */}
       <svg style={{ position:"absolute", inset:0, width:"100%", height:"100%", opacity:0.04 }} aria-hidden="true">
         <defs>
           <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#c9a05a" strokeWidth="0.5"/>
+            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#d4a843" strokeWidth="0.5"/>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#grid)"/>
@@ -198,7 +198,7 @@ export default function AuthPage() {
 
   // ── STRENGTH ──────────────────────────────────────────────
   const pwScore = [/.{6,}/,/[A-Z]/,/[0-9]/,/[^A-Za-z0-9]/].filter(r=>r.test(form.password)).length;
-  const pwColor = ["","#e87a5a","#e8c07a","#7ab8e8","#5cb88a"][pwScore];
+  const pwColor = ["","#e87a5a","#f0cc55","#7ab8e8","#5cb88a"][pwScore];
   const pwLabel = ["","Weak","Fair","Good","Strong"][pwScore];
 
   // ═══════════════════════════════════════════════════════════
@@ -294,7 +294,7 @@ export default function AuthPage() {
                   {form.password&&(
                     <div style={p.strengthRow} aria-live="polite" aria-label={`Password strength: ${pwLabel}`}>
                       <div style={p.strengthBars}>
-                        {[1,2,3,4].map(i=><div key={i} style={{ ...p.strengthBar, background:i<=pwScore?pwColor:"rgba(201,160,90,0.1)" }}/>)}
+                        {[1,2,3,4].map(i=><div key={i} style={{ ...p.strengthBar, background:i<=pwScore?pwColor:"rgba(212,168,67,0.1)" }}/>)}
                       </div>
                       <span style={{ ...p.strengthLbl, color:pwColor }}>{pwLabel}</span>
                     </div>
@@ -334,7 +334,7 @@ export default function AuthPage() {
                           aria-pressed={form.proficiency===lv.label}>
                           <div style={p.levelDots} aria-hidden="true">
                             {Array.from({length:5}).map((_,d)=>(
-                              <div key={d} style={{ ...p.levelDot, background: d<lv.dots?(form.proficiency===lv.label?"#140b04":"#c9a05a"):"rgba(201,160,90,0.15)" }}/>
+                              <div key={d} style={{ ...p.levelDot, background: d<lv.dots?(form.proficiency===lv.label?"#0d0702":"#d4a843"):"rgba(212,168,67,0.15)" }}/>
                             ))}
                           </div>
                           <span style={p.levelLbl}>{lv.short}</span>
@@ -477,7 +477,7 @@ export default function AuthPage() {
                   const answered = answers[i]!==undefined;
                   const correct  = answers[i]===qs[i].answer;
                   return <div key={i} style={{ ...e.scoreDot,
-                    background: !answered?"rgba(201,160,90,0.1)":correct?"#5cb88a":"#e87a5a",
+                    background: !answered?"rgba(212,168,67,0.1)":correct?"#5cb88a":"#e87a5a",
                     transform: i===examIdx?"scale(1.5)":"scale(1)",
                     boxShadow: answered&&correct ? "0 0 8px rgba(92,184,138,0.7)" : answered&&!correct ? "0 0 6px rgba(232,122,90,0.5)" : "none",
                     animation: answered&&correct&&i===examIdx-1 ? "dotPop 0.5s ease" : "none",
@@ -526,7 +526,7 @@ export default function AuthPage() {
         {/* level dial */}
         <div style={r.dialWrap} aria-label={`Placement level: ${result.level}`}>
           <svg width="180" height="100" viewBox="0 0 180 100" aria-hidden="true">
-            <path d="M10 90 A80 80 0 0 1 170 90" fill="none" stroke="rgba(201,160,90,0.1)" strokeWidth="12" strokeLinecap="round"/>
+            <path d="M10 90 A80 80 0 0 1 170 90" fill="none" stroke="rgba(212,168,67,0.1)" strokeWidth="12" strokeLinecap="round"/>
             <path d="M10 90 A80 80 0 0 1 170 90" fill="none" stroke={result.color} strokeWidth="12" strokeLinecap="round"
               strokeDasharray="251" strokeDashoffset={251-(251*result.pct/100)}
               style={{ transition:"stroke-dashoffset 1.2s ease", filter:`drop-shadow(0 0 6px ${result.color}66)` }}/>
@@ -594,12 +594,12 @@ function ErrMsg({ msg }) {
 }
 function Dots() {
   return <span style={{ display:"flex",gap:4,alignItems:"center" }} aria-label="Loading">
-    {[0,1,2].map(i=><span key={i} style={{ width:6,height:6,borderRadius:"50%",background:"#140b04",animation:`dotPulse 1s ${i*0.2}s ease-in-out infinite` }}/>)}
+    {[0,1,2].map(i=><span key={i} style={{ width:6,height:6,borderRadius:"50%",background:"#0d0702",animation:`dotPulse 1s ${i*0.2}s ease-in-out infinite` }}/>)}
   </span>;
 }
 
 // ─── STYLE TOKENS ────────────────────────────────────────────
-const GOLD="#c9a05a", GOLD_L="#e8c07a", CREAM="#eadcca", MUTED="#9a7d5a", DARK="#140b04", CARD="#1c0f06", SURF="#231208", BDR="rgba(201,160,90,0.13)";
+const GOLD   = "#d4a843", GOLD_L="#f0cc55", CREAM="#f5ede0", MUTED="#c8aa80", DARK="#0d0702", CARD="#1b0f06", SURF="#0d0702", BDR="rgba(212,168,67,0.20)";
 
 // signup styles
 const p = {
@@ -609,7 +609,7 @@ const p = {
   logoTxt:    { fontFamily:"'Oswald',sans-serif", fontSize:18, fontWeight:600, color:GOLD_L, letterSpacing:"0.05em" },
   navRight:   { display:"flex", alignItems:"center", gap:14 },
   navHint:    { fontSize:12, color:MUTED, fontFamily:"'Oswald',sans-serif", letterSpacing:"0.05em" },
-  navBtn:     { fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.07em", color:DARK, background:GOLD, border:"none", borderRadius:5, padding:"6px 14px", cursor:"pointer", fontWeight:600 },
+  navBtn:     { fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.07em", color:CREAM, background:GOLD, border:"none", borderRadius:5, padding:"6px 14px", cursor:"pointer", fontWeight:600 },
   layout:     { display:"flex", flex:1, marginTop:60, minHeight:"calc(100vh - 60px)", position:"relative", zIndex:1 },
 
   // LEFT PANEL
@@ -622,7 +622,7 @@ const p = {
   leftFeat:   { display:"flex", alignItems:"flex-start", gap:9, marginBottom:12, animation:"featIn 0.5s ease both" },
   leftFeatDot:{ width:5, height:5, borderRadius:"50%", background:GOLD, flexShrink:0, marginTop:5, opacity:0.7 },
   leftFeatTxt:{ fontSize:12, color:MUTED, lineHeight:1.55, fontFamily:"'Lora',serif" },
-  floatingBadge:{ position:"absolute", width:38, height:38, borderRadius:"50%", background:"rgba(201,160,90,0.07)", border:`1px solid rgba(201,160,90,0.15)`, display:"flex", alignItems:"center", justifyContent:"center", animation:"floatBadge 4s ease-in-out infinite" },
+  floatingBadge:{ position:"absolute", width:38, height:38, borderRadius:"50%", background:"rgba(212,168,67,0.07)", border:`1px solid rgba(212,168,67,0.15)`, display:"flex", alignItems:"center", justifyContent:"center", animation:"floatBadge 4s ease-in-out infinite" },
   floatingBadgeCode:{ fontFamily:"'Oswald',sans-serif", fontSize:10, fontWeight:700, color:GOLD, letterSpacing:"0.06em" },
 
   // RIGHT FORM
@@ -631,7 +631,7 @@ const p = {
   formHeaderRow:{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:24, gap:12 },
   formTitle:  { fontFamily:"'Oswald',sans-serif", fontSize:24, fontWeight:700, color:CREAM, lineHeight:1.2, marginBottom:6 },
   formSub:    { fontSize:12, color:MUTED, lineHeight:1.6, fontFamily:"'Lora',serif" },
-  stepBadge:  { flexShrink:0, background:"rgba(201,160,90,0.08)", border:`1px solid rgba(201,160,90,0.2)`, borderRadius:10, padding:"8px 14px", textAlign:"center" },
+  stepBadge:  { flexShrink:0, background:"rgba(212,168,67,0.08)", border:`1px solid rgba(212,168,67,0.2)`, borderRadius:10, padding:"8px 14px", textAlign:"center" },
   stepNum:    { fontFamily:"'Oswald',sans-serif", fontSize:22, fontWeight:700, color:GOLD, display:"block", lineHeight:1 },
   stepOf:     { fontFamily:"'Oswald',sans-serif", fontSize:12, color:MUTED },
   stepLbl:    { display:"block", fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.1em", color:MUTED, marginTop:2 },
@@ -641,7 +641,7 @@ const p = {
   labelNote:  { fontSize:10, fontFamily:"'Lora',serif", fontStyle:"italic", color:"rgba(154,125,90,0.55)", textTransform:"none", letterSpacing:"0.02em" },
   inputWrap:  { position:"relative", display:"flex", alignItems:"center" },
   inputIcon:  { position:"absolute", left:11, display:"flex", alignItems:"center", pointerEvents:"none" },
-  input:      { width:"100%", background:SURF, border:`1px solid rgba(201,160,90,0.13)`, borderRadius:8, padding:"10px 12px 10px 34px", fontSize:13, color:CREAM, fontFamily:"'Lora',serif", outline:"none", transition:"border-color 0.2s, box-shadow 0.2s", WebkitAppearance:"none" },
+  input:      { width:"100%", background:SURF, border:`1px solid rgba(212,168,67,0.20)`, borderRadius:8, padding:"10px 12px 10px 34px", fontSize:13, color:CREAM, fontFamily:"'Lora',serif", outline:"none", transition:"border-color 0.2s, box-shadow 0.2s", WebkitAppearance:"none" },
   select:     { cursor:"pointer" },
   inputSuffix:{ position:"absolute", right:8, display:"flex", alignItems:"center" },
   eyeBtn:     { background:"none", border:"none", cursor:"pointer", padding:4, display:"flex", alignItems:"center" },
@@ -652,22 +652,22 @@ const p = {
 
   // LANGUAGE TILES
   langGrid:   { display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:8 },
-  langTile:   { background:SURF, border:`1px solid rgba(201,160,90,0.12)`, borderRadius:10, padding:"10px 8px", display:"flex", flexDirection:"column", alignItems:"center", gap:4, cursor:"pointer", transition:"all 0.2s", position:"relative", overflow:"hidden" },
-  langTileOn: { background:"rgba(201,160,90,0.12)", borderColor:`rgba(201,160,90,0.45)` },
+  langTile:   { background:SURF, border:`1px solid rgba(212,168,67,0.12)`, borderRadius:10, padding:"10px 8px", display:"flex", flexDirection:"column", alignItems:"center", gap:4, cursor:"pointer", transition:"all 0.2s", position:"relative", overflow:"hidden" },
+  langTileOn: { background:"rgba(212,168,67,0.12)", borderColor:`rgba(212,168,67,0.45)` },
   langTileScript:{ fontFamily:"serif", fontSize:16, color:GOLD, opacity:0.75, lineHeight:1 },
   langTileName:  { fontFamily:"'Oswald',sans-serif", fontSize:11, letterSpacing:"0.07em", color:CREAM },
   langTileCheck: { position:"absolute", top:4, right:6, fontSize:10, color:GOLD, fontWeight:700 },
 
   // LEVEL BUTTONS
   levelRow:   { display:"flex", gap:7, flexWrap:"wrap" },
-  levelBtn:   { flex:"1 1 80px", background:SURF, border:`1px solid rgba(201,160,90,0.12)`, borderRadius:9, padding:"10px 8px", display:"flex", flexDirection:"column", alignItems:"center", gap:6, cursor:"pointer", transition:"all 0.2s" },
-  levelBtnOn: { background:"rgba(201,160,90,0.14)", borderColor:"rgba(201,160,90,0.45)" },
+  levelBtn:   { flex:"1 1 80px", background:SURF, border:`1px solid rgba(212,168,67,0.12)`, borderRadius:9, padding:"10px 8px", display:"flex", flexDirection:"column", alignItems:"center", gap:6, cursor:"pointer", transition:"all 0.2s" },
+  levelBtnOn: { background:"rgba(212,168,67,0.14)", borderColor:"rgba(212,168,67,0.45)" },
   levelDots:  { display:"flex", gap:3 },
   levelDot:   { width:5, height:5, borderRadius:"50%", transition:"background 0.2s" },
   levelLbl:   { fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.08em", color:MUTED, whiteSpace:"nowrap" },
 
   errMsg:     { fontSize:12, color:"#e87a5a", background:"rgba(232,122,90,0.07)", border:"1px solid rgba(232,122,90,0.2)", borderRadius:7, padding:"8px 12px", marginBottom:14, fontFamily:"'Lora',serif" },
-  submitBtn:  { width:"100%", background:GOLD, border:"none", borderRadius:9, padding:"13px 20px", fontFamily:"'Oswald',sans-serif", fontSize:14, letterSpacing:"0.08em", fontWeight:600, color:DARK, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:10, boxShadow:"0 4px 20px rgba(150,100,30,0.22)", transition:"transform 0.15s, opacity 0.15s", marginTop:6 },
+  submitBtn:  { width:"100%", background:GOLD, border:"none", borderRadius:9, padding:"13px 20px", fontFamily:"'Oswald',sans-serif", fontSize:14, letterSpacing:"0.08em", fontWeight:600, color:CREAM, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:10, boxShadow:"0 4px 20px rgba(150,100,30,0.22)", transition:"transform 0.15s, opacity 0.15s", marginTop:6 },
   examNotice: { fontSize:11, color:MUTED, textAlign:"center", marginTop:12, lineHeight:1.6, fontFamily:"'Lora',serif", fontStyle:"italic" },
 };
 
@@ -676,12 +676,12 @@ const e = {
   root:       { minHeight:"100vh", display:"flex", flexDirection:"column", position:"relative", fontFamily:"'Lora',Georgia,serif", color:CREAM },
   topBar:     { position:"sticky", top:0, zIndex:50, display:"flex", alignItems:"center", gap:20, padding:"0 32px", height:58, background:"rgba(20,11,4,0.95)", borderBottom:`1px solid ${BDR}`, backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", flexWrap:"wrap" },
   progressWrap:{ display:"flex", alignItems:"center", gap:10, flex:1, minWidth:160 },
-  progressTrack:{ flex:1, height:5, background:"rgba(201,160,90,0.1)", borderRadius:3, overflow:"hidden" },
+  progressTrack:{ flex:1, height:5, background:"rgba(212,168,67,0.1)", borderRadius:3, overflow:"hidden" },
   progressFill: { height:"100%", background:GOLD, borderRadius:3, transition:"width 0.5s ease" },
   progressCount:{ fontFamily:"'Oswald',sans-serif", fontSize:13, color:GOLD, letterSpacing:"0.06em", flexShrink:0 },
   sectionPills:{ display:"flex", gap:6 },
-  secPill:    { display:"flex", alignItems:"center", gap:5, fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.1em", color:MUTED, background:"rgba(35,18,8,0.8)", border:`1px solid rgba(201,160,90,0.1)`, borderRadius:100, padding:"4px 12px", transition:"all 0.25s" },
-  secPillActive:{ color:GOLD_L, borderColor:"rgba(201,160,90,0.35)", background:"rgba(201,160,90,0.08)" },
+  secPill:    { display:"flex", alignItems:"center", gap:5, fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.1em", color:MUTED, background:"rgba(35,18,8,0.8)", border:`1px solid rgba(212,168,67,0.1)`, borderRadius:100, padding:"4px 12px", transition:"all 0.25s" },
+  secPillActive:{ color:GOLD_L, borderColor:"rgba(212,168,67,0.35)", background:"rgba(212,168,67,0.08)" },
   secPillDone:{ color:"#5cb88a", borderColor:"rgba(92,184,138,0.25)", background:"rgba(92,184,138,0.05)" },
   secDot:     { width:5, height:5, borderRadius:"50%", background:"currentColor", display:"inline-block" },
 
@@ -690,29 +690,29 @@ const e = {
   optCol:     { flex:1, padding:"64px 48px 64px 52px", display:"flex", flexDirection:"column", justifyContent:"center", gap:0 },
 
   secLabel:   { display:"flex", alignItems:"center", gap:10, marginBottom:36 },
-  secLabelDot:{ width:9, height:9, borderRadius:"50%", background:GOLD, flexShrink:0, boxShadow:`0 0 8px rgba(201,160,90,0.6)` },
+  secLabelDot:{ width:9, height:9, borderRadius:"50%", background:GOLD, flexShrink:0, boxShadow:`0 0 8px rgba(212,168,67,0.6)` },
   secLabelTxt:{ fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.18em", color:GOLD, textTransform:"uppercase" },
   secLabelCount:{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:MUTED, letterSpacing:"0.08em", marginLeft:"auto" },
 
-  passage:    { background:"rgba(35,18,8,0.85)", border:`1px solid rgba(201,160,90,0.18)`, borderRadius:12, padding:"20px 24px", marginBottom:36, borderLeft:`3px solid rgba(201,160,90,0.5)` },
+  passage:    { background:"rgba(35,18,8,0.85)", border:`1px solid rgba(212,168,67,0.18)`, borderRadius:12, padding:"20px 24px", marginBottom:36, borderLeft:`3px solid rgba(212,168,67,0.5)` },
   passageTag: { fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.22em", color:GOLD, marginBottom:10, textTransform:"uppercase" },
   passageTxt: { fontSize:15, color:"#ccb898", lineHeight:1.85, fontFamily:"'Lora',serif", fontStyle:"italic" },
 
   qNumRow:    { display:"flex", alignItems:"center", gap:16, marginBottom:20 },
-  qNum:       { fontFamily:"'Oswald',sans-serif", fontSize:14, fontWeight:700, color:"rgba(201,160,90,0.4)", letterSpacing:"0.12em", flexShrink:0 },
-  qNumLine:   { flex:1, height:1, background:"rgba(201,160,90,0.12)" },
+  qNum:       { fontFamily:"'Oswald',sans-serif", fontSize:14, fontWeight:700, color:"rgba(212,168,67,0.4)", letterSpacing:"0.12em", flexShrink:0 },
+  qNumLine:   { flex:1, height:1, background:"rgba(212,168,67,0.12)" },
   // ↑ bigger, more air, bolder question text
   question:   { fontFamily:"'Oswald',sans-serif", fontSize:"clamp(22px,2.6vw,32px)", fontWeight:700, color:"#f0e2cc", lineHeight:1.3, marginBottom:36, letterSpacing:"-0.01em" },
 
   feedback:   { display:"flex", alignItems:"flex-start", gap:12, border:"1px solid", borderRadius:12, padding:"16px 20px", marginBottom:0 },
   feedbackTxt:{ fontSize:14, lineHeight:1.65, fontFamily:"'Lora',serif", fontStyle:"italic" },
-  nextBtn:    { display:"flex", alignItems:"center", justifyContent:"center", gap:10, width:"100%", fontFamily:"'Oswald',sans-serif", fontSize:15, letterSpacing:"0.08em", fontWeight:600, color:DARK, background:GOLD, border:"none", borderRadius:10, padding:"16px 22px", cursor:"pointer", marginTop:14, boxShadow:"0 6px 28px rgba(150,100,30,0.32)", transition:"transform 0.15s, box-shadow 0.15s" },
+  nextBtn:    { display:"flex", alignItems:"center", justifyContent:"center", gap:10, width:"100%", fontFamily:"'Oswald',sans-serif", fontSize:15, letterSpacing:"0.08em", fontWeight:600, color:CREAM, background:GOLD, border:"none", borderRadius:10, padding:"16px 22px", cursor:"pointer", marginTop:14, boxShadow:"0 6px 28px rgba(150,100,30,0.32)", transition:"transform 0.15s, box-shadow 0.15s" },
 
   chooseLabel:{ fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.22em", color:MUTED, marginBottom:18, textTransform:"uppercase" },
   opts:       { display:"flex", flexDirection:"column", gap:12, marginBottom:28 },
   // bigger padding, more visual weight per option
-  opt:        { display:"flex", alignItems:"center", gap:16, width:"100%", background:SURF, border:`1px solid rgba(201,160,90,0.1)`, borderRadius:12, padding:"16px 20px", cursor:"pointer", transition:"all 0.22s", textAlign:"left", position:"relative", overflow:"hidden" },
-  optPicked:  { borderColor:"rgba(201,160,90,0.6)", background:"rgba(201,160,90,0.07)", boxShadow:`0 0 0 1px rgba(201,160,90,0.25), 0 0 20px rgba(201,160,90,0.08)` },
+  opt:        { display:"flex", alignItems:"center", gap:16, width:"100%", background:SURF, border:`1px solid rgba(212,168,67,0.1)`, borderRadius:12, padding:"16px 20px", cursor:"pointer", transition:"all 0.22s", textAlign:"left", position:"relative", overflow:"hidden" },
+  optPicked:  { borderColor:"rgba(212,168,67,0.6)", background:"rgba(212,168,67,0.07)", boxShadow:`0 0 0 1px rgba(212,168,67,0.25), 0 0 20px rgba(212,168,67,0.08)` },
   optRight:   { borderColor:"rgba(92,184,138,0.6)", background:"rgba(92,184,138,0.09)", boxShadow:`0 0 0 1px rgba(92,184,138,0.2), 0 0 20px rgba(92,184,138,0.07)` },
   optWrong:   { borderColor:"rgba(232,122,90,0.6)", background:"rgba(232,122,90,0.08)", boxShadow:`0 0 0 1px rgba(232,122,90,0.2)` },
   optDim:     { opacity:0.32, filter:"saturate(0.4)" },
@@ -738,7 +738,7 @@ const r = {
   breakdown:{ marginBottom:20 },
   bRow:  { display:"flex", alignItems:"center", gap:10, marginBottom:10 },
   bLabel:{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.1em", color:MUTED, width:72, textAlign:"right", textTransform:"uppercase" },
-  bTrack:{ flex:1, height:6, background:"rgba(201,160,90,0.1)", borderRadius:3, overflow:"hidden" },
+  bTrack:{ flex:1, height:6, background:"rgba(212,168,67,0.1)", borderRadius:3, overflow:"hidden" },
   bFill: { height:"100%", background:GOLD, borderRadius:3, transition:"width 1s ease" },
   bScore:{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:GOLD, width:28, textAlign:"left", letterSpacing:"0.06em" },
   note:  { fontSize:11, color:MUTED, fontStyle:"italic", fontFamily:"'Lora',serif", marginBottom:22, lineHeight:1.65 },
@@ -750,14 +750,14 @@ const CSS = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
 
-  :focus-visible { outline: 2px solid #c9a05a; outline-offset: 3px; border-radius: 4px; }
+  :focus-visible { outline: 2px solid #d4a843; outline-offset: 3px; border-radius: 4px; }
 
   input:focus, select:focus {
-    border-color: rgba(201,160,90,0.5) !important;
-    box-shadow: 0 0 0 3px rgba(201,160,90,0.08), 0 0 12px rgba(201,160,90,0.06) !important;
+    border-color: rgba(212,168,67,0.5) !important;
+    box-shadow: 0 0 0 3px rgba(212,168,67,0.08), 0 0 12px rgba(212,168,67,0.06) !important;
   }
   input::placeholder { color: rgba(154,125,90,0.38); }
-  select option { background: #231208; color: #eadcca; }
+  select option { background: #0d0702; color: #f5ede0; }
 
   button:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -774,7 +774,7 @@ const CSS = `
     inset: 0;
     border-radius: 12px;
     border: 1px solid transparent;
-    background: linear-gradient(135deg, rgba(201,160,90,0) 0%, rgba(201,160,90,0.18) 50%, rgba(201,160,90,0) 100%) border-box;
+    background: linear-gradient(135deg, rgba(212,168,67,0) 0%, rgba(212,168,67,0.18) 50%, rgba(212,168,67,0) 100%) border-box;
     -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: destination-out;
     mask-composite: exclude;
@@ -784,10 +784,10 @@ const CSS = `
   }
   .opt-hover:hover::before { opacity: 1; }
   .opt-hover:hover {
-    border-color: rgba(201,160,90,0.4) !important;
-    background: rgba(201,160,90,0.06) !important;
+    border-color: rgba(212,168,67,0.4) !important;
+    background: rgba(212,168,67,0.06) !important;
     transform: translateX(5px) !important;
-    box-shadow: 0 0 0 1px rgba(201,160,90,0.15), 0 4px 20px rgba(0,0,0,0.3) !important;
+    box-shadow: 0 0 0 1px rgba(212,168,67,0.15), 0 4px 20px rgba(0,0,0,0.3) !important;
   }
   .opt-hover:active {
     transform: translateX(5px) scale(0.99) !important;
@@ -813,18 +813,18 @@ const CSS = `
     position: absolute;
     top: 0; left: 20px; right: 20px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201,160,90,0.35), transparent);
+    background: linear-gradient(90deg, transparent, rgba(212,168,67,0.35), transparent);
     border-radius: 1px;
     pointer-events: none;
   }
 
   /* Lang tile hover */
   button[aria-pressed]:hover {
-    border-color: rgba(201,160,90,0.35) !important;
+    border-color: rgba(212,168,67,0.35) !important;
     transform: translateY(-2px) !important;
   }
   button[aria-pressed="true"] {
-    box-shadow: 0 0 0 1px rgba(201,160,90,0.3), 0 4px 16px rgba(150,100,30,0.2) !important;
+    box-shadow: 0 0 0 1px rgba(212,168,67,0.3), 0 4px 16px rgba(150,100,30,0.2) !important;
   }
 
   .feat-in  { animation: featIn   0.5s ease both; }

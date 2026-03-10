@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const DARK   = "#140b04";
-const CARD   = "#1a0d05";
+const DARK   = "#0d0702";
+const CARD   = "#1b0f06";
 const CARD2  = "#200f06";
-const GOLD   = "#c9a05a";
-const GOLDLT = "#e8c07a";
-const CREAM  = "#eadcca";
-const MUTED  = "#9a7d5a";
-const DIM    = "#5a3a22";
-const BORD   = "rgba(201,160,90,0.12)";
-const BORD2  = "rgba(201,160,90,0.06)";
-const BODY   = "#c4aa80";
+const GOLD   = "#d4a843";
+const GOLDLT = "#f0cc55";
+const CREAM  = "#f5ede0";
+const MUTED  = "#c8aa80";
+const DIM    = "#a08050";
+const BORD   = "rgba(212,168,67,0.20)";
+const BORD2  = "rgba(212,168,67,0.06)";
+const BODY   = "#c8aa80";
 const A_GREEN  = "#7db87d";
 const A_BLUE   = "#6a9ec0";
 const A_ROSE   = "#c07070";
@@ -24,19 +24,29 @@ const CSS = `
   html,body { height:100%; }
   ::-webkit-scrollbar { width:4px; }
   ::-webkit-scrollbar-track { background:transparent; }
-  ::-webkit-scrollbar-thumb { background:rgba(201,160,90,0.2); border-radius:2px; }
+  ::-webkit-scrollbar-thumb { background:rgba(212,168,67,0.2); border-radius:2px; }
   .hud-cell { transition:background .12s, border-color .12s; }
-  .hud-cell:hover { background:rgba(201,160,90,0.05) !important; border-color:rgba(201,160,90,0.2) !important; }
+  .hud-cell:hover { background:rgba(212,168,67,0.05) !important; border-color:rgba(212,168,67,0.2) !important; }
   .ev-chip:hover { filter:brightness(1.25); transform:translateX(1px); }
-  .tab-btn:hover { color:#eadcca !important; border-color:rgba(201,160,90,0.25) !important; }
-  .arrow-btn:hover { color:#eadcca !important; border-color:rgba(201,160,90,0.25) !important; background:rgba(201,160,90,0.06) !important; }
-  .agenda-row:hover { background:rgba(201,160,90,0.05) !important; }
-  .sess-card:hover { border-color:rgba(201,160,90,0.22) !important; transform:translateY(-1px); }
+  .tab-btn:hover { color:#f5ede0 !important; border-color:rgba(212,168,67,0.25) !important; }
+  .arrow-btn:hover { color:#f5ede0 !important; border-color:rgba(212,168,67,0.25) !important; background:rgba(212,168,67,0.06) !important; }
+  .agenda-row:hover { background:rgba(212,168,67,0.05) !important; }
+  .sess-card:hover { border-color:rgba(212,168,67,0.22) !important; transform:translateY(-1px); }
   .book-btn:hover { filter:brightness(1.1); transform:scale(1.02); }
   .pop-in { animation:popIn .2s cubic-bezier(.34,1.3,.64,1) both; }
   .fade-in { animation:fadeIn .18s ease both; }
   @keyframes popIn  { from{opacity:0;transform:scale(.95) translateY(6px)} to{opacity:1;transform:none} }
   @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+  @media(max-width:768px){
+    .cal-layout { flex-direction:column !important; }
+    .cal-sidebar { width:100% !important; max-height:280px !important; border-left:none !important; border-top:1px solid rgba(212,168,67,0.20) !important; overflow-y:auto !important; }
+    .cal-sessions-grid { grid-template-columns:1fr !important; }
+    .cal-topbar { flex-wrap:wrap !important; gap:8px !important; padding:14px 16px !important; }
+    .cal-main { padding:14px !important; }
+  }
+  @media(min-width:768px) and (max-width:1023px){
+    .cal-sidebar { width:260px !important; }
+  }
 `;
 
 const LANGS = [
@@ -57,7 +67,7 @@ const SUBJECT_COLORS = {
 
 const LEVEL_META = {
   Beginner:     { c:A_GREEN, g:"rgba(125,184,125,0.12)" },
-  Intermediate: { c:GOLD,    g:"rgba(201,160,90,0.12)"  },
+  Intermediate: { c:GOLD,    g:"rgba(212,168,67,0.20)"  },
   Advanced:     { c:A_ROSE,  g:"rgba(192,112,112,0.12)" },
 };
 
@@ -237,7 +247,7 @@ function EventModal({ ev, onClose, onBook, onUnbook, isBooked }) {
             <span style={{ background:LEVEL_META[ev.level]?.g, color:LEVEL_META[ev.level]?.c,
               fontFamily:"'Share Tech Mono',monospace", fontSize:9, letterSpacing:"0.1em",
               borderRadius:2, padding:"2px 8px" }}>{ev.level.toUpperCase()}</span>
-            <span style={{ background:`rgba(201,160,90,0.08)`, color:BODY,
+            <span style={{ background:`rgba(212,168,67,0.14)`, color:BODY,
               fontFamily:"'Share Tech Mono',monospace", fontSize:9, letterSpacing:"0.1em",
               borderRadius:2, padding:"2px 8px" }}>{ev.dur}MIN</span>
           </div>
@@ -271,7 +281,7 @@ function EventModal({ ev, onClose, onBook, onUnbook, isBooked }) {
               : <button onClick={() => onBook(ev)} className="book-btn"
                   style={{ width:"100%", background:sc.c, border:"none", borderRadius:4,
                     padding:"10px", fontFamily:"'Share Tech Mono',monospace",
-                    fontSize:11, letterSpacing:"0.12em", color:DARK,
+                    fontSize:11, letterSpacing:"0.12em", color:CREAM,
                     cursor:"pointer", transition:"all .2s", fontWeight:700 }}>
                   BOOK_SESSION →
                 </button>
@@ -296,15 +306,16 @@ function PersonalCalendar({ year, month, allEvents, onSelectDay, selectedDay, on
   });
 
   return (
-    <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", padding:"14px 20px" }}>
+    <div className="cal-main" style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden", padding:"14px 20px" }}>
 
       {/* Legend */}
-      <div style={{ display:"flex", gap:12, marginBottom:8, flexWrap:"wrap", alignItems:"center" }}>
-        <HudLabel>Legend</HudLabel>
+      <div style={{ display:"flex", gap:16, marginBottom:10, flexWrap:"wrap", alignItems:"center" }}>
+        <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:13,
+          letterSpacing:"0.14em", textTransform:"uppercase", color:MUTED }}>Legend</span>
         {Object.entries(SUBJECT_COLORS).map(([subj, sc]) => (
-          <div key={subj} style={{ display:"flex", alignItems:"center", gap:4 }}>
-            <div style={{ width:5, height:5, borderRadius:"50%", background:sc.c }}/>
-            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
+          <div key={subj} style={{ display:"flex", alignItems:"center", gap:6 }}>
+            <div style={{ width:8, height:8, borderRadius:"50%", background:sc.c, flexShrink:0 }}/>
+            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:15,
               letterSpacing:"0.06em", color:BODY }}>{subj}</span>
           </div>
         ))}
@@ -333,8 +344,8 @@ function PersonalCalendar({ year, month, allEvents, onSelectDay, selectedDay, on
           return (
             <div key={i} onClick={() => isCurr && onSelectDay(cellDate)}
               className={isCurr ? "hud-cell" : ""}
-              style={{ background: isSel?"rgba(201,160,90,0.08)":isCurr?CARD:"rgba(255,255,255,0.01)",
-                border:`1px solid ${isSel?"rgba(201,160,90,0.25)":isCurr?BORD2:"transparent"}`,
+              style={{ background: isSel?"rgba(212,168,67,0.14)":isCurr?CARD:"rgba(255,255,255,0.01)",
+                border:`1px solid ${isSel?"rgba(212,168,67,0.25)":isCurr?BORD2:"transparent"}`,
                 borderRadius:3, padding:"8px 8px 6px",
                 cursor:isCurr?"pointer":"default",
                 overflow:"hidden", minHeight:90, position:"relative" }}>
@@ -373,26 +384,26 @@ function AgendaPanel({ selectedDay, allEvents, onEventClick }) {
     .slice(0, 6);
 
   return (
-    <div style={{ width:300, borderLeft:`1px solid ${BORD}`, display:"flex",
+    <div className="cal-sidebar" style={{ width:340, borderLeft:`1px solid ${BORD}`, display:"flex",
       flexDirection:"column", overflow:"hidden", flexShrink:0, background:CARD2 }}>
-      <div style={{ padding:"12px 14px 10px", borderBottom:`1px solid ${BORD}` }}>
+      <div style={{ padding:"14px 18px 12px", borderBottom:`1px solid ${BORD}` }}>
         <HudLabel>Agenda</HudLabel>
-        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:20, color:CREAM,
-          letterSpacing:"0.03em", marginTop:4, lineHeight:1.2 }}>
+        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:24, color:CREAM,
+          letterSpacing:"0.03em", marginTop:5, lineHeight:1.2 }}>
           {selectedDay
             ? selectedDay.toLocaleDateString("en-US",{weekday:"long",month:"short",day:"numeric"})
             : "Select a day"}
         </p>
       </div>
 
-      <div style={{ flex:1, overflowY:"auto", padding:"8px 10px" }}>
+      <div style={{ flex:1, overflowY:"auto", padding:"10px 12px" }}>
         {!selectedDay ? (
-          <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
+          <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:MUTED,
             fontStyle:"italic", textAlign:"center", marginTop:20, lineHeight:1.6 }}>
             Click any day<br/>to see events
           </p>
         ) : dayEvs.length === 0 ? (
-          <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
+          <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:MUTED,
             fontStyle:"italic", textAlign:"center", marginTop:20 }}>
             No events — enjoy the break.
           </p>
@@ -400,19 +411,19 @@ function AgendaPanel({ selectedDay, allEvents, onEventClick }) {
           const sc = SUBJECT_COLORS[ev.subject] || SUBJECT_COLORS.Personal;
           return (
             <div key={i} onClick={() => onEventClick(ev)} className="agenda-row"
-              style={{ display:"flex", gap:8, padding:"7px 8px", marginBottom:4,
+              style={{ display:"flex", gap:10, padding:"9px 10px", marginBottom:5,
                 background:`${sc.c}08`, border:`1px solid ${sc.c}18`,
-                borderLeft:`2px solid ${sc.c}`, borderRadius:"0 3px 3px 0",
+                borderLeft:`3px solid ${sc.c}`, borderRadius:"0 4px 4px 0",
                 cursor:"pointer", transition:"all .12s" }}>
               <div style={{ flex:1, minWidth:0 }}>
-                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11.5, color:CREAM,
+                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:14, color:CREAM,
                   letterSpacing:"0.02em", overflow:"hidden", textOverflow:"ellipsis",
                   whiteSpace:"nowrap", lineHeight:1.3 }}>{ev.title}</p>
-                <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
-                  color:MUTED, marginTop:2 }}>{fmt12(ev.start)} → {fmt12(ev.end)}</p>
+                <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
+                  color:MUTED, marginTop:3 }}>{fmt12(ev.start)} → {fmt12(ev.end)}</p>
                 {ev.tutor && (
-                  <p style={{ fontFamily:"'Lora',serif", fontSize:9.5, color:BODY,
-                    fontStyle:"italic", marginTop:1 }}>{ev.tutor}</p>
+                  <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:BODY,
+                    fontStyle:"italic", marginTop:2 }}>{ev.tutor}</p>
                 )}
               </div>
             </div>
@@ -420,20 +431,20 @@ function AgendaPanel({ selectedDay, allEvents, onEventClick }) {
         })}
       </div>
 
-      <div style={{ borderTop:`1px solid ${BORD}`, padding:"8px 10px 10px" }}>
-        <div style={{ marginBottom:7 }}><HudLabel>Upcoming</HudLabel></div>
+      <div style={{ borderTop:`1px solid ${BORD}`, padding:"10px 12px 14px" }}>
+        <div style={{ marginBottom:9 }}><HudLabel>Upcoming</HudLabel></div>
         {upcoming.map((ev, i) => {
           const sc = SUBJECT_COLORS[ev.subject] || SUBJECT_COLORS.Personal;
           return (
             <div key={i} onClick={() => onEventClick(ev)} className="agenda-row"
-              style={{ display:"flex", alignItems:"center", gap:6, marginBottom:5,
-                cursor:"pointer", padding:"3px 4px", borderRadius:3, transition:"all .12s" }}>
-              <div style={{ width:4, height:4, borderRadius:"50%", background:sc.c, flexShrink:0 }}/>
+              style={{ display:"flex", alignItems:"center", gap:8, marginBottom:7,
+                cursor:"pointer", padding:"5px 6px", borderRadius:4, transition:"all .12s" }}>
+              <div style={{ width:6, height:6, borderRadius:"50%", background:sc.c, flexShrink:0 }}/>
               <div style={{ flex:1, minWidth:0 }}>
-                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:CREAM,
+                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:14, color:CREAM,
                   letterSpacing:"0.02em", overflow:"hidden", textOverflow:"ellipsis",
                   whiteSpace:"nowrap" }}>{ev.title}</p>
-                <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8.5, color:MUTED }}>
+                <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11, color:MUTED }}>
                   {ev.start.toLocaleDateString("en-US",{month:"short",day:"numeric"})} · {fmt12(ev.start)}
                 </p>
               </div>
@@ -479,11 +490,11 @@ function SessionsView({ langCode, year, month, booked, onBook, onUnbook, onCardC
         <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:BODY,
           fontStyle:"italic", marginBottom:7 }}>with {sess.tutor}</p>
         <div style={{ display:"flex", gap:4, flexWrap:"wrap", marginBottom:7 }}>
-          <span style={{ background:"rgba(201,160,90,0.08)", color:BODY,
+          <span style={{ background:"rgba(212,168,67,0.14)", color:BODY,
             fontFamily:"'Share Tech Mono',monospace", fontSize:9, borderRadius:2, padding:"2px 6px" }}>
             {sessDate.toLocaleDateString("en-US",{month:"short",day:"numeric"})} · {sess.time}
           </span>
-          <span style={{ background:"rgba(201,160,90,0.08)", color:BODY,
+          <span style={{ background:"rgba(212,168,67,0.14)", color:BODY,
             fontFamily:"'Share Tech Mono',monospace", fontSize:9, borderRadius:2, padding:"2px 6px" }}>
             {sess.dur}MIN
           </span>
@@ -525,7 +536,7 @@ function SessionsView({ langCode, year, month, booked, onBook, onUnbook, onCardC
               <button onClick={e=>{e.stopPropagation();onBook(sess);}} className="book-btn"
                 style={{ background:lm.c, border:"none", borderRadius:3, padding:"4px 10px",
                   fontFamily:"'Share Tech Mono',monospace", fontSize:8.5, fontWeight:700,
-                  color:DARK, cursor:"pointer", transition:"all .2s", flexShrink:0 }}>
+                  color:CREAM, cursor:"pointer", transition:"all .2s", flexShrink:0 }}>
                 BOOK →
               </button>
             )
@@ -590,7 +601,7 @@ function SessionsView({ langCode, year, month, booked, onBook, onUnbook, onCardC
               justifyContent:"center", transition:"all .15s" }}>›</button>
         </div>
       </div>
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:18 }}>
+      <div className="cal-sessions-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:18 }}>
         <Column title="Individual" items={individual}/>
         <Column title="Group"      items={group}/>
       </div>
@@ -637,59 +648,62 @@ export default function CalendarPage() {
       background:DARK, color:CREAM, fontFamily:"'Oswald',sans-serif", overflow:"hidden" }}>
       <style>{CSS}</style>
 
-      <header style={{ borderBottom:`1px solid ${BORD}`, padding:"14px 20px",
-        display:"flex", alignItems:"center", gap:6, flexShrink:0,
-        flexWrap:"wrap", rowGap:6, background:CARD2 }}>
-        <div style={{ marginRight:10 }}>
-          <HudLabel>Speaksphere / Schedule</HudLabel>
-          <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, fontWeight:700,
-            color:CREAM, letterSpacing:"0.04em", lineHeight:1, marginTop:2 }}>Calendar</h1>
+      <header style={{ borderBottom:`1px solid ${BORD}`, padding:"18px 28px",
+        display:"flex", alignItems:"center", gap:10, flexShrink:0,
+        flexWrap:"wrap", rowGap:10, background:CARD2 }}>
+        <div style={{ marginRight:14 }}>
+          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
+            letterSpacing:"0.14em", textTransform:"uppercase", color:MUTED }}>
+            Speaksphere / Schedule
+          </span>
+          <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:34, fontWeight:700,
+            color:CREAM, letterSpacing:"0.04em", lineHeight:1, marginTop:4 }}>Calendar</h1>
         </div>
 
-        <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
+        <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
           {[{id:"personal",label:"My Calendar",c:GOLD}, ...LANGS.map(l=>({id:l.code,label:l.name,c:l.c,script:l.script}))].map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
               className={tab!==t.id?"tab-btn":""}
-              style={{ display:"flex", alignItems:"center", gap:5,
+              style={{ display:"flex", alignItems:"center", gap:7,
                 background: tab===t.id?`${t.c}14`:"transparent",
                 border:`1px solid ${tab===t.id?`${t.c}40`:BORD2}`,
                 borderBottom: tab===t.id?`1px solid ${t.c}`:`1px solid ${BORD2}`,
-                borderRadius:"3px 3px 0 0", padding:"5px 11px",
-                fontFamily:"'Oswald',sans-serif", fontSize:12,
+                borderRadius:"4px 4px 0 0", padding:"8px 16px",
+                fontFamily:"'Oswald',sans-serif", fontSize:15,
                 letterSpacing:"0.08em", textTransform:"uppercase",
                 color: tab===t.id?t.c:MUTED, cursor:"pointer", transition:"all .15s" }}>
-              {t.script && <span style={{ fontFamily:"Georgia,serif", fontSize:11 }}>{t.script.slice(0,3)}</span>}
+              {t.script && <span style={{ fontFamily:"Georgia,serif", fontSize:14 }}>{t.script.slice(0,3)}</span>}
               {t.label}
             </button>
           ))}
         </div>
 
         {tab === "personal" && (
-          <div style={{ display:"flex", alignItems:"center", gap:6, marginLeft:"auto" }}>
+          <div className="cal-topbar" style={{ display:"flex", alignItems:"center", gap:8, marginLeft:"auto" }}>
             <button onClick={() => goMonth(-1)} className="arrow-btn"
-              style={{ width:24, height:24, background:"transparent", border:`1px solid ${BORD}`,
-                borderRadius:3, cursor:"pointer", color:MUTED, fontSize:14,
+              style={{ width:32, height:32, background:"transparent", border:`1px solid ${BORD}`,
+                borderRadius:4, cursor:"pointer", color:MUTED, fontSize:18,
                 display:"flex", alignItems:"center", justifyContent:"center", transition:"all .15s" }}>‹</button>
-            <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11, color:CREAM,
-              letterSpacing:"0.1em", minWidth:110, textAlign:"center" }}>
-              {MONTHS[month].toUpperCase().slice(0,3)} {year}
+            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:22, color:CREAM,
+              letterSpacing:"0.06em", minWidth:160, textAlign:"center", fontWeight:600 }}>
+              {MONTHS[month].toUpperCase()} {year}
             </span>
             <button onClick={() => goMonth(1)} className="arrow-btn"
-              style={{ width:24, height:24, background:"transparent", border:`1px solid ${BORD}`,
-                borderRadius:3, cursor:"pointer", color:MUTED, fontSize:14,
+              style={{ width:32, height:32, background:"transparent", border:`1px solid ${BORD}`,
+                borderRadius:4, cursor:"pointer", color:MUTED, fontSize:18,
                 display:"flex", alignItems:"center", justifyContent:"center", transition:"all .15s" }}>›</button>
             <button onClick={() => { setMonth(today.getMonth()); setYear(today.getFullYear()); }}
               className="arrow-btn"
-              style={{ height:24, padding:"0 10px", background:"transparent", border:`1px solid ${BORD}`,
-                borderRadius:3, cursor:"pointer", fontFamily:"'Share Tech Mono',monospace",
-                fontSize:8.5, letterSpacing:"0.12em", color:MUTED, transition:"all .15s" }}>
+              style={{ height:32, padding:"0 14px", background:"transparent", border:`1px solid ${BORD}`,
+                borderRadius:4, cursor:"pointer", fontFamily:"'Share Tech Mono',monospace",
+                fontSize:12, letterSpacing:"0.12em", color:MUTED, transition:"all .15s" }}>
               TODAY
             </button>
           </div>
         )}
       </header>
 
-      <div style={{ flex:1, display:"flex", overflow:"hidden" }}>
+      <div className="cal-layout" style={{ flex:1, display:"flex", overflow:"hidden" }}>
         {tab === "personal" ? (
           <>
             <PersonalCalendar

@@ -1,20 +1,20 @@
 import { useState } from "react";
 
-const DARK   = "#140b04";
-const CARD   = "#1a0d05";
+const DARK   = "#0d0702";
+const CARD   = "#1b0f06";
 const CARD2  = "#201108";
-const GOLD   = "#c9a05a";
-const GOLDLT = "#e8c07a";
-const CREAM  = "#eadcca";
-const MUTED  = "#9a7d5a";
-const DIM    = "#5a3a22";
-const BORD   = "rgba(201,160,90,0.12)";
-const BODY   = "#c4aa80";
+const GOLD   = "#d4a843";
+const GOLDLT = "#f0cc55";
+const CREAM  = "#f5ede0";
+const MUTED  = "#c8aa80";
+const DIM    = "#a08050";
+const BORD   = "rgba(212,168,67,0.20)";
+const BODY   = "#c8aa80";
 const GRAIN  = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")`;
 
 /* ── LANGUAGES ── */
 const LANGS = [
-  { code:"ES", name:"Spanish",  script:"Español",  color:"#c9a05a", light:"#e8c07a", dark:"#7a5a20" },
+  { code:"ES", name:"Spanish",  script:"Español",  color:"#d4a843", light:"#f0cc55", dark:"#7a5a20" },
   { code:"FR", name:"French",   script:"Français", color:"#b89070", light:"#d4aa88", dark:"#6a4a30" },
   { code:"JP", name:"Japanese", script:"日本語",    color:"#a8856a", light:"#c4a080", dark:"#584030" },
   { code:"KO", name:"Korean",   script:"한국어",    color:"#c0956a", light:"#d8ae88", dark:"#704828" },
@@ -22,7 +22,7 @@ const LANGS = [
 
 /* ── MASTERY ── */
 const M = {
-  mastered:    { label:"Mastered",    c:"#e8c07a", bg:"rgba(232,192,122,0.18)", pct:1.0  },
+  mastered:    { label:"Mastered",    c:"#f0cc55", bg:"rgba(232,192,122,0.18)", pct:1.0  },
   proficient:  { label:"Proficient",  c:"#c4956a", bg:"rgba(196,149,106,0.15)", pct:0.66 },
   familiar:    { label:"Familiar",    c:"#a8855a", bg:"rgba(168,133,90,0.12)",  pct:0.40 },
   attempted:   { label:"Attempted",   c:"#7a5535", bg:"rgba(122,85,53,0.12)",   pct:0.15 },
@@ -35,7 +35,7 @@ const COURSES = {
     totalPossibleXP: 3750,
     earnedXP: 700,
     units: [
-      { id:1, title:"Foundations",           color:"#c9a05a", light:"#e8c07a",
+      { id:1, title:"Foundations",           color:"#d4a843", light:"#f0cc55",
         lessons:[
           { id:"1.1", title:"Greetings & Introductions",   mastery:"mastered",   xp:150 },
           { id:"1.2", title:"Numbers, Dates & Time",        mastery:"mastered",   xp:150 },
@@ -245,7 +245,7 @@ function LessonPopup({ lesson, color, light, onOpen, onClose }) {
       onClick={onClose}>
       <div onClick={e => e.stopPropagation()}
         style={{ background:CARD2, border:`1px solid ${color}40`,
-          borderRadius:10, padding:"28px 32px", width:360,
+          borderRadius:12, padding:"36px 40px", width:460,
           backgroundImage:GRAIN, backgroundSize:"300px",
           animation:"popIn .2s cubic-bezier(.34,1.3,.64,1) both",
           position:"relative", overflow:"hidden" }}>
@@ -256,46 +256,46 @@ function LessonPopup({ lesson, color, light, onOpen, onClose }) {
         {[[0,0,"top","left"],[0,"auto","top","right"],["auto",0,"bottom","left"],["auto","auto","bottom","right"]].map(([t,b,tt,lr],i)=>(
           <div key={i} style={{ position:"absolute", top:t===0?0:undefined, bottom:t==="auto"?0:undefined,
             left:lr==="left"?0:undefined, right:lr==="right"?0:undefined,
-            width:14, height:14,
+            width:18, height:18,
             borderTop: tt==="top" ? `1px solid ${color}60` : "none",
             borderBottom: tt==="bottom" ? `1px solid ${color}60` : "none",
             borderLeft: lr==="left" ? `1px solid ${color}60` : "none",
             borderRight: lr==="right" ? `1px solid ${color}60` : "none" }}/>
         ))}
 
-        <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
-          color, letterSpacing:"0.16em", marginBottom:6 }}>LESSON {lesson.id}</p>
-        <h3 style={{ fontFamily:"'Oswald',sans-serif", fontSize:20, color:CREAM,
-          letterSpacing:"0.02em", lineHeight:1.2, marginBottom:14 }}>{lesson.title}</h3>
+        <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
+          color, letterSpacing:"0.16em", marginBottom:8 }}>LESSON {lesson.id}</p>
+        <h3 style={{ fontFamily:"'Oswald',sans-serif", fontSize:26, color:CREAM,
+          letterSpacing:"0.02em", lineHeight:1.2, marginBottom:18 }}>{lesson.title}</h3>
 
         {/* Mastery + ring */}
-        <div style={{ display:"flex", alignItems:"center", gap:16, marginBottom:20 }}>
-          <Ring pct={M[lesson.mastery]?.pct||0} size={64} stroke={5} color={m.c}>
-            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, color:m.c,
+        <div style={{ display:"flex", alignItems:"center", gap:20, marginBottom:24 }}>
+          <Ring pct={M[lesson.mastery]?.pct||0} size={80} stroke={6} color={m.c}>
+            <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:16, color:m.c,
               lineHeight:1 }}>{Math.round((M[lesson.mastery]?.pct||0)*100)}%</span>
           </Ring>
           <div>
-            <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:4 }}>
-              <div style={{ width:7, height:7, borderRadius:"50%", background:m.c }}/>
-              <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
+            <div style={{ display:"flex", alignItems:"center", gap:7, marginBottom:6 }}>
+              <div style={{ width:9, height:9, borderRadius:"50%", background:m.c }}/>
+              <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:14,
                 color:m.c, letterSpacing:"0.1em" }}>{m.label.toUpperCase()}</span>
             </div>
-            <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
+            <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:13,
               color:GOLDLT }}>{lesson.xp} / 150 XP</p>
           </div>
         </div>
 
         {/* XP bar */}
-        <div style={{ height:3, borderRadius:2, background:"rgba(255,255,255,0.06)", marginBottom:20 }}>
-          <div style={{ height:"100%", borderRadius:2, width:`${(lesson.xp/150)*100}%`,
+        <div style={{ height:5, borderRadius:3, background:"rgba(255,255,255,0.06)", marginBottom:24 }}>
+          <div style={{ height:"100%", borderRadius:3, width:`${(lesson.xp/150)*100}%`,
             background:`linear-gradient(90deg,${color},${light})`, transition:"width .5s" }}/>
         </div>
 
-        <div style={{ display:"flex", gap:8 }}>
+        <div style={{ display:"flex", gap:10 }}>
           <button onClick={() => { onOpen(lesson); onClose(); }}
-            style={{ flex:1, fontFamily:"'Oswald',sans-serif", fontSize:11,
-              letterSpacing:"0.1em", textTransform:"uppercase", padding:"11px",
-              borderRadius:5, border:"none", fontWeight:700,
+            style={{ flex:1, fontFamily:"'Oswald',sans-serif", fontSize:14,
+              letterSpacing:"0.1em", textTransform:"uppercase", padding:"14px",
+              borderRadius:6, border:"none", fontWeight:700,
               background: lesson.mastery==="mastered" ? `${color}25` : light,
               color: lesson.mastery==="mastered" ? light : DARK,
               cursor:"pointer", transition:"all .15s" }}>
@@ -303,9 +303,9 @@ function LessonPopup({ lesson, color, light, onOpen, onClose }) {
              lesson.mastery==="not_started" ? "Start Lesson →" : "Continue →"}
           </button>
           <button onClick={onClose}
-            style={{ padding:"11px 16px", borderRadius:5, border:`1px solid ${BORD}`,
+            style={{ padding:"14px 20px", borderRadius:6, border:`1px solid ${BORD}`,
               background:"transparent", color:MUTED, cursor:"pointer",
-              fontFamily:"'Oswald',sans-serif", fontSize:11, letterSpacing:"0.08em" }}>
+              fontFamily:"'Oswald',sans-serif", fontSize:14, letterSpacing:"0.08em" }}>
             Close
           </button>
         </div>
@@ -338,51 +338,68 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Share+Tech+Mono&display=swap');
         *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
         ::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-track { background:transparent; }
-        ::-webkit-scrollbar-thumb { background:rgba(201,160,90,0.18); border-radius:2px; }
+        ::-webkit-scrollbar-thumb { background:rgba(212,168,67,0.18); border-radius:2px; }
         .chip-btn:hover { transform:scale(1.12) !important; z-index:5; }
-        .lang-tab:hover { background:rgba(201,160,90,0.08) !important; }
-        .unit-card:hover { border-color:rgba(201,160,90,0.2) !important; }
+        .lang-tab:hover { background:rgba(212,168,67,0.14) !important; }
+        .unit-card:hover { border-color:rgba(212,168,67,0.2) !important; }
         .open-btn:hover { filter:brightness(1.12); transform:translateY(-1px); }
         @keyframes popIn    { from{opacity:0;transform:scale(.92) translateY(8px)} to{opacity:1;transform:none} }
         @keyframes fadeUp   { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
         @keyframes activePulse { 0%,100%{opacity:.5} 50%{opacity:1} }
         @keyframes shimmer  { 0%{opacity:.6} 50%{opacity:1} 100%{opacity:.6} }
+
+        @media(max-width:767px){
+          .res-overview-topbar { padding:12px 16px !important; gap:8px !important; }
+          .res-overview-body { flex-direction:column !important; overflow:visible !important; height:auto !important; }
+          .res-overview-left { width:100% !important; flex-direction:row !important; flex-wrap:wrap !important; border-right:none !important; border-bottom:1px solid rgba(212,168,67,0.20) !important; padding:12px 14px !important; gap:12px !important; overflow-y:visible !important; max-height:none !important; }
+          .res-overview-right { flex:none !important; width:100% !important; height:auto !important; overflow:visible !important; }
+          .res-overview-right-scroll { overflow-y:visible !important; height:auto !important; }
+          .res-units-padding { padding:0 14px !important; }
+          .res-banner { padding:16px 14px !important; }
+          .res-banner-main-row { flex-wrap:wrap !important; gap:12px !important; }
+          .res-banner-xp { border-left:none !important; padding-left:0 !important; text-align:left !important; }
+        }
+        @media(min-width:768px) and (max-width:1023px){
+          .res-overview-left { width:240px !important; }
+          .res-units-padding { padding:0 20px !important; }
+          .res-banner { padding:20px 24px !important; }
+        }
       `}</style>
 
       {/* ══ TOPBAR ══ */}
-      <div style={{ borderBottom:`1px solid ${BORD}`, padding:"12px 28px",
-        display:"flex", alignItems:"center", gap:12, flexShrink:0,
-        background:CARD, flexWrap:"wrap", rowGap:8 }}>
+      <div className="res-overview-topbar" style={{ borderBottom:`1px solid ${BORD}`, padding:"18px 32px",
+        display:"flex", alignItems:"center", gap:16, flexShrink:0,
+        background:CARD, flexWrap:"wrap", rowGap:12 }}>
         {/* Title */}
-        <div style={{ marginRight:8 }}>
-          <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
-            color:MUTED, letterSpacing:"0.16em", marginBottom:3 }}>RESOURCES / COURSES</p>
-          <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:20, color:CREAM,
+        <div style={{ marginRight:12 }}>
+          <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
+            color:MUTED, letterSpacing:"0.16em", marginBottom:5 }}>RESOURCES / COURSES</p>
+          <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, color:CREAM,
             fontWeight:600, letterSpacing:"0.03em", lineHeight:1 }}>My Languages</h1>
         </div>
 
         {/* Language tabs */}
-        <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
+        <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
           {LANGS.map(l => {
             const lc    = COURSES[l.code];
             const lpct  = Math.round((lc.earnedXP / lc.totalPossibleXP) * 100);
             const active = l.code === langCode;
             return (
               <button key={l.code} onClick={() => setLangCode(l.code)} className="lang-tab"
-                style={{ display:"flex", alignItems:"center", gap:8, padding:"7px 14px",
-                  borderRadius:5, border:`1px solid ${active ? l.color+"60" : BORD}`,
+                style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 18px",
+                  borderRadius:6, border:`1px solid ${active ? l.color+"60" : BORD}`,
                   background: active ? `${l.color}14` : "transparent",
                   cursor:"pointer", transition:"all .15s" }}>
-                <Ring pct={lpct/100} size={30} stroke={3} color={active ? l.light : l.color}
+                <Ring pct={lpct/100} size={42} stroke={4} color={active ? l.light : l.color}
                   trackColor="rgba(255,255,255,0.06)">
-                  <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:7,
+                  <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:10,
                     color: active ? l.light : MUTED }}>{lpct}%</span>
                 </Ring>
                 <div style={{ textAlign:"left" }}>
-                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
+                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:15,
                     color: active ? l.light : MUTED, letterSpacing:"0.06em",
                     lineHeight:1.2 }}>{l.name}</p>
-                  <p style={{ fontFamily:"'Lora',serif", fontSize:9, color:DIM,
+                  <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:DIM,
                     fontStyle:"italic" }}>{l.script}</p>
                 </div>
               </button>
@@ -391,12 +408,12 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
         </div>
 
         {/* Current lesson pill */}
-        <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:8,
+        <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:10,
           background:`${lang.color}10`, border:`1px solid ${lang.color}30`,
-          borderRadius:20, padding:"5px 14px" }}>
-          <div style={{ width:5, height:5, borderRadius:"50%", background:lang.light,
+          borderRadius:20, padding:"8px 18px" }}>
+          <div style={{ width:7, height:7, borderRadius:"50%", background:lang.light,
             animation:"shimmer 2s ease-in-out infinite" }}/>
-          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:13,
             color:lang.light, letterSpacing:"0.1em" }}>
             {langCode==="ES" ? "2.3 — Present Subjunctive" :
              langCode==="FR" ? "1.1 — Bonjour! Greetings" :
@@ -406,55 +423,55 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
       </div>
 
       {/* ══ BODY ══ */}
-      <div style={{ flex:1, display:"flex", overflow:"hidden" }}>
+      <div className="res-overview-body" style={{ flex:1, display:"flex", overflow:"hidden" }}>
 
         {/* LEFT: Big progress panel */}
-        <div style={{ width:260, flexShrink:0, borderRight:`1px solid ${BORD}`,
+        <div className="res-overview-left" style={{ width:320, flexShrink:0, borderRight:`1px solid ${BORD}`,
           background:CARD, display:"flex", flexDirection:"column",
           padding:"0 20px 20px", gap:20, overflowY:"auto" }}>
 
           {/* Big ring */}
           <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:14,
             paddingTop:20, borderBottom:`1px solid ${BORD}`, paddingBottom:20 }}>
-            <Ring pct={0.27} size={140} stroke={8} color={lang.light}
-              trackColor="rgba(201,160,90,0.08)">
-              <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, color:lang.light,
+            <Ring pct={0.27} size={160} stroke={9} color={lang.light}
+              trackColor="rgba(212,168,67,0.14)">
+              <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:36, color:lang.light,
                 lineHeight:1 }}>27%</span>
-              <span style={{ fontFamily:"'Lora',serif", fontSize:10, color:MUTED,
-                fontStyle:"italic", marginTop:2 }}>course</span>
+              <span style={{ fontFamily:"'Lora',serif", fontSize:13, color:MUTED,
+                fontStyle:"italic", marginTop:3 }}>course</span>
             </Ring>
             <div style={{ textAlign:"center" }}>
-              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:16, color:CREAM,
+              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:22, color:CREAM,
                 letterSpacing:"0.03em" }}>{lang.name}</p>
-              <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
-                fontStyle:"italic", marginTop:2 }}>{course.units.length} units · {totalN} skills</p>
+              <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:MUTED,
+                fontStyle:"italic", marginTop:4 }}>{course.units.length} units · {totalN} skills</p>
             </div>
           </div>
 
           {/* XP bar */}
           <div style={{ background:CARD2, border:`1px solid ${BORD}`,
-            borderRadius:6, padding:"14px 16px" }}>
-            <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
-              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+            borderRadius:6, padding:"16px 18px" }}>
+            <div style={{ display:"flex", justifyContent:"space-between", marginBottom:10 }}>
+              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                 color:MUTED, letterSpacing:"0.12em" }}>TOTAL XP</span>
-              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
+              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:14,
                 color:lang.light }}>{course.earnedXP.toLocaleString()}</span>
             </div>
-            <div style={{ height:4, borderRadius:2, background:"rgba(255,255,255,0.05)",
+            <div style={{ height:6, borderRadius:3, background:"rgba(255,255,255,0.05)",
               overflow:"hidden" }}>
-              <div style={{ height:"100%", borderRadius:2, width:`${xpPct*100}%`,
+              <div style={{ height:"100%", borderRadius:3, width:`${xpPct*100}%`,
                 background:`linear-gradient(90deg,${lang.color},${lang.light})`,
                 transition:"width .8s cubic-bezier(.4,0,.2,1)" }}/>
             </div>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:9, color:DIM,
-              fontStyle:"italic", marginTop:6, textAlign:"right" }}>
+            <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:DIM,
+              fontStyle:"italic", marginTop:8, textAlign:"right" }}>
               of {course.totalPossibleXP.toLocaleString()} possible
             </p>
           </div>
 
           {/* Mastery breakdown — mini rings */}
-          <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-            <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+          <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+            <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
               color:MUTED, letterSpacing:"0.12em" }}>SKILL BREAKDOWN</p>
             {[
               { label:"Mastered",   n:masteredN, c:M.mastered.c   },
@@ -463,15 +480,15 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
               { label:"Not started",n:totalN-masteredN-profN-famN-allLessons.filter(l=>l.mastery==="attempted").length, c:M.not_started.c },
             ].map((row,i) => (
               <div key={i} style={{ display:"flex", alignItems:"center", gap:10 }}>
-                <div style={{ flex:1, display:"flex", flexDirection:"column", gap:3 }}>
+                <div style={{ flex:1, display:"flex", flexDirection:"column", gap:5 }}>
                   <div style={{ display:"flex", justifyContent:"space-between" }}>
-                    <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:9.5,
+                    <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
                       letterSpacing:"0.06em", color:row.c }}>{row.label}</span>
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:13,
                       color:MUTED }}>{row.n}</span>
                   </div>
-                  <div style={{ height:2, borderRadius:1, background:"rgba(255,255,255,0.05)" }}>
-                    <div style={{ height:"100%", borderRadius:1, background:row.c,
+                  <div style={{ height:3, borderRadius:2, background:"rgba(255,255,255,0.05)" }}>
+                    <div style={{ height:"100%", borderRadius:2, background:row.c,
                       width:`${(row.n/totalN)*100}%`, transition:"width .6s" }}/>
                   </div>
                 </div>
@@ -480,9 +497,9 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
           </div>
 
           {/* Unit quick-jump */}
-          <div style={{ display:"flex", flexDirection:"column", gap:3, marginTop:4 }}>
-            <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
-              color:MUTED, letterSpacing:"0.12em", marginBottom:4 }}>UNITS</p>
+          <div style={{ display:"flex", flexDirection:"column", gap:4, marginTop:4 }}>
+            <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
+              color:MUTED, letterSpacing:"0.12em", marginBottom:6 }}>UNITS</p>
             {course.units.map(u => {
               const done = u.lessons.filter(l => l.mastery!=="not_started").length;
               const upct = done / u.lessons.length;
@@ -490,17 +507,17 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
                 <button key={u.id}
                   onClick={() => document.getElementById(`unit-${langCode}-${u.id}`)
                     ?.scrollIntoView({behavior:"smooth", block:"start"})}
-                  style={{ display:"flex", alignItems:"center", gap:8, padding:"6px 8px",
+                  style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 10px",
                     borderRadius:4, border:"none", background:"transparent",
                     cursor:"pointer", textAlign:"left", transition:"all .12s" }}
-                  onMouseEnter={e=>e.currentTarget.style.background="rgba(201,160,90,0.07)"}
+                  onMouseEnter={e=>e.currentTarget.style.background="rgba(212,168,67,0.12)"}
                   onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
-                  <Ring pct={upct} size={24} stroke={2.5} color={u.light}
+                  <Ring pct={upct} size={32} stroke={3} color={u.light}
                     trackColor="rgba(255,255,255,0.07)">
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:6,
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
                       color:u.color }}>{u.id}</span>
                   </Ring>
-                  <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:10.5,
+                  <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:14,
                     color:BODY, letterSpacing:"0.03em", lineHeight:1.3 }}>{u.title}</span>
                 </button>
               );
@@ -509,11 +526,11 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
         </div>
 
         {/* RIGHT: Units scroll */}
-        <div style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden" }}>
+        <div className="res-overview-right" style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden" }}>
 
           {/* ══ INTERMEDIATE PROGRESS BANNER ══ */}
           {langCode === "ES" && (
-            <div style={{ flexShrink:0, borderBottom:`1px solid ${lang.color}25`,
+            <div className="res-banner" style={{ flexShrink:0, borderBottom:`1px solid ${lang.color}25`,
               background:`linear-gradient(135deg, ${lang.color}0e 0%, ${CARD2} 60%)`,
               backgroundImage:`${GRAIN}, linear-gradient(135deg, ${lang.color}0e 0%, ${CARD2} 60%)`,
               backgroundSize:"300px, 100%",
@@ -535,7 +552,7 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
               </div>
 
               {/* Main row: pct + bar + XP */}
-              <div style={{ display:"flex", alignItems:"center", gap:24 }}>
+              <div className="res-banner-main-row" style={{ display:"flex", alignItems:"center", gap:24 }}>
 
                 {/* Big % */}
                 <div style={{ flexShrink:0, lineHeight:1 }}>
@@ -574,17 +591,17 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
                 </div>
 
                 {/* XP block */}
-                <div style={{ flexShrink:0, textAlign:"right", paddingLeft:12,
+                <div className="res-banner-xp" style={{ flexShrink:0, textAlign:"right", paddingLeft:16,
                   borderLeft:`1px solid ${lang.color}20` }}>
-                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:36,
+                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:48,
                     color:lang.light, lineHeight:1, letterSpacing:"-0.01em" }}>
-                    175<span style={{ fontSize:14, color:MUTED, fontWeight:400,
-                      marginLeft:4 }}>XP</span>
+                    175<span style={{ fontSize:20, color:MUTED, fontWeight:400,
+                      marginLeft:5 }}>XP</span>
                   </p>
-                  <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:DIM,
-                    fontStyle:"italic", marginTop:4 }}>of 1,050 in this unit</p>
-                  <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
-                    color:lang.color, letterSpacing:"0.1em", marginTop:6 }}>
+                  <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:DIM,
+                    fontStyle:"italic", marginTop:6 }}>of 1,050 in this unit</p>
+                  <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:12,
+                    color:lang.color, letterSpacing:"0.1em", marginTop:8 }}>
                     3 / 7 SKILLS STARTED</p>
                 </div>
               </div>
@@ -592,7 +609,7 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
           )}
 
           {/* SCROLLABLE CONTENT */}
-          <div style={{ flex:1, overflowY:"auto", padding:"0 0 60px" }}>
+          <div className="res-overview-right-scroll" style={{ flex:1, overflowY:"auto", padding:"0 0 60px" }}>
 
           {/* Legend */}
           <div style={{ padding:"16px 36px 0" }}>
@@ -611,7 +628,7 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
           </div>
           </div>{/* end legend padding wrapper */}
 
-          <div style={{ padding:"0 36px" }}>
+          <div className="res-units-padding" style={{ padding:"0 36px" }}>
           {/* Units */}
           {course.units.map((unit, ui) => {
             const nonTest = unit.lessons.filter(l => !l.isTest);
@@ -696,15 +713,15 @@ export default function SpanishCourseOverview({ onOpenLesson }) {
           })}
 
           </div>{/* end units padding wrapper */}
-          <div style={{ padding:"0 36px" }}>
+          <div className="res-units-padding" style={{ padding:"0 36px" }}>
           {/* Course challenge */}
-          <div style={{ border:`1px solid rgba(201,160,90,0.15)`,
+          <div style={{ border:`1px solid rgba(212,168,67,0.15)`,
             borderLeft:`4px solid ${lang.color}`,
             borderRadius:"0 8px 8px 0", padding:"20px 24px",
             display:"flex", alignItems:"center", gap:20,
             background:`${lang.color}06`, marginTop:8 }}>
             <Ring pct={overallPct/100} size={56} stroke={4} color={lang.light}
-              trackColor="rgba(201,160,90,0.08)">
+              trackColor="rgba(212,168,67,0.14)">
               <svg width={16} height={16} viewBox="0 0 24 24" fill={overallPct>=80?lang.light:DIM}>
                 <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
               </svg>

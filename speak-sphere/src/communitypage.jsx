@@ -1,17 +1,17 @@
 import { useState } from "react";
 
 /* ─── DESIGN TOKENS ─────────────────────────────────────────── */
-const DARK   = "#140b04";
-const CARD   = "#1a0d05";
+const DARK   = "#0d0702";
+const CARD   = "#1b0f06";
 const CARD2  = "#200f06";
-const GOLD   = "#c9a05a";
-const GOLDLT = "#e8c07a";
-const CREAM  = "#eadcca";
-const MUTED  = "#9a7d5a";
-const DIM    = "#5a3a22";
-const BORD   = "rgba(201,160,90,0.12)";
-const BORD2  = "rgba(201,160,90,0.06)";
-const BODY   = "#c4aa80";
+const GOLD   = "#d4a843";
+const GOLDLT = "#f0cc55";
+const CREAM  = "#f5ede0";
+const MUTED  = "#c8aa80";
+const DIM    = "#a08050";
+const BORD   = "rgba(212,168,67,0.20)";
+const BORD2  = "rgba(212,168,67,0.06)";
+const BODY   = "#c8aa80";
 const A_GREEN  = "#7db87d";
 const A_BLUE   = "#6a9ec0";
 const A_ROSE   = "#c07070";
@@ -23,19 +23,30 @@ const CSS = `
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
   ::-webkit-scrollbar { width:4px; }
   ::-webkit-scrollbar-track { background:transparent; }
-  ::-webkit-scrollbar-thumb { background:rgba(201,160,90,0.2); border-radius:2px; }
+  ::-webkit-scrollbar-thumb { background:rgba(212,168,67,0.2); border-radius:2px; }
   @keyframes fadeUp  { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
   @keyframes popIn   { from{opacity:0;transform:scale(0.94)} to{opacity:1;transform:scale(1)} }
   @keyframes pulse   { 0%,100%{opacity:1} 50%{opacity:0.35} }
   @keyframes ticker  { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-  .post-card:hover   { border-color:rgba(201,160,90,0.28) !important; box-shadow:0 4px 28px rgba(0,0,0,0.45) !important; }
-  .like-btn:hover    { background:rgba(201,160,90,0.1) !important; border-color:rgba(201,160,90,0.35) !important; }
-  .like-btn:hover span { color:#eadcca !important; }
+  .post-card:hover   { border-color:rgba(212,168,67,0.28) !important; box-shadow:0 4px 28px rgba(0,0,0,0.45) !important; }
+  .like-btn:hover    { background:rgba(212,168,67,0.1) !important; border-color:rgba(212,168,67,0.35) !important; }
+  .like-btn:hover span { color:#f5ede0 !important; }
   .stamp-tab         { transition:all .16s; cursor:pointer; }
   .stamp-tab:hover   { opacity:0.8 !important; }
-  .user-row:hover    { background:rgba(201,160,90,0.05) !important; }
+  .user-row:hover    { background:rgba(212,168,67,0.05) !important; }
   .tag-btn:hover     { opacity:0.75; }
   .submit-btn:hover  { filter:brightness(1.1); transform:translateY(-1px); }
+  @media(max-width:768px){
+    .comm-layout { flex-direction:column !important; }
+    .comm-sidebar { display:none !important; }
+    .comm-feed { min-width:0 !important; }
+    .comm-masthead-date { grid-template-columns:1fr !important; text-align:center !important; gap:4px !important; }
+    .comm-composer { padding:14px 16px !important; }
+    .comm-post { padding:14px 16px !important; }
+  }
+  @media(min-width:768px) and (max-width:1023px){
+    .comm-sidebar { width:220px !important; }
+  }
 `;
 
 const LANGS = {
@@ -48,7 +59,7 @@ const TYPE_META = {
   tip:        { label:"TIP",       c:A_GREEN, bg:"rgba(125,184,125,0.1)"  },
   discussion: { label:"DISCUSS",   c:A_BLUE,  bg:"rgba(106,158,192,0.1)"  },
   question:   { label:"QUESTION",  c:A_AMBER, bg:"rgba(212,169,106,0.1)"  },
-  milestone:  { label:"MILESTONE", c:GOLD,    bg:"rgba(201,160,90,0.1)"   },
+  milestone:  { label:"MILESTONE", c:GOLD,    bg:"rgba(212,168,67,0.1)"   },
   resource:   { label:"RESOURCE",  c:A_ROSE,  bg:"rgba(192,112,112,0.1)"  },
 };
 
@@ -124,11 +135,11 @@ function RankMedal({ rank }) {
   const cols = { 1:["#f5d060","#8a6a00"], 2:["#c0c8d0","#6a7a84"], 3:["#d49060","#6a3010"] };
   const [fg, bg2] = cols[rank] || [DIM, "transparent"];
   return (
-    <div style={{ width:22, height:22, borderRadius:3, flexShrink:0,
+    <div style={{ width:26, height:26, borderRadius:3, flexShrink:0,
       background: rank<=3 ? `linear-gradient(135deg,${fg},${bg2})` : "transparent",
       border: rank>3 ? `1px solid ${DIM}` : "none",
       display:"flex", alignItems:"center", justifyContent:"center",
-      fontFamily:"'Oswald',sans-serif", fontSize:11, fontWeight:700,
+      fontFamily:"'Oswald',sans-serif", fontSize:13, fontWeight:700,
       color: rank<=3 ? DARK : DIM }}>
       {rank}
     </div>
@@ -171,19 +182,19 @@ export default function CommunityPage() {
       <style>{CSS}</style>
 
       {/* ══ LIVE TICKER ══ */}
-      <div style={{ height:26, background:"#0c0600", borderBottom:`1px solid ${BORD}`,
+      <div style={{ height:42, background:"#0c0600", borderBottom:`1px solid ${BORD}`,
         display:"flex", alignItems:"center", overflow:"hidden", flexShrink:0 }}>
-        <div style={{ background:GOLD, padding:"0 12px", height:"100%", display:"flex",
+        <div style={{ background:GOLD, padding:"0 18px", height:"100%", display:"flex",
           alignItems:"center", flexShrink:0 }}>
-          <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:9, fontWeight:700,
-            color:DARK, letterSpacing:"0.14em" }}>LIVE</span>
+          <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:14, fontWeight:700,
+            color:CREAM, letterSpacing:"0.14em" }}>LIVE</span>
         </div>
         <div style={{ flex:1, overflow:"hidden" }}>
           <div style={{ display:"inline-flex", gap:56, animation:"ticker 40s linear infinite",
             whiteSpace:"nowrap" }}>
             {[...TICKER_ITEMS,...TICKER_ITEMS].map((t,i) => (
-              <span key={i} style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
-                color:BODY, letterSpacing:"0.05em", lineHeight:"26px" }}>◆ {t}</span>
+              <span key={i} style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:14,
+                color:BODY, letterSpacing:"0.05em", lineHeight:"42px" }}>◆ {t}</span>
             ))}
           </div>
         </div>
@@ -192,15 +203,15 @@ export default function CommunityPage() {
       {/* ══ MASTHEAD ══ */}
       <header style={{ background:CARD2, borderBottom:`2px solid ${GOLD}`, flexShrink:0 }}>
         {/* Date bar */}
-        <div style={{ padding:"7px 24px", borderBottom:`1px solid ${BORD}`,
-          display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+        <div className="comm-masthead-date" style={{ padding:"10px 24px", borderBottom:`1px solid ${BORD}`,
+          display:"grid", gridTemplateColumns:"1fr auto 1fr", alignItems:"center" }}>
+          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:14,
             color:DIM, letterSpacing:"0.12em" }}>SPEAKSPHERE · COMMUNITY DISPATCH</span>
-          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9, color:DIM }}>
+          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:14, color:DIM, textAlign:"center" }}>
             {new Date().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"})}
           </span>
-          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
-            color:DIM }}>{posts.length} posts · {ACTIVE_NOW.length} online</span>
+          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:14,
+            color:DIM, textAlign:"right" }}>{posts.length} posts · {ACTIVE_NOW.length} online</span>
         </div>
 
         {/* Big title + tabs */}
@@ -222,10 +233,10 @@ export default function CommunityPage() {
                     borderBottom: active ? `2px solid ${lm.c}` : `1px solid ${BORD}`,
                     background: active ? `${lm.c}15` : "transparent",
                     marginBottom: active ? -2 : 0,
-                    fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.1em",
+                    fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.1em",
                     color: active ? lm.c : MUTED, borderRadius:"4px 4px 0 0",
                     display:"flex", flexDirection:"column", alignItems:"center", gap:0 }}>
-                  {lm.script && <span style={{ fontFamily:"Georgia,serif", fontSize:10, opacity:0.65 }}>{lm.script}</span>}
+                  {lm.script && <span style={{ fontFamily:"Georgia,serif", fontSize:12, opacity:0.65 }}>{lm.script}</span>}
                   <span>{lm.stamp || lm.code}</span>
                 </button>
               );
@@ -235,8 +246,8 @@ export default function CommunityPage() {
               style={{ marginLeft:10, padding:"5px 16px 7px", borderRadius:"4px 4px 0 0",
                 border:`1px solid ${composing ? GOLD+"70" : BORD}`,
                 borderBottom: composing ? `2px solid ${GOLD}` : `1px solid ${BORD}`,
-                background: composing ? "rgba(201,160,90,0.12)" : "transparent",
-                fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.1em",
+                background: composing ? "rgba(212,168,67,0.20)" : "transparent",
+                fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.1em",
                 color: composing ? GOLD : MUTED, marginBottom: composing ? -2 : 0 }}>
               {composing ? "✕ CANCEL" : "+ DISPATCH"}
             </button>
@@ -245,10 +256,10 @@ export default function CommunityPage() {
       </header>
 
       {/* ══ BODY ══ */}
-      <div style={{ flex:1, display:"flex", overflow:"hidden" }}>
+      <div className="comm-layout" style={{ flex:1, display:"flex", overflow:"hidden" }}>
 
         {/* ── FEED ── */}
-        <div style={{ flex:1, overflowY:"auto", padding:"18px 24px", display:"flex",
+        <div className="comm-feed" style={{ flex:1, overflowY:"auto", padding:"18px 24px", display:"flex",
           flexDirection:"column", gap:0 }}>
 
           {/* Flash */}
@@ -266,16 +277,16 @@ export default function CommunityPage() {
 
           {/* Composer */}
           {composing && (
-            <div style={{ marginBottom:18, background:CARD,
+            <div className="comm-composer" style={{ marginBottom:18, background:CARD,
               border:`1px solid ${GOLD}28`, borderTop:`2px solid ${GOLD}`,
               borderRadius:"0 0 5px 5px", padding:"18px 20px",
               animation:"fadeUp .2s ease both" }}>
               <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom:14 }}>
                 <Avatar initials="MM" color={GOLD} isMe size={34}/>
                 <div>
-                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
+                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:15,
                     color:CREAM, letterSpacing:"0.04em" }}>Mishka M.</p>
-                  <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                  <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                     color:MUTED, letterSpacing:"0.08em" }}>Journeyman · Intermediate Spanish</p>
                 </div>
                 <div style={{ flex:1, height:1, background:BORD2, marginLeft:8 }}/>
@@ -296,7 +307,7 @@ export default function CommunityPage() {
                     style={{ padding:"3px 9px", borderRadius:2, cursor:"pointer",
                       border:`1px solid ${postLang===code ? lm.c+"60" : BORD2}`,
                       background: postLang===code ? `${lm.c}18` : "transparent",
-                      fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                      fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       letterSpacing:"0.1em", color: postLang===code ? lm.c : DIM,
                       transition:"all .12s" }}>{lm.stamp}</button>
                 ))}
@@ -306,15 +317,15 @@ export default function CommunityPage() {
                     style={{ padding:"3px 9px", borderRadius:2, cursor:"pointer",
                       border:`1px solid ${postType===t ? tm.c+"60" : BORD2}`,
                       background: postType===t ? tm.bg : "transparent",
-                      fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                      fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       letterSpacing:"0.08em", color: postType===t ? tm.c : DIM,
                       transition:"all .12s" }}>{tm.label}</button>
                 ))}
                 <button onClick={submitPost} disabled={!postText.trim()} className="submit-btn"
                   style={{ marginLeft:"auto", padding:"6px 20px", borderRadius:3, border:"none",
                     background: postText.trim() ? GOLD : DIM, cursor: postText.trim()?"pointer":"default",
-                    fontFamily:"'Oswald',sans-serif", fontSize:11, letterSpacing:"0.12em",
-                    color:DARK, fontWeight:700, transition:"all .15s",
+                    fontFamily:"'Oswald',sans-serif", fontSize:13, letterSpacing:"0.12em",
+                    color:CREAM, fontWeight:700, transition:"all .15s",
                     opacity: postText.trim() ? 1 : 0.4 }}>PUBLISH</button>
               </div>
             </div>
@@ -323,7 +334,7 @@ export default function CommunityPage() {
           {/* Section rule */}
           <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:16 }}>
             <div style={{ flex:1, height:1, background:BORD }}/>
-            <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+            <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
               color:DIM, letterSpacing:"0.16em", textTransform:"uppercase" }}>
               {filter==="ALL" ? "All Dispatches" : `${LANGS[filter]?.name} Dispatches`} — {filtered.length}
             </span>
@@ -335,7 +346,7 @@ export default function CommunityPage() {
             const lm = LANGS[post.lang];
             const tm = TYPE_META[post.type] || TYPE_META.discussion;
             return (
-              <div key={post.id} className="post-card"
+              <div key={post.id} className="post-card comm-post"
                 style={{ marginBottom:10, background:CARD,
                   border:`1px solid ${post.isMe ? GOLD+"28" : BORD}`,
                   borderLeft:`3px solid ${lm.c}`,
@@ -348,40 +359,40 @@ export default function CommunityPage() {
                   <Avatar initials={post.initials} color={post.authorColor} isMe={!!post.isMe}/>
                   <div style={{ flex:1 }}>
                     <div style={{ display:"flex", alignItems:"center", gap:7, flexWrap:"wrap", marginBottom:2 }}>
-                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
                         letterSpacing:"0.14em", color:tm.c, background:tm.bg,
-                        border:`1px solid ${tm.c}40`, borderRadius:2, padding:"1px 6px" }}>
+                        border:`1px solid ${tm.c}40`, borderRadius:2, padding:"2px 8px" }}>
                         {tm.label}
                       </span>
-                      <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:14,
+                      <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:16,
                         color: post.isMe ? GOLD : CREAM, letterSpacing:"0.03em" }}>
                         {post.author}
                       </span>
                       {post.isMe && (
-                        <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:7,
+                        <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
                           color:GOLD, border:`1px solid ${GOLD}40`, borderRadius:2,
-                          padding:"1px 5px", letterSpacing:"0.1em" }}>YOU</span>
+                          padding:"1px 6px", letterSpacing:"0.1em" }}>YOU</span>
                       )}
                       {post.badge && (
-                        <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:7,
+                        <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
                           color:A_GREEN, border:`1px solid ${A_GREEN}35`,
-                          borderRadius:2, padding:"1px 5px", letterSpacing:"0.08em" }}>
+                          borderRadius:2, padding:"1px 6px", letterSpacing:"0.08em" }}>
                           {post.badge}
                         </span>
                       )}
-                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:7,
+                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
                         color:lm.c, border:`1px solid ${lm.c}35`,
-                        borderRadius:2, padding:"1px 6px", letterSpacing:"0.08em" }}>
+                        borderRadius:2, padding:"2px 7px", letterSpacing:"0.08em" }}>
                         {lm.name.toUpperCase()}
                       </span>
                     </div>
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       color:DIM, letterSpacing:"0.06em" }}>{post.level} · {post.time}</span>
                   </div>
                 </div>
 
                 {/* Body */}
-                <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:BODY,
+                <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:BODY,
                   lineHeight:1.78, marginBottom:12, paddingLeft:45 }}>{post.text}</p>
 
                 {/* Actions */}
@@ -390,14 +401,14 @@ export default function CommunityPage() {
                     style={{ display:"flex", alignItems:"center", gap:5, padding:"3px 11px",
                       borderRadius:3, cursor:"pointer",
                       border:`1px solid ${post.liked ? GOLD+"55" : BORD2}`,
-                      background: post.liked ? "rgba(201,160,90,0.08)" : "transparent",
+                      background: post.liked ? "rgba(212,168,67,0.14)" : "transparent",
                       transition:"all .14s" }}>
                     <svg width={12} height={12} viewBox="0 0 24 24"
                       fill={post.liked ? GOLD : "none"}
                       stroke={post.liked ? GOLD : MUTED} strokeWidth="1.8">
                       <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
                     </svg>
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       color: post.liked ? GOLD : MUTED, letterSpacing:"0.06em",
                       transition:"color .14s" }}>{post.likes}</span>
                   </button>
@@ -410,13 +421,13 @@ export default function CommunityPage() {
                       stroke={MUTED} strokeWidth="1.8" strokeLinecap="round">
                       <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
                     </svg>
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       color:MUTED, letterSpacing:"0.06em" }}>{post.comments}</span>
                   </button>
 
                   <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:5 }}>
                     <div style={{ width:4, height:4, borderRadius:"50%", background:`${lm.c}70` }}/>
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       color:DIM, letterSpacing:"0.06em" }}>{post.time}</span>
                   </div>
                 </div>
@@ -437,17 +448,17 @@ export default function CommunityPage() {
         </div>
 
         {/* ── RIGHT SIDEBAR ── */}
-        <div style={{ width:252, borderLeft:`1px solid ${BORD}`, background:CARD2,
+        <div className="comm-sidebar" style={{ width:290, borderLeft:`1px solid ${BORD}`, background:CARD2,
           display:"flex", flexDirection:"column", overflowY:"auto", flexShrink:0 }}>
 
           {/* Leaderboard */}
           <div style={{ padding:"14px 16px 0" }}>
             <div style={{ borderTop:`2px solid ${GOLD}`, borderBottom:`1px solid ${BORD}`,
               padding:"7px 0", marginBottom:12 }}>
-              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:18,
+              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:22,
                 fontWeight:600, color:CREAM, letterSpacing:"0.06em",
                 textTransform:"uppercase", lineHeight:1.1 }}>Leaderboard</p>
-              <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+              <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                 color:DIM, letterSpacing:"0.12em", textTransform:"uppercase", marginTop:2 }}>
                 Top Learners by XP
               </p>
@@ -457,20 +468,20 @@ export default function CommunityPage() {
               <div key={i} className="user-row"
                 style={{ display:"flex", alignItems:"center", gap:8, padding:"6px 3px",
                   borderRadius:3, transition:"background .12s",
-                  background: u.isMe ? "rgba(201,160,90,0.05)" : "transparent",
+                  background: u.isMe ? "rgba(212,168,67,0.05)" : "transparent",
                   borderBottom:`1px solid ${BORD2}`, marginBottom:2 }}>
                 <RankMedal rank={u.rank}/>
                 <Avatar initials={u.initials} color={u.c} size={26} isMe={!!u.isMe}/>
                 <div style={{ flex:1, minWidth:0 }}>
-                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
+                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
                     color: u.isMe ? GOLD : CREAM, letterSpacing:"0.02em",
                     overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                     {u.name}{u.isMe ? " ★" : ""}
                   </p>
                   <div style={{ display:"flex", gap:4, alignItems:"center" }}>
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       color:MUTED }}>{u.xp.toLocaleString()} XP</span>
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       color:u.c }}>· {u.streak}d</span>
                   </div>
                   <div style={{ marginTop:2, height:2, borderRadius:1,
@@ -491,7 +502,7 @@ export default function CommunityPage() {
               display:"flex", alignItems:"center", gap:7 }}>
               <div style={{ width:6, height:6, borderRadius:"50%", background:A_GREEN,
                 animation:"pulse 2s infinite" }}/>
-              <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+              <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                 color:MUTED, letterSpacing:"0.12em", textTransform:"uppercase" }}>
                 Active Now · {ACTIVE_NOW.length}
               </p>
@@ -509,11 +520,11 @@ export default function CommunityPage() {
                     background: u.status.includes("session") ? A_AMBER : A_GREEN }}/>
                 </div>
                 <div style={{ flex:1, minWidth:0 }}>
-                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:CREAM,
+                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, color:CREAM,
                     letterSpacing:"0.02em", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                     {u.name}
                   </p>
-                  <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                  <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                     color: u.status.includes("session") ? A_AMBER : A_GREEN,
                     letterSpacing:"0.04em" }}>{u.status}</p>
                 </div>
@@ -525,7 +536,7 @@ export default function CommunityPage() {
           <div style={{ padding:"12px 16px", marginTop:6 }}>
             <div style={{ borderTop:`2px solid ${BORD}`, borderBottom:`1px solid ${BORD2}`,
               padding:"7px 0", marginBottom:12 }}>
-              <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+              <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                 color:MUTED, letterSpacing:"0.12em", textTransform:"uppercase" }}>
                 This Week's Figures
               </p>
@@ -539,9 +550,9 @@ export default function CommunityPage() {
               <div key={i} style={{ display:"flex", justifyContent:"space-between",
                 alignItems:"baseline", marginBottom:9,
                 borderBottom:`1px dotted ${BORD2}`, paddingBottom:8 }}>
-                <span style={{ fontFamily:"'Lora',serif", fontSize:12, color:BODY,
+                <span style={{ fontFamily:"'Lora',serif", fontSize:14, color:BODY,
                   fontStyle:"italic" }}>{s.label}</span>
-                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:18,
+                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:22,
                   color:GOLDLT, letterSpacing:"0.04em", lineHeight:1 }}>{s.value}</span>
               </div>
             ))}

@@ -1,17 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 
 /* ─── DESIGN TOKENS ─────────────────────────────────────────── */
-const DARK   = "#140b04";
-const CARD   = "#1a0d05";
+const DARK   = "#0d0702";
+const CARD   = "#1b0f06";
 const CARD2  = "#200f06";
-const GOLD   = "#c9a05a";
-const GOLDLT = "#e8c07a";
-const CREAM  = "#eadcca";
-const MUTED  = "#9a7d5a";
-const DIM    = "#5a3a22";
-const BORD   = "rgba(201,160,90,0.12)";
-const BORD2  = "rgba(201,160,90,0.06)";
-const BODY   = "#c4aa80";
+const GOLD   = "#d4a843";
+const GOLDLT = "#f0cc55";
+const CREAM  = "#f5ede0";
+const MUTED  = "#c8aa80";
+const DIM    = "#a08050";
+const BORD   = "rgba(212,168,67,0.20)";
+const BORD2  = "rgba(212,168,67,0.10)";
+const BODY   = "#c8aa80";
 const A_GREEN  = "#7db87d";
 const A_BLUE   = "#6a9ec0";
 const A_ROSE   = "#c07070";
@@ -25,7 +25,7 @@ const CSS = `
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
   ::-webkit-scrollbar { width:4px; }
   ::-webkit-scrollbar-track { background:transparent; }
-  ::-webkit-scrollbar-thumb { background:rgba(201,160,90,0.18); border-radius:2px; }
+  ::-webkit-scrollbar-thumb { background:rgba(212,168,67,0.18); border-radius:2px; }
 
   @keyframes fadeUp    { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
   @keyframes fadeIn    { from{opacity:0} to{opacity:1} }
@@ -36,13 +36,25 @@ const CSS = `
   @keyframes shimmer   { 0%{opacity:0.5} 50%{opacity:1} 100%{opacity:0.5} }
 
   .pal-card        { transition: border-color .2s, transform .2s, box-shadow .2s; }
-  .pal-card:hover  { border-color:rgba(201,160,90,0.3) !important; transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.5) !important; }
-  .pal-row:hover   { background:rgba(201,160,90,0.06) !important; }
+  .pal-card:hover  { border-color:rgba(212,168,67,0.3) !important; transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,0.5) !important; }
+  .pal-row:hover   { background:rgba(212,168,67,0.10) !important; }
   .send-btn:hover  { filter:brightness(1.1); transform:translateY(-1px); }
   .tag-chip        { transition: all .14s; }
   .tag-chip:hover  { opacity:0.8; }
-  .view-btn:hover  { border-color:rgba(201,160,90,0.4) !important; color:#eadcca !important; }
+  .view-btn:hover  { border-color:rgba(212,168,67,0.4) !important; color:#f5ede0 !important; }
   .correction-tip  { transition: max-height .3s ease, opacity .3s ease; }
+
+  @media(max-width:767px){
+    .pp-layout { flex-direction:column !important; }
+    .pp-leftsidebar { width:100% !important; max-height:120px !important; overflow-y:auto !important; border-right:none !important; border-bottom:1px solid rgba(212,168,67,0.20) !important; }
+    .pp-main { min-width:0 !important; overflow-x:hidden !important; }
+    .pp-discover-grid { grid-template-columns:1fr !important; }
+    .pp-topbar { flex-wrap:wrap !important; padding:12px 14px !important; gap:8px !important; }
+  }
+  @media(min-width:768px) and (max-width:1023px){
+    .pp-leftsidebar { width:180px !important; }
+    .pp-discover-grid { grid-template-columns:repeat(auto-fill,minmax(260px,1fr)) !important; }
+  }
 `;
 
 /* ─── LANGUAGE META ─────────────────────────────────────────── */
@@ -189,10 +201,10 @@ function Avatar({ initials, color, size=38, online=false }) {
 /* ─── INTEREST TAG ──────────────────────────────────────────── */
 function Tag({ label, color=DIM }) {
   return (
-    <span className="tag-chip" style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+    <span className="tag-chip" style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
       letterSpacing:"0.1em", textTransform:"uppercase",
       color, border:`1px solid ${color}50`, borderRadius:2,
-      padding:"2px 7px", background:`${color}10` }}>
+      padding:"3px 9px", background:`${color}10` }}>
       {label}
     </span>
   );
@@ -200,7 +212,7 @@ function Tag({ label, color=DIM }) {
 
 /* ─── MATCH RING ────────────────────────────────────────────── */
 function MatchRing({ pct, color }) {
-  const size=44, stroke=4, r=(size-stroke)/2;
+  const size=54, stroke=5, r=(size-stroke)/2;
   const circ = 2*Math.PI*r;
   return (
     <div style={{ position:"relative", width:size, height:size, flexShrink:0 }}>
@@ -214,9 +226,9 @@ function MatchRing({ pct, color }) {
       </svg>
       <div style={{ position:"absolute", inset:0, display:"flex",
         flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
-        <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
+        <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
           fontWeight:700, color, lineHeight:1 }}>{pct}</span>
-        <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:6,
+        <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
           color:MUTED, letterSpacing:"0.06em" }}>%</span>
       </div>
     </div>
@@ -246,21 +258,21 @@ function LetterBubble({ msg, palColor, showCorrection }) {
           borderTop:`1px solid ${isMe?GOLD:palColor}50`,
           [isMe?"borderRight":"borderLeft"]:`1px solid ${isMe?GOLD:palColor}50` }}/>
 
-        <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:BODY,
+        <p style={{ fontFamily:"'Lora',serif", fontSize:15, color:BODY,
           lineHeight:1.8, fontStyle:"italic" }}>{msg.text}</p>
 
         <div style={{ display:"flex", alignItems:"center", gap:8, marginTop:8,
           justifyContent: isMe ? "flex-end" : "flex-start" }}>
-          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
             color:DIM, letterSpacing:"0.06em" }}>
             {LANG_META[msg.lang]?.name || msg.lang} · {msg.time}
           </span>
           {isMe && msg.correction && (
             <button onClick={() => setCorrOpen(o=>!o)}
-              style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+              style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
                 letterSpacing:"0.08em", color: corrOpen ? A_AMBER : MUTED,
                 background:"transparent", border:`1px solid ${corrOpen ? A_AMBER+"50" : BORD2}`,
-                borderRadius:2, padding:"1px 7px", cursor:"pointer",
+                borderRadius:2, padding:"2px 8px", cursor:"pointer",
                 transition:"all .15s" }}>
               {corrOpen ? "hide tip" : "✦ tip"}
             </button>
@@ -280,14 +292,14 @@ function LetterBubble({ msg, palColor, showCorrection }) {
               <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
             </svg>
             <div>
-              <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+              <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                 color:A_AMBER, letterSpacing:"0.1em", marginBottom:4 }}>WRITING TIP</p>
-              <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:BODY,
+              <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY,
                 lineHeight:1.6, fontStyle:"italic" }}>
                 "{msg.correction.original}" →{" "}
                 <span style={{ color:A_GREEN }}>"{msg.correction.suggestion}"</span>
               </p>
-              <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:MUTED,
+              <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:MUTED,
                 lineHeight:1.5, marginTop:4 }}>{msg.correction.note}</p>
             </div>
           </div>
@@ -375,14 +387,14 @@ export default function PenPalsPage() {
       <style>{CSS}</style>
 
       {/* ══ TOPBAR ══ */}
-      <header style={{ borderBottom:`1px solid ${BORD}`, padding:"13px 24px",
+      <header className="pp-topbar" style={{ borderBottom:`1px solid ${BORD}`, padding:"13px 24px",
         background:CARD2, flexShrink:0, display:"flex", alignItems:"center", gap:16 }}>
         <div>
-          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
             letterSpacing:"0.14em", color:MUTED, textTransform:"uppercase" }}>
             Speaksphere / Pen Pals
           </span>
-          <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:28, fontWeight:700,
+          <h1 style={{ fontFamily:"'Oswald',sans-serif", fontSize:34, fontWeight:700,
             color:CREAM, letterSpacing:"0.04em", lineHeight:1, marginTop:2 }}>
             Pen Pals
           </h1>
@@ -393,16 +405,16 @@ export default function PenPalsPage() {
           borderRadius:4, overflow:"hidden" }}>
           {[["discover","Discover"],["thread","Correspondence"]].map(([v,label]) => (
             <button key={v} onClick={() => setView(v)}
-              style={{ padding:"6px 16px", border:"none", cursor:"pointer",
-                background: view===v ? `rgba(201,160,90,0.12)` : "transparent",
+              style={{ padding:"7px 18px", border:"none", cursor:"pointer",
+                background: view===v ? `rgba(212,168,67,0.20)` : "transparent",
                 borderRight: v==="discover" ? `1px solid ${BORD}` : "none",
-                fontFamily:"'Oswald',sans-serif", fontSize:11,
+                fontFamily:"'Oswald',sans-serif", fontSize:13,
                 letterSpacing:"0.08em", textTransform:"uppercase",
                 color: view===v ? GOLD : MUTED, transition:"all .15s" }}>
               {label}
               {v==="thread" && activePals.length > 0 && (
                 <span style={{ marginLeft:6, background:GOLD, color:DARK,
-                  borderRadius:"50%", width:14, height:14, fontSize:8,
+                  borderRadius:"50%", width:17, height:17, fontSize:10,
                   fontFamily:"'Share Tech Mono',monospace",
                   display:"inline-flex", alignItems:"center", justifyContent:"center" }}>
                   {activePals.length}
@@ -419,10 +431,10 @@ export default function PenPalsPage() {
               const lm = LANG_META[f];
               return (
                 <button key={f} onClick={() => setFilter(f)}
-                  style={{ padding:"5px 12px", borderRadius:3,
+                  style={{ padding:"6px 14px", borderRadius:3,
                     border:`1px solid ${filter===f ? (lm?.c || GOLD)+"55" : BORD2}`,
                     background: filter===f ? `${lm?.c || GOLD}15` : "transparent",
-                    fontFamily:"'Oswald',sans-serif", fontSize:10,
+                    fontFamily:"'Oswald',sans-serif", fontSize:12,
                     letterSpacing:"0.08em", textTransform:"uppercase",
                     color: filter===f ? (lm?.c || GOLD) : MUTED,
                     cursor:"pointer", transition:"all .15s" }}>
@@ -437,9 +449,9 @@ export default function PenPalsPage() {
         <div style={{ marginLeft:"auto", display:"flex", gap:20 }}>
           {[["Active Pals", activePals.length],["Letters Sent", profiles.reduce((a,p)=>a+p.letters,0)]].map(([l,v]) => (
             <div key={l} style={{ textAlign:"right" }}>
-              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:18,
+              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:22,
                 fontWeight:700, color:GOLD, lineHeight:1 }}>{v}</p>
-              <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+              <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:10,
                 color:MUTED, letterSpacing:"0.1em", textTransform:"uppercase" }}>{l}</p>
             </div>
           ))}
@@ -447,14 +459,14 @@ export default function PenPalsPage() {
       </header>
 
       {/* ══ BODY ══ */}
-      <div style={{ flex:1, display:"flex", overflow:"hidden" }}>
+      <div className="pp-layout" style={{ flex:1, display:"flex", overflow:"hidden" }}>
 
         {/* ── LEFT SIDEBAR: active pals ── */}
-        <div style={{ width:220, borderRight:`1px solid ${BORD}`, background:CARD2,
+        <div className="pp-leftsidebar" style={{ width:220, borderRight:`1px solid ${BORD}`, background:CARD2,
           display:"flex", flexDirection:"column", flexShrink:0, overflow:"hidden" }}>
 
           <div style={{ padding:"12px 14px 8px", borderBottom:`1px solid ${BORD}` }}>
-            <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+            <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
               letterSpacing:"0.14em", color:MUTED, textTransform:"uppercase" }}>
               Active Correspondence
             </span>
@@ -462,7 +474,7 @@ export default function PenPalsPage() {
 
           <div style={{ flex:1, overflowY:"auto", padding:"6px 0" }}>
             {activePals.length === 0 ? (
-              <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:DIM,
+              <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:DIM,
                 fontStyle:"italic", padding:"16px 14px", lineHeight:1.6 }}>
                 Send your first letter to start a correspondence.
               </p>
@@ -479,12 +491,12 @@ export default function PenPalsPage() {
                   <div style={{ display:"flex", gap:9, alignItems:"center" }}>
                     <Avatar initials={p.initials} color={p.color} size={30} online={p.online}/>
                     <div style={{ flex:1, minWidth:0 }}>
-                      <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12,
+                      <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:14,
                         color: isActive ? p.color : CREAM, letterSpacing:"0.02em",
                         overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                         {p.name}
                       </p>
-                      <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:MUTED,
+                      <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:MUTED,
                         fontStyle:"italic", overflow:"hidden", textOverflow:"ellipsis",
                         whiteSpace:"nowrap", lineHeight:1.4 }}>
                         {lastMsg?.text.slice(0,32)}…
@@ -499,16 +511,16 @@ export default function PenPalsPage() {
           {/* My profile mini card */}
           <div style={{ margin:"10px 10px", padding:"12px",
             border:`1px solid ${BORD}`, borderRadius:5,
-            background:"rgba(201,160,90,0.03)" }}>
-            <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+            background:"rgba(212,168,67,0.03)" }}>
+            <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
               color:DIM, letterSpacing:"0.12em", textTransform:"uppercase",
               marginBottom:8 }}>Your Profile</p>
             <div style={{ display:"flex", gap:9, alignItems:"center" }}>
-              <Avatar initials="MM" color={GOLD} size={30} online/>
+              <Avatar initials="MM" color={GOLD} size={34} online/>
               <div>
-                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12,
+                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:14,
                   color:GOLD, letterSpacing:"0.02em" }}>Mishka M.</p>
-                <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                   color:MUTED }}>EN native · ES learner</p>
               </div>
             </div>
@@ -519,18 +531,18 @@ export default function PenPalsPage() {
         {view === "discover" ? (
 
           /* ══ DISCOVER GRID ══ */
-          <div style={{ flex:1, overflowY:"auto", padding:"20px 24px" }}>
+          <div className="pp-main" style={{ flex:1, overflowY:"auto", padding:"20px 24px" }}>
             <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:20 }}>
               <div style={{ flex:1, height:1, background:BORD }}/>
-              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+              <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                 color:DIM, letterSpacing:"0.16em", textTransform:"uppercase" }}>
                 {displayProfiles.length} learners looking for pen pals
               </span>
               <div style={{ flex:1, height:1, background:BORD }}/>
             </div>
 
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",
-              gap:14 }}>
+            <div className="pp-discover-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",
+              gap:16 }}>
               {displayProfiles.map((p, i) => {
                 const mc = matchColor(p.matchPct);
                 const nlm = LANG_META[p.native];
@@ -553,25 +565,25 @@ export default function PenPalsPage() {
                       <Avatar initials={p.initials} color={p.color} size={44} online={p.online}/>
                       <div style={{ flex:1 }}>
                         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-                          <h3 style={{ fontFamily:"'Oswald',sans-serif", fontSize:16,
+                          <h3 style={{ fontFamily:"'Oswald',sans-serif", fontSize:19,
                             color:CREAM, letterSpacing:"0.03em" }}>{p.name}</h3>
                           <MatchRing pct={p.matchPct} color={mc}/>
                         </div>
-                        <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                        <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                           color:MUTED, letterSpacing:"0.08em", marginTop:2 }}>
                           {p.flag} {p.country} · {p.gender}
                         </p>
                         {/* Language chips */}
                         <div style={{ display:"flex", gap:5, marginTop:6 }}>
-                          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                             letterSpacing:"0.08em", color:nlm?.c,
-                            border:`1px solid ${nlm?.c}40`, borderRadius:2, padding:"1px 6px",
+                            border:`1px solid ${nlm?.c}40`, borderRadius:2, padding:"2px 8px",
                             background:`${nlm?.c}10` }}>
                             {nlm?.flag} {nlm?.name} native
                           </span>
-                          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                          <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                             letterSpacing:"0.08em", color:llm?.c,
-                            border:`1px solid ${llm?.c}40`, borderRadius:2, padding:"1px 6px",
+                            border:`1px solid ${llm?.c}40`, borderRadius:2, padding:"2px 8px",
                             background:`${llm?.c}10` }}>
                             learning {llm?.flag} {llm?.name}
                           </span>
@@ -580,7 +592,7 @@ export default function PenPalsPage() {
                     </div>
 
                     {/* Bio */}
-                    <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:BODY,
+                    <p style={{ fontFamily:"'Lora',serif", fontSize:15, color:BODY,
                       lineHeight:1.7, fontStyle:"italic", marginBottom:12,
                       borderLeft:`2px solid ${p.color}30`, paddingLeft:10 }}>
                       {p.bio}
@@ -595,23 +607,23 @@ export default function PenPalsPage() {
                     <div style={{ display:"flex", alignItems:"center",
                       justifyContent:"space-between", paddingTop:10,
                       borderTop:`1px solid ${BORD2}` }}>
-                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                      <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                         color:DIM, letterSpacing:"0.06em" }}>{p.replies}</span>
 
                       {hasThread ? (
                         <button onClick={() => openThread(p.id)} className="view-btn"
-                          style={{ padding:"6px 16px", borderRadius:3, cursor:"pointer",
+                          style={{ padding:"8px 18px", borderRadius:3, cursor:"pointer",
                             border:`1px solid ${p.color}50`, background:`${p.color}15`,
-                            fontFamily:"'Oswald',sans-serif", fontSize:10,
+                            fontFamily:"'Oswald',sans-serif", fontSize:12,
                             letterSpacing:"0.1em", textTransform:"uppercase",
                             color:p.color, transition:"all .15s" }}>
                           View Letters ({p.thread.length})
                         </button>
                       ) : (
                         <button onClick={() => openThread(p.id)} className="view-btn"
-                          style={{ padding:"6px 16px", borderRadius:3, cursor:"pointer",
+                          style={{ padding:"8px 18px", borderRadius:3, cursor:"pointer",
                             border:`1px solid ${BORD}`, background:"transparent",
-                            fontFamily:"'Oswald',sans-serif", fontSize:10,
+                            fontFamily:"'Oswald',sans-serif", fontSize:12,
                             letterSpacing:"0.1em", textTransform:"uppercase",
                             color:MUTED, transition:"all .15s" }}>
                           Send First Letter →
@@ -627,7 +639,7 @@ export default function PenPalsPage() {
         ) : (
 
           /* ══ CORRESPONDENCE VIEW ══ */
-          <div style={{ flex:1, display:"flex", overflow:"hidden" }}>
+          <div className="pp-main" style={{ flex:1, display:"flex", overflow:"hidden" }}>
 
             {/* Pal selector if none selected */}
             {!selectedPal ? (
@@ -656,9 +668,9 @@ export default function PenPalsPage() {
                   <Avatar initials={selectedPal.initials} color={selectedPal.color}
                     size={36} online={selectedPal.online}/>
                   <div style={{ flex:1 }}>
-                    <h3 style={{ fontFamily:"'Oswald',sans-serif", fontSize:15,
+                    <h3 style={{ fontFamily:"'Oswald',sans-serif", fontSize:17,
                       color:CREAM, letterSpacing:"0.03em" }}>{selectedPal.name}</h3>
-                    <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                    <p style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       color:selectedPal.color, letterSpacing:"0.08em" }}>
                       {selectedPal.flag} {selectedPal.country} · {LANG_META[selectedPal.native]?.name} native
                       {selectedPal.online && <span style={{ color:A_GREEN, marginLeft:8 }}>● online</span>}
@@ -667,17 +679,17 @@ export default function PenPalsPage() {
 
                   {/* Level + match */}
                   <div style={{ display:"flex", gap:8, alignItems:"center" }}>
-                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                    <span style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       letterSpacing:"0.08em", color:MUTED, border:`1px solid ${BORD}`,
-                      borderRadius:2, padding:"2px 7px" }}>{selectedPal.level}</span>
+                      borderRadius:2, padding:"3px 9px" }}>{selectedPal.level}</span>
                     <MatchRing pct={selectedPal.matchPct} color={matchColor(selectedPal.matchPct)}/>
                   </div>
 
                   <button onClick={() => { setView("discover"); }}
-                    style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:8,
+                    style={{ fontFamily:"'Share Tech Mono',monospace", fontSize:11,
                       letterSpacing:"0.1em", color:MUTED, background:"transparent",
                       border:`1px solid ${BORD}`, borderRadius:3,
-                      padding:"4px 12px", cursor:"pointer" }}>
+                      padding:"5px 14px", cursor:"pointer" }}>
                     ← Back
                   </button>
                 </div>
@@ -784,7 +796,7 @@ export default function PenPalsPage() {
                           background: letterText.trim() && !sending ? selectedPal.color : DIM,
                           fontFamily:"'Oswald',sans-serif", fontSize:11,
                           letterSpacing:"0.1em", textTransform:"uppercase",
-                          color:DARK, fontWeight:700, cursor: letterText.trim()?"pointer":"default",
+                          color:CREAM, fontWeight:700, cursor: letterText.trim()?"pointer":"default",
                           transition:"all .2s", opacity: letterText.trim() ? 1 : 0.45 }}>
                         Send →
                       </button>

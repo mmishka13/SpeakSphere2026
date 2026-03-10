@@ -2,15 +2,16 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 /* ─── DESIGN TOKENS — dark academia (matches landing page) ─── */
-const DARK   = "#140b04";
+const DARK   = "#0d0702";
 const SURF   = "#1d0f06";
-const CARD   = "#1a0d05";
-const CREAM  = "#eadcca";
-const GOLD   = "#c9a05a";
-const GOLDLT = "#e8c07a";
-const MUTED  = "#9a7d5a";
-const DIM    = "#5a3a22";
-const BORD   = "rgba(201,160,90,0.14)";
+const CARD   = "#1b0f06";
+const CARD_LT = "#28160a";  /* lighter card for alternating sections */
+const CREAM  = "#f5ede0";
+const GOLD   = "#d4a843";
+const GOLDLT = "#f0cc55";
+const MUTED  = "#c8aa80";
+const DIM    = "#a08050";
+const BORD   = "rgba(212,168,67,0.20)";
 
 const A_BLUE   = "#6a9ec0";
 const A_GREEN  = "#7db87d";
@@ -177,10 +178,10 @@ function GlowRing({ label, pct, color, size=70 }) {
             style={{ transition:"stroke-dashoffset 1.1s ease" }}/>
         </svg>
         <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center",
-          justifyContent:"center", fontFamily:"'Oswald',sans-serif", fontSize:13,
+          justifyContent:"center", fontFamily:"'Oswald',sans-serif", fontSize:Math.round(size*0.2),
           fontWeight:700, color:CREAM }}>{pct}%</div>
       </div>
-      <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:9, fontWeight:600,
+      <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, fontWeight:600,
         color:MUTED, textTransform:"uppercase", letterSpacing:"0.1em" }}>{label}</span>
     </div>
   );
@@ -254,8 +255,8 @@ function DailyQuestion({ q, opts, ans, done, onDone }) {
       </p>
       {opts.map((o, i) => {
         const isCorrect = i === ans, isChosen = i === picked;
-        let bg = `rgba(201,160,90,0.04)`;
-        let bord = `1px solid rgba(201,160,90,0.12)`;
+        let bg = `rgba(212,168,67,0.04)`;
+        let bord = `1px solid rgba(212,168,67,0.20)`;
         let col = CREAM;
         if (revealed && isCorrect) { bg = "rgba(125,184,125,0.12)"; bord=`1px solid ${A_GREEN}55`; col=A_GREEN; }
         if (revealed && isChosen && !isCorrect) { bg = "rgba(192,112,112,0.1)"; bord=`1px solid ${A_ROSE}44`; col=A_ROSE; }
@@ -297,7 +298,7 @@ function AddLangModal({ onAdd, onClose, existing }) {
             cursor:"pointer", color:MUTED, fontSize:22, lineHeight:1, padding:"0 4px" }}>×</button>
         </div>
         {available.length === 0
-          ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c4aa80", fontStyle:"italic" }}>
+          ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c8aa80", fontStyle:"italic" }}>
               You're enrolled in all languages!</p>
           : available.map(l => (
             <button key={l.code} onClick={()=>{ onAdd(l); onClose(); }}
@@ -327,7 +328,7 @@ const BANNERS = [
     cta:    "Answer today's question",
     path:   null, // scrolls to daily Q
     accent: GOLD,
-    pattern: "radial-gradient(ellipse 80% 60% at 20% 50%, rgba(201,160,90,0.13) 0%, transparent 70%)",
+    pattern: "radial-gradient(ellipse 80% 60% at 20% 50%, rgba(212,168,67,0.20) 0%, transparent 70%)",
   },
   {
     tag:    "Ready to level up?",
@@ -385,14 +386,14 @@ function HeroBanner({ onDailyQ, navigate }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{ position:"relative", borderRadius:8, overflow:"hidden", cursor:"default",
-        border:`1px solid rgba(201,160,90,0.14)`,
+        border:`1px solid rgba(212,168,67,0.22)`,
         background: CARD,
         backgroundImage: GRAIN,
         backgroundRepeat:"repeat", backgroundSize:"300px",
         marginBottom:20, transition:"border-color .25s",
         minHeight:"52vh",
         display:"flex", flexDirection:"column", justifyContent:"space-between",
-        borderColor: hovered ? `${b.accent}55` : "rgba(201,160,90,0.14)" }}>
+        borderColor: hovered ? `${b.accent}55` : "rgba(212,168,67,0.22)" }}>
 
       {/* Decorative pattern layer */}
       <div style={{ position:"absolute", inset:0, background:b.pattern,
@@ -411,7 +412,7 @@ function HeroBanner({ onDailyQ, navigate }) {
       {/* ── TOP STATS STRIP — normal flow so it isn't clipped ── */}
       <div style={{ position:"relative", zIndex:1,
         display:"flex", gap:0,
-        borderBottom:`1px solid rgba(201,160,90,0.08)`, flexShrink:0 }}>
+        borderBottom:`1px solid rgba(212,168,67,0.14)`, flexShrink:0 }}>
         {[
           { label:"Current Level",   value:"Journeyman",  sub:"Spanish"          },
           { label:"Total XP",        value:"1,840",       sub:"660 to Scholar"   },
@@ -423,12 +424,12 @@ function HeroBanner({ onDailyQ, navigate }) {
           <div key={i} style={{ flex:1,
             paddingTop:20, paddingBottom:16,
             paddingLeft: i === 0 ? 36 : 20, paddingRight: i === 5 ? 36 : 20,
-            borderRight: i < 5 ? `1px solid rgba(201,160,90,0.08)` : "none" }}>
+            borderRight: i < 5 ? `1px solid rgba(212,168,67,0.14)` : "none" }}>
             <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:8, letterSpacing:"0.16em",
               textTransform:"uppercase", color:MUTED, marginBottom:5 }}>{s.label}</p>
             <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:20, color:CREAM,
               letterSpacing:"0.02em", lineHeight:1 }}>{s.value}</p>
-            <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:"#c4aa80",
+            <p style={{ fontFamily:"'Lora',serif", fontSize:10, color:"#c8aa80",
               fontStyle:"italic", marginTop:3 }}>{s.sub}</p>
           </div>
         ))}
@@ -474,7 +475,7 @@ function HeroBanner({ onDailyQ, navigate }) {
         {BANNERS.map((_, i) => (
           <button key={i} onClick={() => goTo(i)}
             style={{ width: i===idx ? 18 : 6, height:6, borderRadius:3,
-              background: i===idx ? b.accent : "rgba(201,160,90,0.2)",
+              background: i===idx ? b.accent : "rgba(212,168,67,0.2)",
               border:"none", cursor:"pointer", padding:0,
               transition:"all .3s ease" }}/>
         ))}
@@ -486,33 +487,33 @@ function HeroBanner({ onDailyQ, navigate }) {
 /* ═══════════════ MAIN DASHBOARD ═══════════════ */
 /* ── CREATE SESSION (standalone component) ──────────────────── */
 function CreateSession({ lang, csOpen, setCsOpen, csData, setCsData, csSubmitted, onSubmit }) {
-  const langColor = lang?.c || "#c9a05a";
-  const GOLD_C = "#c9a05a", DARK_C = "#140b04", BORD_C = "rgba(201,160,90,0.12)";
-  const CREAM_C = "#eadcca", MUTED_C = "#9a7d5a", DIM_C = "#5a3a22";
-  const A_GREEN_C = "#a8855a", A_ROSE_C = "#8a6440";
+  const langColor = lang?.c || "#d4a843";
+  const GOLD_C = "#d4a843", DARK_C = "#0d0702", BORD_C = "rgba(212,168,67,0.20)";
+  const CREAM_C = "#f5ede0", MUTED_C = "#c8aa80", DIM_C = "#d4a843";
+  const A_GREEN_C = "#7db87d", A_ROSE_C = "#c07070";
   const LEVELS = ["Beginner","Intermediate","Advanced"];
   const LANGS_OPTS = [
     { code:"ES", name:"Spanish" }, { code:"FR", name:"French" },
     { code:"JP", name:"Japanese" }, { code:"KO", name:"Korean" },
   ];
   const inputStyle = {
-    background:"rgba(201,160,90,0.04)", border:`1px solid ${BORD_C}`,
-    borderRadius:4, padding:"9px 12px", fontFamily:"'Oswald',sans-serif",
-    fontSize:12, letterSpacing:"0.04em", color:CREAM_C, width:"100%", outline:"none",
+    background:"rgba(212,168,67,0.06)", border:`1px solid ${BORD_C}`,
+    borderRadius:5, padding:"10px 14px", fontFamily:"'Oswald',sans-serif",
+    fontSize:14, letterSpacing:"0.04em", color:CREAM_C, width:"100%", outline:"none",
   };
   const labelStyle = {
-    fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.14em",
-    textTransform:"uppercase", color:MUTED_C, display:"block", marginBottom:5,
+    fontFamily:"'Oswald',sans-serif", fontSize:11, letterSpacing:"0.14em",
+    textTransform:"uppercase", color:MUTED_C, display:"block", marginBottom:6,
   };
-  const valid = csData.title && csData.date && csData.time && csData.zoom;
+  const valid = csData.title && csData.date && csData.time;
 
   return (
-    <div style={{ background:"#1a0d05", border:`1px solid ${BORD_C}`, borderRadius:6, padding:"20px 22px" }}>
+    <div style={{ background:"#1b0f06", border:`1px solid ${BORD_C}`, borderRadius:6, padding:"20px 22px" }}>
       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom: csOpen ? 20 : 0 }}>
         <div>
-          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.14em",
+          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, letterSpacing:"0.14em",
             textTransform:"uppercase", color:MUTED_C, marginBottom:4 }}>Tutor Tools</p>
-          <h3 style={{ fontFamily:"'Oswald',sans-serif", fontSize:16, color:CREAM_C,
+          <h3 style={{ fontFamily:"'Oswald',sans-serif", fontSize:20, color:CREAM_C,
             letterSpacing:"0.03em" }}>Create a Session</h3>
         </div>
         <button onClick={() => setCsOpen(o => !o)}
@@ -532,7 +533,7 @@ function CreateSession({ lang, csOpen, setCsOpen, csData, setCsData, csSubmitted
               borderRadius:5, padding:"18px 20px", textAlign:"center" }}>
               <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:16, color:A_GREEN_C,
                 letterSpacing:"0.06em" }}>Session Created!</p>
-              <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:"#c4aa80",
+              <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:"#c8aa80",
                 fontStyle:"italic", marginTop:6 }}>Your session has been added to the calendar.</p>
             </div>
           ) : (
@@ -587,10 +588,10 @@ function CreateSession({ lang, csOpen, setCsOpen, csData, setCsData, csSubmitted
                       const sel = csData.level === lv;
                       return (
                         <button key={lv} onClick={() => setCsData(d => ({...d, level:lv}))}
-                          style={{ flex:1, fontFamily:"'Oswald',sans-serif", fontSize:9,
-                            letterSpacing:"0.08em", textTransform:"uppercase", padding:"8px 4px",
+                          style={{ flex:1, fontFamily:"'Oswald',sans-serif", fontSize:12,
+                            letterSpacing:"0.08em", textTransform:"uppercase", padding:"10px 4px",
                             borderRadius:4, border:`1px solid ${sel ? lvm[lv].c+"66" : BORD_C}`,
-                            background: sel ? `${lvm[lv].c}14` : "transparent",
+                            background: sel ? `${lvm[lv].c}20` : "transparent",
                             color: sel ? lvm[lv].c : MUTED_C, cursor:"pointer", transition:"all .14s" }}>
                           {lv}
                         </button>
@@ -629,17 +630,17 @@ function CreateSession({ lang, csOpen, setCsOpen, csData, setCsData, csSubmitted
 
               <div style={{ display:"flex", gap:10, alignItems:"center" }}>
                 <button onClick={onSubmit} disabled={!valid}
-                  style={{ flex:1, fontFamily:"'Oswald',sans-serif", fontSize:12,
-                    letterSpacing:"0.1em", textTransform:"uppercase", padding:"12px",
-                    borderRadius:4, border:"none", background:langColor, color:DARK_C,
+                  style={{ flex:1, fontFamily:"'Oswald',sans-serif", fontSize:15,
+                    letterSpacing:"0.1em", textTransform:"uppercase", padding:"14px",
+                    borderRadius:5, border:"none", background:langColor, color:DARK_C,
                     fontWeight:700, cursor: valid ? "pointer" : "default",
-                    transition:"all .15s", opacity: valid ? 1 : 0.45 }}>
+                    transition:"all .15s", opacity: valid ? 1 : 0.4 }}>
                   Publish Session
                 </button>
                 <button onClick={() => setCsOpen(false)}
-                  style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
-                    letterSpacing:"0.08em", textTransform:"uppercase", padding:"12px 18px",
-                    borderRadius:4, border:`1px solid ${BORD_C}`, background:"transparent",
+                  style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
+                    letterSpacing:"0.08em", textTransform:"uppercase", padding:"14px 20px",
+                    borderRadius:5, border:`1px solid ${BORD_C}`, background:"transparent",
                     color:MUTED_C, cursor:"pointer" }}>
                   Cancel
                 </button>
@@ -713,30 +714,30 @@ export default function Dashboard() {
 
   /* ── RIGHT PANEL — streak / week / placement / daily Q / resources ── */
   const rightPanel = (
-    <div style={{ width:280, flexShrink:0, display:"flex", flexDirection:"column", gap:14 }}>
+    <div className="dash-right" style={{ width:280, flexShrink:0, display:"flex", flexDirection:"column", gap:14 }}>
 
       {/* This Week — full width, bigger */}
       <Card style={{ padding:"20px 18px" }}>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:14 }}>
           <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.14em",
             textTransform:"uppercase", color:MUTED }}>This Week</p>
-          <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c4aa80", fontStyle:"italic" }}>
+          <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c8aa80", fontStyle:"italic" }}>
             <AnimNum to={ld.sessionsTotal}/> sessions total · streak <span style={{color:GOLDLT}}>{ld.streak}</span> days</p>
         </div>
         <WeekBars data={ld.week} color={lm.c} h={64}/>
       </Card>
 
       {/* Placement */}
-      <Card style={{ padding:"14px 16px" }}>
-        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:8, letterSpacing:"0.14em",
-          textTransform:"uppercase", color:MUTED, marginBottom:10 }}>Placement</p>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:10 }}>
-          <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:14, color:CREAM,
+      <Card style={{ padding:"16px 18px", background:CARD_LT }}>
+        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, letterSpacing:"0.14em",
+          textTransform:"uppercase", color:MUTED, marginBottom:12 }}>Placement</p>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
+          <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:18, color:CREAM,
             letterSpacing:"0.04em" }}>{ld.placement}</span>
-          <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:lm.c }}>
+          <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:14, color:lm.c }}>
             {ld.avgScore}% avg</span>
         </div>
-        <div style={{ display:"flex", gap:10, fontFamily:"'Lora',serif", fontSize:11, color:"#c4aa80" }}>
+        <div style={{ display:"flex", gap:10, fontFamily:"'Lora',serif", fontSize:13, color:"#c8aa80" }}>
           <span>{ld.sessionsTotal} sessions</span>
           <span>·</span>
           <span>3 this week</span>
@@ -744,37 +745,37 @@ export default function Dashboard() {
       </Card>
 
       {/* Suggested Resources */}
-      <Card style={{ padding:"16px" }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
-          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.14em",
+      <Card style={{ padding:"18px" }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
+          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.14em",
             textTransform:"uppercase", color:MUTED }}>Suggested For You</p>
           <button onClick={() => navigate("/resources")}
             style={{ background:"none", border:"none", cursor:"pointer",
-              fontFamily:"'Oswald',sans-serif", fontSize:9, color:GOLD,
+              fontFamily:"'Oswald',sans-serif", fontSize:11, color:GOLD,
               letterSpacing:"0.1em", textTransform:"uppercase",
               display:"flex", alignItems:"center", gap:4 }}>
-            See all <IcoArrow size={11}/>
+            See all <IcoArrow size={12}/>
           </button>
         </div>
         {ld.resources.map((r, i) => {
           const tc = { Video:A_BLUE, Quiz:A_ROSE, Lesson:A_AMBER }[r.type] || GOLD;
           return (
-            <div key={i} style={{ display:"flex", alignItems:"center", gap:10,
-              padding:"9px 0", borderBottom: i < ld.resources.length-1 ? `1px solid rgba(201,160,90,0.07)` : "none",
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:12,
+              padding:"11px 0", borderBottom: i < ld.resources.length-1 ? `1px solid rgba(212,168,67,0.12)` : "none",
               cursor:"pointer" }}>
-              <div style={{ width:32, height:32, borderRadius:4, background:`${tc}12`,
+              <div style={{ width:38, height:38, borderRadius:4, background:`${tc}12`,
                 border:`1px solid ${tc}33`, display:"flex", alignItems:"center",
                 justifyContent:"center", flexShrink:0 }}>
-                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:8,
+                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:10,
                   color:tc, letterSpacing:"0.08em" }}>{r.type.slice(0,3).toUpperCase()}</span>
               </div>
               <div style={{ flex:1, minWidth:0 }}>
-                <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:CREAM,
+                <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:CREAM,
                   overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{r.title}</p>
-                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:9, color:MUTED,
-                  letterSpacing:"0.06em", marginTop:2 }}>{r.diff} · {r.time}</p>
+                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:MUTED,
+                  letterSpacing:"0.06em", marginTop:3 }}>{r.diff} · {r.time}</p>
               </div>
-              <IcoArrow size={12} color={DIM}/>
+              <IcoArrow size={13} color={DIM}/>
             </div>
           );
         })}
@@ -789,7 +790,7 @@ export default function Dashboard() {
       {/* XP / Level card */}
       <Card style={{ padding:"22px 24px", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", top:-40, right:-40, width:200, height:200,
-          borderRadius:"50%", background:"radial-gradient(circle,rgba(201,160,90,0.06),transparent 70%)",
+          borderRadius:"50%", background:"radial-gradient(circle,rgba(212,168,67,0.06),transparent 70%)",
           pointerEvents:"none" }}/>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:16 }}>
           <div style={{ display:"flex", alignItems:"center", gap:12 }}>
@@ -819,27 +820,27 @@ export default function Dashboard() {
           <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, color:MUTED }}>
             {ld.xp.toLocaleString()} XP</span>
           {lNxt && (
-            <span style={{ fontFamily:"'Lora',serif", fontSize:10, color:"#c4aa80", fontStyle:"italic" }}>
+            <span style={{ fontFamily:"'Lora',serif", fontSize:10, color:"#c8aa80", fontStyle:"italic" }}>
               {(lNxt.xp - ld.xp).toLocaleString()} XP to {lNxt.title}</span>
           )}
         </div>
       </Card>
 
       {/* Skill Breakdown */}
-      <Card style={{ padding:"22px 24px" }}>
-        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.14em",
-          textTransform:"uppercase", color:MUTED, marginBottom:20 }}>Skill Breakdown</p>
+      <Card style={{ padding:"22px 24px", background:CARD_LT }}>
+        <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.14em",
+          textTransform:"uppercase", color:MUTED, marginBottom:22 }}>Skill Breakdown</p>
 
         {/* Glow rings row */}
-        <div style={{ display:"flex", justifyContent:"space-around", marginBottom:24 }}>
-          <GlowRing label="Vocab"    pct={ld.skills.vocab}    color={A_AMBER}  />
-          <GlowRing label="Grammar"  pct={ld.skills.grammar}  color={A_BLUE}   />
-          <GlowRing label="Reading"  pct={ld.skills.reading}  color={A_GREEN}  />
-          <GlowRing label="Speaking" pct={ld.skills.speaking} color={A_ROSE}   />
+        <div style={{ display:"flex", justifyContent:"space-around", marginBottom:26 }}>
+          <GlowRing label="Vocab"    pct={ld.skills.vocab}    color={A_AMBER} size={86} />
+          <GlowRing label="Grammar"  pct={ld.skills.grammar}  color={A_BLUE}  size={86} />
+          <GlowRing label="Reading"  pct={ld.skills.reading}  color={A_GREEN} size={86} />
+          <GlowRing label="Speaking" pct={ld.skills.speaking} color={A_ROSE}  size={86} />
         </div>
 
         {/* Bar chart list */}
-        <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+        <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
           {[
             { label:"Vocabulary", k:"vocab",    c:A_AMBER  },
             { label:"Grammar",    k:"grammar",  c:A_BLUE   },
@@ -847,13 +848,13 @@ export default function Dashboard() {
             { label:"Speaking",   k:"speaking", c:A_ROSE   },
           ].map(({ label, k, c }) => (
             <div key={k}>
-              <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}>
-                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11,
+              <div style={{ display:"flex", justifyContent:"space-between", marginBottom:7 }}>
+                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:13,
                   color:MUTED, letterSpacing:"0.06em" }}>{label}</span>
-                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, color:c, fontWeight:600 }}>
+                <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, color:c, fontWeight:600 }}>
                   {ld.skills[k]}%</span>
               </div>
-              <GlowBar pct={ld.skills[k]} color={c} h={6}/>
+              <GlowBar pct={ld.skills[k]} color={c} h={7}/>
             </div>
           ))}
         </div>
@@ -861,35 +862,35 @@ export default function Dashboard() {
 
       {/* Recent Sessions */}
       <Card style={{ padding:"22px 24px" }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
-          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.14em",
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:18 }}>
+          <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, letterSpacing:"0.14em",
             textTransform:"uppercase", color:MUTED }}>Recent Sessions</p>
           <button onClick={() => navigate("/calendar")}
             style={{ background:"none", border:"none", cursor:"pointer",
-              fontFamily:"'Oswald',sans-serif", fontSize:9, color:GOLD,
+              fontFamily:"'Oswald',sans-serif", fontSize:11, color:GOLD,
               letterSpacing:"0.1em", textTransform:"uppercase",
               display:"flex", alignItems:"center", gap:4 }}>
-            View all <IcoArrow size={11}/>
+            View all <IcoArrow size={12}/>
           </button>
         </div>
         {ld.sessions.length === 0
-          ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c4aa80", fontStyle:"italic" }}>
+          ? <p style={{ fontFamily:"'Lora',serif", fontSize:14, color:"#c8aa80", fontStyle:"italic" }}>
               No sessions yet — book one from the calendar.</p>
           : ld.sessions.map((s, i) => (
             <div key={i} style={{ display:"flex", alignItems:"center", gap:14,
-              padding:"12px 0", borderBottom: i < ld.sessions.length-1 ? `1px solid rgba(201,160,90,0.07)` : "none" }}>
-              <div style={{ width:36, height:36, borderRadius:6, background:`${lm.c}12`,
+              padding:"14px 0", borderBottom: i < ld.sessions.length-1 ? `1px solid rgba(212,168,67,0.12)` : "none" }}>
+              <div style={{ width:42, height:42, borderRadius:6, background:`${lm.c}12`,
                 border:`1px solid ${lm.c}33`, display:"flex", alignItems:"center",
                 justifyContent:"center", flexShrink:0 }}>
-                <IcoCal size={14} color={lm.c}/>
+                <IcoCal size={17} color={lm.c}/>
               </div>
               <div style={{ flex:1, minWidth:0 }}>
-                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, color:CREAM,
-                  letterSpacing:"0.02em", marginBottom:3 }}>{s.title}</p>
-                <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:"#c4aa80", fontStyle:"italic" }}>
+                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:15, color:CREAM,
+                  letterSpacing:"0.02em", marginBottom:4 }}>{s.title}</p>
+                <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c8aa80", fontStyle:"italic" }}>
                   with {s.with} · {s.date} · {s.duration}</p>
               </div>
-              <Stars n={s.stars} size={11}/>
+              <Stars n={s.stars} size={13}/>
             </div>
           ))
         }
@@ -904,8 +905,13 @@ export default function Dashboard() {
     spots:"6", zoom:"", desc:""
   });
   const [csSubmitted, setCsSubmitted] = useState(false);
+
+  /* ── EDIT SESSION ── */
+  const [editSess, setEditSess] = useState(null);
+  const [editData, setEditData] = useState({});
+  const [upcomingList, setUpcomingList] = useState(td.upcoming);
   function handleCsSubmit() {
-    if (!csData.title || !csData.date || !csData.time || !csData.zoom) return;
+    if (!csData.title || !csData.date || !csData.time) return;
     setCsSubmitted(true);
     setTimeout(() => { setCsSubmitted(false); setCsOpen(false);
       setCsData({ title:"", date:"", time:"", duration:"60", language:"ES",
@@ -917,7 +923,7 @@ export default function Dashboard() {
     <div style={{ flex:1, display:"flex", flexDirection:"column", gap:16 }}>
 
       {/* Stats row */}
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12 }}>
+      <div className="tutor-stats" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12 }}>
         {[
           { label:"Sessions",  value:td.hosted   },
           { label:"Students",  value:td.students  },
@@ -948,12 +954,12 @@ export default function Dashboard() {
         <div style={{ display:"flex", justifyContent:"space-between", marginTop:8 }}>
           <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, color:MUTED }}>
             {td.hosted} sessions hosted</span>
-          {tNxt && <span style={{ fontFamily:"'Lora',serif", fontSize:10, color:"#c4aa80", fontStyle:"italic" }}>
+          {tNxt && <span style={{ fontFamily:"'Lora',serif", fontSize:10, color:"#c8aa80", fontStyle:"italic" }}>
             {tNxt.sessions - td.hosted} more to {tNxt.title}</span>}
         </div>
       </Card>
 
-      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
+      <div className="tutor-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
         {/* Upcoming */}
         <Card style={{ padding:"22px 24px" }}>
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
@@ -967,15 +973,22 @@ export default function Dashboard() {
               Schedule <IcoArrow size={11}/>
             </button>
           </div>
-          {td.upcoming.length === 0
-            ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c4aa80", fontStyle:"italic" }}>
+          {upcomingList.length === 0
+            ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c8aa80", fontStyle:"italic" }}>
                 No upcoming sessions.</p>
-            : td.upcoming.map((s, i) => (
+            : upcomingList.map((s, i) => (
               <div key={i} style={{ padding:"10px 0",
-                borderBottom: i < td.upcoming.length-1 ? `1px solid rgba(201,160,90,0.07)` : "none" }}>
-                <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:12, color:CREAM,
-                  letterSpacing:"0.02em", marginBottom:4 }}>{s.title}</p>
-                <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:"#c4aa80", fontStyle:"italic" }}>
+                borderBottom: i < upcomingList.length-1 ? `1px solid rgba(212,168,67,0.12)` : "none" }}>
+                <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:8 }}>
+                  <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, color:CREAM,
+                    letterSpacing:"0.02em", marginBottom:4, flex:1 }}>{s.title}</p>
+                  <button onClick={() => { setEditSess(s); setEditData({title:s.title, date:s.date, student:s.student}); }}
+                    style={{ background:"rgba(212,168,67,0.12)", border:`1px solid ${BORD}`,
+                      borderRadius:3, padding:"3px 9px", cursor:"pointer", flexShrink:0,
+                      fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.1em",
+                      color:GOLD, textTransform:"uppercase" }}>Edit</button>
+                </div>
+                <p style={{ fontFamily:"'Lora',serif", fontSize:11, color:"#c8aa80", fontStyle:"italic" }}>
                   {s.date}</p>
                 <span style={{ fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.08em",
                   color:s.spots<=1?A_ROSE:A_GREEN, border:`1px solid ${s.spots<=1?A_ROSE:A_GREEN}44`,
@@ -987,16 +1000,16 @@ export default function Dashboard() {
         </Card>
 
         {/* Reviews */}
-        <Card style={{ padding:"22px 24px" }}>
+        <Card style={{ padding:"22px 24px", background:CARD_LT }}>
           <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.14em",
             textTransform:"uppercase", color:MUTED, marginBottom:16 }}>Student Reviews</p>
           {td.reviews.length === 0
-            ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c4aa80", fontStyle:"italic" }}>
+            ? <p style={{ fontFamily:"'Lora',serif", fontSize:13, color:"#c8aa80", fontStyle:"italic" }}>
                 Host a session to get reviews.</p>
             : td.reviews.map((r, i) => (
               <div key={i} style={{ marginBottom: i < td.reviews.length-1 ? 14 : 0 }}>
                 <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6 }}>
-                  <div style={{ width:24, height:24, borderRadius:4, background:"rgba(201,160,90,0.1)",
+                  <div style={{ width:24, height:24, borderRadius:4, background:"rgba(212,168,67,0.1)",
                     border:`1px solid ${BORD}`, display:"flex", alignItems:"center",
                     justifyContent:"center", fontFamily:"'Oswald',sans-serif", fontSize:8, color:GOLD }}>
                     {r.from.split(" ").map(w=>w[0]).join("")}
@@ -1005,7 +1018,7 @@ export default function Dashboard() {
                     color:CREAM, letterSpacing:"0.04em" }}>{r.from}</span>
                   <Stars n={r.stars} size={10}/>
                 </div>
-                <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:"#c4aa80",
+                <p style={{ fontFamily:"'Lora',serif", fontSize:12, color:"#c8aa80",
                   fontStyle:"italic", lineHeight:1.6 }}>"{r.text}"</p>
               </div>
             ))
@@ -1023,24 +1036,39 @@ export default function Dashboard() {
         *{box-sizing:border-box;margin:0;padding:0;}
         ::-webkit-scrollbar{width:4px;height:4px;}
         ::-webkit-scrollbar-track{background:transparent;}
-        ::-webkit-scrollbar-thumb{background:rgba(201,160,90,0.2);border-radius:2px;}
-        .nav-btn:hover{background:rgba(201,160,90,0.06)!important;}
+        ::-webkit-scrollbar-thumb{background:rgba(212,168,67,0.2);border-radius:2px;}
+        .nav-btn:hover{background:rgba(212,168,67,0.06)!important;}
         .nav-btn:hover span{color:${CREAM}!important;}
         @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
         @keyframes toastIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+        select option{background:#1b0f06;color:#f5ede0;}
+        @media(max-width:768px){
+          .dash-topbar{flex-direction:column!important;align-items:flex-start!important;}
+          .dash-topbar h1{font-size:28px!important;}
+          .dash-content{padding:14px 14px 80px!important;}
+          .dash-cols{flex-direction:column!important;}
+          .dash-right{display:none!important;}
+          .tutor-stats{grid-template-columns:1fr 1fr!important;}
+          .tutor-grid{grid-template-columns:1fr!important;}
+          .learner-stats{grid-template-columns:1fr 1fr!important;}
+          .learner-grid{grid-template-columns:1fr!important;}
+        }
+        @media(min-width:768px) and (max-width:1023px){
+          .dash-right{width:260px!important;}
+        }
       `}</style>
 
       <main style={{ flex:1, display:"flex", flexDirection:"column", minHeight:"100vh" }}>
 
         {/* TOP BAR */}
-        <div style={{ padding:"22px 28px 0", borderBottom:`1px solid rgba(201,160,90,0.08)`,
+        <div style={{ padding:"22px 28px 0", borderBottom:`1px solid rgba(212,168,67,0.14)`,
           paddingBottom:16, animation:"fadeUp .4s ease both" }}>
 
-          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end",
+          <div className="dash-topbar" style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end",
             marginBottom:16, flexWrap:"wrap", gap:12 }}>
             <div>
-              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:9, letterSpacing:"0.18em",
+              <p style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, letterSpacing:"0.18em",
                 textTransform:"uppercase", color:MUTED, marginBottom:4 }}>
                 {greeting}, Mishka
               </p>
@@ -1072,7 +1100,7 @@ export default function Dashboard() {
                     <button key={l.code} onClick={() => setLcode(l.code)}
                       style={{ fontFamily:"'Oswald',sans-serif", fontSize:10, letterSpacing:"0.1em",
                         textTransform:"uppercase", padding:"5px 12px", border:"none", borderRadius:4,
-                        cursor:"pointer", background: lcode===l.code ? `${lData?.c||GOLD}22` : "rgba(201,160,90,0.05)",
+                        cursor:"pointer", background: lcode===l.code ? `${lData?.c||GOLD}22` : "rgba(212,168,67,0.05)",
                         color: lcode===l.code ? lData?.c||GOLD : MUTED,
                         outline: lcode===l.code ? `1px solid ${lData?.c||GOLD}55` : "none",
                         transition:"all .15s" }}>
@@ -1094,13 +1122,13 @@ export default function Dashboard() {
         </div>
 
         {/* CONTENT */}
-        <div style={{ flex:1, padding:"20px 28px 36px", overflowY:"auto",
+        <div className="dash-content" style={{ flex:1, padding:"20px 28px 36px", overflowY:"auto",
           animation:"fadeUp .35s ease .05s both" }}>
           <HeroBanner navigate={navigate} onDailyQ={scrollToDQ} />
 
           {/* ── FEATURED: QUESTION OF THE DAY ── */}
           {tab === "learner" && (
-            <div ref={dqRef} style={{ marginBottom:20, border:`1px solid ${isDQ ? "rgba(201,160,90,0.12)" : "rgba(201,160,90,0.28)"}`,
+            <div ref={dqRef} style={{ marginBottom:20, border:`1px solid ${isDQ ? "rgba(212,168,67,0.20)" : "rgba(212,168,67,0.28)"}`,
               borderRadius:8, background:CARD, backgroundImage:GRAIN,
               backgroundRepeat:"repeat", backgroundSize:"300px",
               position:"relative", overflow:"hidden" }}>
@@ -1126,7 +1154,7 @@ export default function Dashboard() {
                 <div style={{ flex:"0 0 auto", maxWidth:260 }}>
                   <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:14 }}>
                     <div style={{ width:36, height:36, borderRadius:6,
-                      background: isDQ ? "rgba(125,184,125,0.1)" : "rgba(201,160,90,0.1)",
+                      background: isDQ ? "rgba(125,184,125,0.1)" : "rgba(212,168,67,0.1)",
                       border:`1px solid ${isDQ ? A_GREEN+"44" : GOLD+"44"}`,
                       display:"flex", alignItems:"center", justifyContent:"center" }}>
                       {isDQ
@@ -1170,7 +1198,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Divider */}
-                <div style={{ width:1, background:"rgba(201,160,90,0.1)",
+                <div style={{ width:1, background:"rgba(212,168,67,0.1)",
                   alignSelf:"stretch", flexShrink:0, minHeight:80 }}/>
 
                 {/* Right — the actual question */}
@@ -1186,7 +1214,7 @@ export default function Dashboard() {
           )}
 
           {tab === "learner"
-            ? <div style={{ display:"flex", gap:16, alignItems:"flex-start" }}>
+            ? <div className="dash-cols" style={{ display:"flex", gap:16, alignItems:"flex-start" }}>
                 {learnerMain}
                 {rightPanel}
               </div>
@@ -1203,9 +1231,64 @@ export default function Dashboard() {
         />
       )}
 
+
+      {/* ── EDIT SESSION MODAL ── */}
+      {editSess && (
+        <div style={{ position:"fixed", inset:0, background:"rgba(10,5,2,0.88)",
+          backdropFilter:"blur(10px)", zIndex:999, display:"flex",
+          alignItems:"center", justifyContent:"center" }}
+          onClick={() => setEditSess(null)}>
+          <Card style={{ padding:32, width:420, maxWidth:"90vw" }}
+            onClick={e => e.stopPropagation()}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:24 }}>
+              <h2 style={{ fontFamily:"'Oswald',sans-serif", fontSize:20, color:CREAM, letterSpacing:"0.04em" }}>
+                Edit Session</h2>
+              <button onClick={() => setEditSess(null)}
+                style={{ background:"none", border:"none", cursor:"pointer", color:MUTED, fontSize:22 }}>×</button>
+            </div>
+            <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+              {[
+                { label:"Session Title", key:"title", type:"text"     },
+                { label:"Date",          key:"date",  type:"text"     },
+                { label:"Time",          key:"student",type:"text"    },
+              ].map(({ label, key, type }) => (
+                <div key={key}>
+                  <label style={{ fontFamily:"'Oswald',sans-serif", fontSize:11, letterSpacing:"0.12em",
+                    textTransform:"uppercase", color:MUTED, display:"block", marginBottom:6 }}>{label}</label>
+                  <input type={type}
+                    style={{ background:"rgba(212,168,67,0.06)", border:`1px solid ${BORD}`,
+                      borderRadius:5, padding:"10px 14px", fontFamily:"'Oswald',sans-serif",
+                      fontSize:14, color:CREAM, width:"100%", outline:"none" }}
+                    value={editData[key] || ""}
+                    onChange={e => setEditData(d => ({...d, [key]:e.target.value}))}/>
+                </div>
+              ))}
+              <div style={{ display:"flex", gap:10, marginTop:6 }}>
+                <button onClick={() => {
+                  setUpcomingList(list => list.map(s => s === editSess ? {...s, ...editData} : s));
+                  setEditSess(null);
+                  fireToast("Session updated!");
+                }}
+                  style={{ flex:1, fontFamily:"'Oswald',sans-serif", fontSize:14, letterSpacing:"0.1em",
+                    textTransform:"uppercase", padding:"13px", borderRadius:5,
+                    border:"none", background:lm.c, color:CREAM, fontWeight:700, cursor:"pointer" }}>
+                  Save Changes
+                </button>
+                <button onClick={() => setEditSess(null)}
+                  style={{ fontFamily:"'Oswald',sans-serif", fontSize:13, letterSpacing:"0.08em",
+                    textTransform:"uppercase", padding:"13px 20px", borderRadius:5,
+                    border:`1px solid ${BORD}`, background:"transparent", color:MUTED, cursor:"pointer" }}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
+
       {toast && (
         <div style={{ position:"fixed", bottom:24, left:"50%", transform:"translateX(-50%)",
-          background:CARD, border:`1px solid rgba(201,160,90,0.25)`, borderRadius:5,
+          background:CARD, border:`1px solid rgba(212,168,67,0.25)`, borderRadius:5,
           padding:"9px 20px", fontFamily:"'Oswald',sans-serif", fontSize:11,
           letterSpacing:"0.08em", color:CREAM, zIndex:9999,
           animation:"toastIn .22s ease both" }}>

@@ -61,6 +61,7 @@ const CSS = `
     .cal-sidebar { width:100% !important; max-height:320px !important; flex:none !important;
       border-left:none !important; border-top:1px solid rgba(212,168,67,0.20) !important;
       overflow-y:auto !important; }
+    .cal-day-events { display:none !important; }
 
     /* Sessions grid 1 col */
     .cal-sessions-grid { grid-template-columns:1fr !important; }
@@ -441,7 +442,7 @@ function AgendaPanel({ selectedDay, allEvents, onEventClick }) {
         </p>
       </div>
 
-      <div style={{ flex:1, overflowY:"auto", padding:"10px 12px" }}>
+      <div className="cal-day-events" style={{ flex:1, overflowY:"auto", padding:"10px 12px" }}>
         {!selectedDay ? (
           <p style={{ fontFamily:"'Lora',serif", fontSize:16, color:MUTED,
             fontStyle:"italic", textAlign:"center", marginTop:20, lineHeight:1.6 }}>
